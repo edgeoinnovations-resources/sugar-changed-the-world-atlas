@@ -12,7 +12,7 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;
 
 let DATA = {}, map, srcMarkers = [], popup, activeLayers = new Set(), curYear = 1950,
     curEra = 'e2', mode = 'story', playTimer = null, placeMarkers = [],
-    gratMarkers = [], globeOn = false, userTurning = false, spinResume = null;
+    gratMarkers = [], globeOn = false, userTurning = false, spinRAF = null, curStep = null;
 const GRAT_LAYERS = ['grat-l', 'grat-polar', 'grat-trop', 'grat-eq'];
 const LAND_SWAP = 5;            // zoom at which the 1:110m base hands over to 1:10m
 
@@ -325,23 +325,45 @@ function setGlobe(on) {
   globeOn = on;
   map.setProjection({ type: on ? 'globe' : 'mercator' });
   document.getElementById('map').classList.toggle('globe', on);
-  if (on) spinGlobe();
+  if (on) startSpin(); else stopSpin();
 }
 
-function spinGlobe() {
-  if (!globeOn || userTurning) return;
-  const c = map.getCenter();
-  map.easeTo({ center: [c.lng - SPIN_DEG_PER_SEC, c.lat], duration: 1000, easing: t => t });
+/* One animation loop, never a chain of eased moves. An earlier version queued the next
+   ease from 'moveend', which forked: a single drag fires both 'mouseup' and 'dragend',
+   so two chains started, then four, and the competing eases stamped on every camera
+   move the story asked for — including the one that carries you to the next step. */
+function startSpin() {
+  stopSpin();
+  let last = 0;
+  const tick = now => {
+    spinRAF = requestAnimationFrame(tick);
+    if (!last) { last = now; return; }
+    const dt = Math.min((now - last) / 1000, 0.25);   // a hidden tab comes back with a huge gap
+    last = now;
+    // hold still while the reader has hold of it, and while the story is flying the camera
+    if (userTurning || map.isEasing() || map.isZooming() || map.isRotating()) return;
+    const c = map.getCenter();
+    map.setCenter([c.lng - SPIN_DEG_PER_SEC * dt, c.lat]);
+  };
+  spinRAF = requestAnimationFrame(tick);
+}
+
+function stopSpin() {
+  if (spinRAF) cancelAnimationFrame(spinRAF);
+  spinRAF = null;
+  userTurning = false;
 }
 
 function wireGlobeSpin() {
-  map.on('moveend', () => { if (globeOn) spinGlobe(); });       // each ease queues the next
-  ['mousedown', 'touchstart', 'wheel'].forEach(ev => map.on(ev, () => { userTurning = true; }));
-  ['mouseup', 'touchend', 'dragend', 'zoomend'].forEach(ev => map.on(ev, () => {
-    userTurning = false;
-    clearTimeout(spinResume);
-    spinResume = setTimeout(spinGlobe, 900);                     // let go, and it drifts on
-  }));
+  // only meaningful while the globe is up; the story's own eases must not look like a grab
+  const hold = () => { if (globeOn) userTurning = true; };
+  const release = () => { userTurning = false; };
+  ['dragstart', 'wheel'].forEach(ev => map.on(ev, hold));
+  ['dragend', 'zoomend', 'rotateend'].forEach(ev => map.on(ev, release));
+  // let go outside the canvas and the map never hears about it
+  window.addEventListener('pointerup', release);
+  window.addEventListener('pointercancel', release);
+  window.addEventListener('blur', release);
 }
 
 /* ── graticule ────────────────────────────────────────────────
@@ -520,13 +542,21 @@ function goStep(id) {
   if (s.year) curYear = s.year;
   if (s.diffusionYear) curYear = s.diffusionYear;
   if (s.era) curEra = s.era;
-  /* "fit" frames a bounding box instead of a fixed centre/zoom, so every point stays
-     on screen whatever the window size. */
-  if (s.fit) map.fitBounds(s.fit, { bearing: 0, pitch: 0, duration: 1500, padding: camPad() });
-  else map.easeTo({ center: s.camera.center, zoom: s.camera.zoom, bearing: 0, pitch: 0, duration: 1500, padding: camPad() });
+  /* Projection first, then the camera — but on separate ticks. setProjection kicks off
+     its own transition, and a camera command issued in the same tick gets swallowed by
+     it, which left the map a whole step behind the text. */
+  setGlobe(!!s.globe);
+  const fly = () => {
+    if (curStep !== s.id) return;                 // a faster scroll already moved on
+    /* "fit" frames a bounding box instead of a fixed centre/zoom, so every point stays
+       on screen whatever the window size. */
+    if (s.fit) map.fitBounds(s.fit, { bearing: 0, pitch: 0, duration: 1500, padding: camPad() });
+    else map.easeTo({ center: s.camera.center, zoom: s.camera.zoom, bearing: 0, pitch: 0, duration: 1500, padding: camPad() });
+  };
+  curStep = s.id;
+  setTimeout(fly, 0);
   setPlaceLabels(s.places);
   applyState(s.filterAct);
-  setGlobe(!!s.globe);            // after applyState: swapping projection stalls isStyleLoaded()
   const note = document.getElementById('mapnote');
   if (s.layers && s.layers.length) {
     note.hidden = false;
