@@ -357,7 +357,7 @@
       "prompt": "OPTIC — Parts: note the ages of the two people. Connect that to Ephraim Knowlton's 'suckling gang' and the water carriers aged eleven to fifteen."
     },
     {
-      "id": "s25-stickfighting", "act": 2, "kind": "image",
+      "id": "s25-stickfighting", "act": 2, "kind": "image", "music": "kalinda",
       "title": "Stick fighting",
       "creator": "Agostino Brunias",
       "date": "1779",

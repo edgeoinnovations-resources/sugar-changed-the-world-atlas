@@ -382,7 +382,7 @@
    "act": 2,
    "kicker": "Part Two",
    "title": "How we can still hear them",
-   "body": "Nobody interviewed the Africans who laboured in the cane. They were meant to work and die. But they invented music, dances and songs that carry the pulse of their lives — bomba in Puerto Rico, rumba in Cuba, Maculelê in Brazil, stick fighting on the islands, and later jazz in Louisiana.<p>A master walking by saw dancing. No words of anger. But the drummers were speaking.</p>",
+   "body": "Nobody interviewed the Africans who laboured in the cane. They were meant to work and die. But they invented music, dances and songs that carry the pulse of their lives — bomba in Puerto Rico, rumba in Cuba, Maculelê in Brazil, stick fighting on the islands, and later jazz in Louisiana.<p>A master walking by saw dancing. No words of anger. But the drummers were speaking.</p><p><b>Click a teal pin to hear it.</b> Each one carries the recordings — and how well the book's claim about that music actually holds up.</p>",
    "camera": {
     "center": [
      -64,
@@ -394,13 +394,24 @@
    },
    "layers": [
     "sources",
-    "freedom"
+    "freedom",
+    "music"
    ],
    "filterAct": 2,
    "sources": [
     "s25-stickfighting",
     "s24-cuatro",
     "s26-rebel-surinam"
+   ],
+   "fit": [
+    [
+     -95.0,
+     -17.0
+    ],
+    [
+     -34.0,
+     35.0
+    ]
    ]
   },
   {

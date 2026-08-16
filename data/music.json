@@ -1,0 +1,218 @@
+{
+ "_note": "Five musical traditions the book names on pp. 54-55. Each carries the book's claim, what the record actually shows, and something to listen to. Public-domain recordings are served from this repo; everything still in copyright is played through the rights holder's own player and nothing third-party loads until a student asks for it.",
+ "music": [
+  {
+   "id": "bomba",
+   "tradition": "Bomba",
+   "place": "Loíza, Puerto Rico",
+   "lon": -65.88,
+   "lat": 18.433,
+   "bookPage": "54",
+   "claim": "A conversation in rhythm. The drummer follows the dancer, not the other way round — so a master walking past saw only dancing.",
+   "verdict": "holds up",
+   "evidence": "The National Endowment for the Arts, honouring Rafael Cepeda as <i>el patriarca de la bomba</i>, says it outright: bomba spread \"from their birthplace on the island's sugarcane plantations and coastal villages to urban centers in Puerto Rico and abroad.\" A federal agency, saying what the book says.",
+   "quote": "Everything you freestyle becomes a communication between the dancer and the drummer.",
+   "quoteWho": "Mar Cruz, bomba dancer, Santurce",
+   "watchFor": "Bomba is not plena. Bomba uses barrel drums — <i>barriles</i> — and is dancer-led; plena uses hand frame drums and dates from about 1900. Group names tell you nothing. Check the drums.",
+   "media": [
+    {
+     "kind": "youtube",
+     "id": "z0vzkGKEWX4",
+     "title": "Puerto Rico's Bomba, A Dance of the African Diaspora",
+     "credit": "KQED / PBS, <i>If Cities Could Dance</i>, 2020 · 6:34",
+     "note": "Filmed in Santurce and Loíza with the sisters Mar and María Cruz. Watch the drummer's hand wait for the dancer's hip — that break is the <i>piquete</i>, and it is the book's sentence happening in front of you."
+    },
+    {
+     "kind": "youtube",
+     "id": "3RGqiGHWDrQ",
+     "title": "Why Puerto Rican Bomba Music Is Resistance",
+     "credit": "Sound Field, PBS Digital Studios, 2021 · 10:57",
+     "note": "Ivelisse Díaz takes the rhythm apart piece by piece."
+    },
+    {
+     "kind": "link",
+     "url": "https://folkways.si.edu/raul-and-freddy-ayala/bomba/caribbean-latin-world/music/track/smithsonian",
+     "title": "\"Bomba\" — Raúl and Freddy Ayala",
+     "credit": "Smithsonian Folkways FW04412, recorded by Henrietta Yurchenco, 1971",
+     "note": "The Ayalas are the Loíza bomba family. Free preview clip on the page. Ask for <i>juba</i> (yubá) — the oldest and most African of the bomba rhythms."
+    },
+    {
+     "kind": "link",
+     "url": "https://www.arts.gov/honors/heritage/rafael-cepeda",
+     "title": "Rafael Cepeda — NEA National Heritage Fellow, 1983",
+     "credit": "National Endowment for the Arts",
+     "note": "The citation that ties bomba to the cane plantations."
+    }
+   ]
+  },
+  {
+   "id": "rumba",
+   "tradition": "Rumba, and what came before it",
+   "place": "Matanzas, Cuba",
+   "lon": -81.5775,
+   "lat": 23.0411,
+   "bookPage": "54",
+   "claim": "Sugar workers told their stories in rumba. One song says <i>\"The boss does not want me to play the drum.\"</i>",
+   "verdict": "half true — and the other half is more interesting",
+   "evidence": "The song is real. It is <i>\"Lamento Esclavo\"</i>, recorded by Los Muñequitos de Matanzas. But it is a 1950s composition looking back at slavery, not a song sung by enslaved people. Rumba grew in the tenements, docks and taverns of Havana and Matanzas in the 1880s — at the same time as, and largely after, Cuba abolished slavery in 1886. It is a port-and-city music, not a plantation music. The book's own endnote traces the quotation to a private conversation with its musicologist: no title, no recording, no publication.",
+   "quote": "El amo no quiere que yo toque tambor.",
+   "quoteWho": "chorus of \"Lamento Esclavo\" — <i>the master</i> does not want me to play the drum. The book translated <i>el amo</i> as \"the boss.\"",
+   "watchFor": "When the book's own musicologist, Professor Ben Lapidus, chose Cuban music for the authors' playlist, he did not choose rumba. He chose ritual songs recorded <i>at named sugar mills</i> — one of them sung by a surviving member of the work gang at the Arrati mill. The better evidence was on their own website all along.",
+   "media": [
+    {
+     "kind": "youtube",
+     "id": "rdE5uDFy9Ww",
+     "title": "\"Lamento Esclavo\" — Los Muñequitos de Matanzas",
+     "credit": "delivered by the rights holder · composition by Julio Blanco and Armando Pedroso",
+     "note": "The song the book quotes. Listen for the chorus. The composition is still in copyright, so only that one line is printed here."
+    },
+    {
+     "kind": "youtube",
+     "id": "4wblApq2pl4",
+     "title": "Rumba in Cuba",
+     "credit": "UNESCO — inscribed on the Representative List of Intangible Cultural Heritage, 2016",
+     "note": "UNESCO's own text places rumba in \"marginal neighbourhoods… near ports and shanty towns\" — which is exactly the problem with calling it plantation music."
+    },
+    {
+     "kind": "link",
+     "url": "https://marinabudhos.com/the-music-and-dance-of-sugar-work",
+     "title": "The Music & Dance of Sugar Work — the authors' own playlist",
+     "credit": "Marina Budhos, with selections by Prof. Ben Lapidus (John Jay College, CUNY)",
+     "note": "The book prints a web address on p. 54 that no longer exists. This is where that page went. It is the closest thing to an authorised soundtrack, and its Cuban picks were all recorded at working sugar mills."
+    }
+   ]
+  },
+  {
+   "id": "maculele",
+   "tradition": "Maculelê",
+   "place": "Santo Amaro da Purificação, Bahia, Brazil",
+   "lon": -38.7119,
+   "lat": -12.5467,
+   "bookPage": "55",
+   "claim": "Danced with sticks — or with sugar cane stalks — \"which some trace to the sugar fields.\"",
+   "verdict": "the setting is right, the origin is undocumented",
+   "evidence": "Santo Amaro sits in the Recôncavo, the heart of colonial Brazilian sugar, so the geography could hardly be better. The origin story is another matter. No primary document links maculelê to enslaved cane cutters. The descriptions name wooden <i>grimas</i> and <i>bastões</i>, and later machetes — not cane stalks. The oldest date in circulation, 1757, comes from a mid-twentieth-century pamphlet that names no archive. The competing origin stories contradict each other outright, which is the signature of folklore rather than documentation.",
+   "quote": "Eles eram livres, mas quem botou o Maculêle fui eu mesmo.",
+   "quoteWho": "Mestre Popó (Paulino de Andrade, b. 1876), interviewed 16 December 1968 — \"They were free, but I'm the one who put maculelê in place.\"",
+   "watchFor": "Notice what the book's hedge — <i>some trace</i> — is doing. The practice had lapsed by the early 1900s. Popó reconstituted it from memory in 1943, and from the 1960s it was choreographed for the stage, with sticks swapped for machetes because machetes look better. The version on YouTube is roughly eighty years old, not four hundred.",
+   "media": [
+    {
+     "kind": "youtube",
+     "id": "Vhgot9H7vZw",
+     "title": "Capoeira circle",
+     "credit": "UNESCO — Representative List of Intangible Cultural Heritage, 2013",
+     "note": "Maculelê travels today inside capoeira schools. Worth knowing that UNESCO's capoeira file does not mention maculelê at all, and no heritage body has ratified the sugar story."
+    },
+    {
+     "kind": "link",
+     "url": "https://www.ime.usp.br/~salles/ceaca/maculele/maculele.html",
+     "title": "Mestre Popó, in his own words",
+     "credit": "interview by Maria Mutti, 16 December 1968 · transcript hosted by the University of São Paulo",
+     "note": "The document that changes the story. Popó says he learned it from elderly freedmen — and that he is the one who put it in place."
+    },
+    {
+     "kind": "link",
+     "url": "https://www.youtube.com/watch?v=IF8XWPEL7eU",
+     "title": "Maculelê: entre paus, grimas e cacetes (2021)",
+     "credit": "dirs. Gabrielle Conde and Bruna Mascaro · funded by Funcultura / SECULT-PE · 1h07",
+     "note": "Filmed in Santo Amaro and Salvador with mestres and researchers rather than in a capoeira academy. Portuguese, no subtitles. Linked rather than embedded because the uploading channel is not clearly the filmmakers' — preview it before showing a class."
+    },
+    {
+     "kind": "link",
+     "url": "https://vpa.uncg.edu/wp-content/uploads/2024/09/Staging-Brazil-Ch4.pdf",
+     "title": "Ana Paula Höfling, Staging Brazil, chapter 4",
+     "credit": "free PDF, University of North Carolina Greensboro",
+     "note": "Documents how maculelê was built into a stage form in the 1960s."
+    }
+   ]
+  },
+  {
+   "id": "kalinda",
+   "tradition": "Stick fighting — kalinda",
+   "place": "Trinidad",
+   "lon": -61.4,
+   "lat": 10.55,
+   "bookPage": "55",
+   "claim": "A fight and a music at once. A master walking by saw dancing; the drummers were speaking.",
+   "verdict": "holds up — the colonial authorities agreed with the book",
+   "evidence": "This is the strongest of the five, and the proof is the ban. Stick fighting was outlawed in 1880 precisely because the authorities read it as the thing the book says it was. The Canboulay riots followed in 1881, and drums themselves were banned in 1884 — which is what produced tamboo bamboo, and later the steel pan. Alan Lomax recorded stick fighters in Trinidad in 1962, including Matthew Thomas's ensemble and an interview about stick-fighter ritual.",
+   "quote": "Rival groups of stick fighters would challenge one another to the accompaniment of drums while the chantwells sang taunting lyrics.",
+   "quoteWho": "Smithsonian Folkways, on \"Calinda,\" recorded by Emory Cook in Trinidad, 1956",
+   "watchFor": "Say the staging out loud, because it <i>is</i> the argument. The competition below is a regulated modern sport, revived in 1937 after a fifty-seven-year ban. The riot re-enactment is scripted theatre, written by the playwright Eintou Pearl Springer. Neither is a spontaneous survival — both are deliberate reconstructions of something a government tried to erase, which is a different and better story.",
+   "media": [
+    {
+     "kind": "youtube",
+     "id": "jc1WYI4zPzA",
+     "title": "National Stick Fighting Competition 2024",
+     "credit": "TTT Live Online, Trinidad and Tobago's state broadcaster · run by the National Carnival Commission",
+     "note": "The living tradition, as a national institution stages it. Listen for the drums setting the pace of the fight."
+    },
+    {
+     "kind": "youtube",
+     "id": "MLYoCD6YfkM",
+     "title": "Canboulay Riots re-enactment",
+     "credit": "National Carnival Commission of Trinidad and Tobago",
+     "note": "The 1881 riots, performed every Carnival Friday before dawn. Scripted — and staged on purpose, every year, as an act of memory."
+    },
+    {
+     "kind": "link",
+     "url": "https://archive.culturalequity.org/jouvay",
+     "title": "Stick Fighting and Kalenda — Lomax field recordings, Trinidad 1962",
+     "credit": "Alan Lomax · Association for Cultural Equity",
+     "note": "Streamable 1962 audio: Matthew Thomas's stick-fighting ensemble, and an interview on stick-fighter ritual. The same page covers the 1881 riots and the 1884 drum ban."
+    },
+    {
+     "kind": "link",
+     "url": "https://folkways.si.edu/bamboo-tamboo-bongo-and-belair/caribbean-world/music/album/smithsonian",
+     "title": "\"Calinda\" — Bamboo-Tamboo, Bongo and the Belair",
+     "credit": "recorded by Emory Cook, Trinidad, 1956 · Smithsonian Folkways Cook05017",
+     "note": "The authors' own pick. Free preview clip on the page."
+    }
+   ]
+  },
+  {
+   "id": "jazz",
+   "tradition": "Jazz",
+   "place": "LaPlace, St John the Baptist Parish, Louisiana",
+   "lon": -90.4812,
+   "lat": 30.0699,
+   "bookPage": "55",
+   "claim": "And later jazz in Louisiana — sugar's music, carried into the twentieth century.",
+   "verdict": "the society holds up, the causal arrow does not",
+   "evidence": "The demography is real and independently confirmed: death rates exceeded birth rates in Louisiana's sugar parishes, and more than two-thirds of the enslaved population were men. But jazz comes together in New Orleans between about 1895 and 1917 — a generation and a half after emancipation, in a city rather than a cane field. Congo Square drumming had already been suppressed by ordinance in 1856, some forty years before Buddy Bolden. The people who made jazz were the grandchildren of the people the book describes.",
+   "quote": "It was a rare thing if a man lived from more than ten to twelve years of those who worked at the mill.",
+   "quoteWho": "a formerly enslaved witness, quoted by John Bardes for 64 Parishes",
+   "watchFor": "The honest bridge is one person rather than a mood. <b>Kid Ory was born in LaPlace</b>, in St John the Baptist Parish — a River Road sugar parish, and the exact parish where the German Coast uprising began in 1811. There is a pin for that revolt on this map. Sugar built the society jazz came out of; it did not directly cause jazz.",
+   "media": [
+    {
+     "kind": "audio",
+     "file": "audio/jazz-ory-creole-trombone-1922.mp3",
+     "title": "\"Ory's Creole Trombone\" — Kid Ory's Sunshine Orchestra",
+     "credit": "recorded 1921, published 1922 · public domain · transfer from the Internet Archive 78rpm collection",
+     "note": "The Library of Congress calls these \"the first recordings of black/Creole New Orleans jazz.\" Ory grew up in a sugar parish; this is what he was playing in 1922."
+    },
+    {
+     "kind": "audio",
+     "file": "audio/jazz-odjb-livery-stable-blues-1917.mp3",
+     "title": "\"Livery Stable Blues\" — Original Dixieland Jazz Band",
+     "credit": "recorded 26 February 1917 · Victor 18255-B · public domain",
+     "note": "The first jazz record ever made — by five white New Orleanians. Record companies routinely passed over Black musicians, and the cornetist Freddie Keppard had already turned down an earlier offer. The first evidence is not the first music. That gap is the whole lesson."
+    },
+    {
+     "kind": "audio",
+     "file": "audio/jazz-oliver-working-man-blues-1923.mp3",
+     "title": "\"Working Man Blues\" — King Oliver's Creole Jazz Band",
+     "credit": "recorded 5 October 1923, with Louis Armstrong on second cornet · public domain",
+     "note": "Armstrong was twenty-two. The title hands you the labour theme without anyone having to argue for it."
+    },
+    {
+     "kind": "link",
+     "url": "https://64parishes.org/entry/plantation-slavery-in-antebellum-louisiana",
+     "title": "Plantation slavery in antebellum Louisiana",
+     "credit": "John Bardes, 64 Parishes (Louisiana Endowment for the Humanities)",
+     "note": "Where the sugar-parish death rates come from — the part of the book's claim that survives checking."
+    }
+   ]
+  }
+ ]
+}

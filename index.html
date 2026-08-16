@@ -69,6 +69,7 @@
           <label class="lyr" data-c="4"><input type="checkbox" data-layer="indenture"> <span><b>Indian indenture, 1835–1917</b><i>Calcutta and Madras to the sugar colonies</i></span></label>
           <label class="lyr" data-c="5"><input type="checkbox" data-layer="science"> <span><b>The Age of Science</b><i>beet sugar, Rillieux, and the end of cane's monopoly</i></span></label>
           <label class="lyr" data-c="0"><input type="checkbox" data-layer="sources" checked> <span><b>Primary sources</b><i>49 geolocated sources (47 with images) and their prompts</i></span></label>
+          <label class="lyr" data-c="m"><input type="checkbox" data-layer="music"> <span><b>Music you can still hear</b><i>five traditions the book names — with the recordings, and how well each claim holds up</i></span></label>
         </fieldset>
 
         <fieldset class="layers">
@@ -107,7 +108,26 @@
       <p class="sheet-cap" id="sheet-cap"></p>
       <div class="sheet-flag" id="sheet-flag" hidden></div>
       <div class="prompt" id="sheet-prompt"></div>
+      <div id="sheet-hear" hidden></div>
       <dl class="sheet-facts" id="sheet-facts"></dl>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MUSIC ═══ -->
+<div class="sheet" id="music" hidden role="dialog" aria-modal="true" aria-labelledby="music-title">
+  <div class="sheet-inner narrow">
+    <button class="sheet-x" id="music-x" aria-label="Close">✕</button>
+    <div class="sheet-txt wide">
+      <div class="sheet-kind" id="music-kind"></div>
+      <h3 id="music-title"></h3>
+      <p class="sheet-meta" id="music-place"></p>
+      <div class="claimcheck" id="music-claim"></div>
+      <blockquote class="mquote" id="music-quote" hidden></blockquote>
+      <div class="sheet-flag" id="music-watch" hidden></div>
+      <h4 class="mhead">Listen</h4>
+      <div id="music-media"></div>
+      <p class="mfoot">Recordings still in copyright play through the rights holder's own player, and nothing loads from another site until you press play. The 1917–1923 jazz sides are public domain and are served from this atlas.</p>
     </div>
   </div>
 </div>

@@ -12,7 +12,8 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;
 
 let DATA = {}, map, srcMarkers = [], popup, activeLayers = new Set(), curYear = 1950,
     curEra = 'e2', mode = 'story', playTimer = null, placeMarkers = [],
-    gratMarkers = [], globeOn = false, userTurning = false, spinRAF = null, curStep = null;
+    gratMarkers = [], globeOn = false, userTurning = false, spinRAF = null, curStep = null,
+    musicMarkers = [];
 const GRAT_LAYERS = ['grat-l', 'grat-polar', 'grat-trop', 'grat-eq'];
 const LAND_SWAP = 5;            // zoom at which the 1:110m base hands over to 1:10m
 
@@ -67,9 +68,10 @@ const ln = (coords, props) => ({ type: 'Feature', properties: props, geometry: {
 Promise.all([
   fetch('data/sources.json').then(r => r.json()),
   fetch('data/layers.json').then(r => r.json()),
-  fetch('data/narrative.json').then(r => r.json())
-]).then(([s, l, n]) => {
-  DATA = { sources: s.sources, ...l, ...n };
+  fetch('data/narrative.json').then(r => r.json()),
+  fetch('data/music.json').then(r => r.json())
+]).then(([s, l, n, mu]) => {
+  DATA = { sources: s.sources, ...l, ...n, music: mu.music };
   // Build the readable site first so a map failure never costs the text and sources.
   buildStory();
   buildSourceGrid();
@@ -175,6 +177,7 @@ function onMapLoad() {
   });
 
   buildSourceMarkers();
+  buildMusicMarkers();
   wireGlobeSpin();
   map.on('move', positionGratLabels);
 }
@@ -460,6 +463,89 @@ function setPlaceLabels(places) {
   });
 }
 
+/* ── music ────────────────────────────────────────────────────
+   Five traditions the book names on pp. 54-55. Public-domain jazz sides are served
+   from this repo; everything else plays in the rights holder's own player, and no
+   third-party request is made until a student actually asks to hear something. */
+function buildMusicMarkers() {
+  (DATA.music || []).forEach(m => {
+    const el = document.createElement('button');
+    el.className = 'pin listen';
+    el.innerHTML = '<span class="dot"></span>';
+    el.title = `${m.tradition} — ${m.place}`;
+    el.addEventListener('click', ev => { ev.stopPropagation(); openMusic(m.id); });
+    const mk = new maplibregl.Marker({ element: el }).setLngLat([m.lon, m.lat]).addTo(map);
+    el.setAttribute('aria-label', `Music: ${m.tradition}, ${m.place}`);   // after addTo
+    musicMarkers.push({ id: m.id, marker: mk, el });
+  });
+}
+
+/* A play button that becomes the embed. Keeps the atlas request-free until asked, and
+   uses youtube-nocookie so a classroom is not tracked for pressing play. */
+function mediaBlock(x) {
+  if (x.kind === 'audio') {
+    return `<figure class="med">
+      <figcaption><b>${esc(x.title)}</b><span>${x.credit}</span></figcaption>
+      <audio controls preload="none" src="${esc(x.file)}"></audio>
+      <p>${x.note}</p></figure>`;
+  }
+  if (x.kind === 'youtube') {
+    return `<figure class="med">
+      <figcaption><b>${esc(x.title)}</b><span>${x.credit}</span></figcaption>
+      <div class="ytwrap"><button class="ytplay" data-yt="${esc(x.id)}">
+        <span class="ytmark" aria-hidden="true">▶</span>
+        <span>Play here<i>loads from YouTube when you press this</i></span></button></div>
+      <p>${x.note} <a href="https://www.youtube.com/watch?v=${esc(x.id)}" target="_blank" rel="noopener">open on YouTube ↗</a></p></figure>`;
+  }
+  return `<figure class="med">
+    <figcaption><b>${esc(x.title)}</b><span>${x.credit}</span></figcaption>
+    <p>${x.note} <a href="${esc(x.url)}" target="_blank" rel="noopener">go to the recording ↗</a></p></figure>`;
+}
+
+function wireMediaPlayers(root) {
+  root.querySelectorAll('.ytplay').forEach(b => b.addEventListener('click', () => {
+    const id = b.dataset.yt, wrap = b.parentElement;
+    wrap.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${esc(id)}?rel=0&autoplay=1"
+      title="Video" loading="lazy" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+      encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+  }));
+}
+
+function openMusic(id) {
+  const m = (DATA.music || []).find(x => x.id === id); if (!m) return;
+  lastFocus = document.activeElement;
+  document.getElementById('music-kind').textContent = 'Music · and how well the book’s claim holds up';
+  document.getElementById('music-title').textContent = m.tradition;
+  document.getElementById('music-place').innerHTML = `${esc(m.place)} <span class="badge listen">listen</span>`;
+  document.getElementById('music-claim').innerHTML =
+    `<p class="cc-claim"><b>The book says</b> (p. ${esc(m.bookPage)}) ${m.claim}</p>
+     <p class="cc-verdict"><b>Checking it</b> — ${esc(m.verdict)}</p>
+     <p class="cc-ev">${m.evidence}</p>`;
+  const q = document.getElementById('music-quote');
+  if (m.quote) { q.hidden = false; q.innerHTML = `<p>${esc(m.quote)}</p><cite>${m.quoteWho}</cite>`; }
+  else q.hidden = true;
+  const w = document.getElementById('music-watch');
+  if (m.watchFor) { w.hidden = false; w.innerHTML = `<b>Watch for this.</b> ${m.watchFor}`; }
+  else w.hidden = true;
+
+  const box = document.getElementById('music-media');
+  box.innerHTML = m.media.map(mediaBlock).join('');
+  wireMediaPlayers(box);
+
+  document.getElementById('music').hidden = false;
+  setInert(true);
+  document.getElementById('music-x').focus();
+  if (map) map.flyTo({ center: [m.lon, m.lat], zoom: Math.max(map.getZoom(), 4.4), duration: 1400, padding: camPad() });
+}
+
+function closeMusic() {
+  const box = document.getElementById('music-media');
+  box.innerHTML = '';                       // stops any playing audio or embed dead
+  document.getElementById('music').hidden = true;
+  setInert(false);
+  lastFocus && lastFocus.focus();
+}
+
 /* ── popups ───────────────────────────────────────────────── */
 function showPopup(f, lngLat) {
   const p = f.properties;
@@ -623,6 +709,9 @@ function applyState(filterAct, tries = 0) {
   const yf = ['<=', ['coalesce', ['get', 'year'], -9999], curYear];
   ['diff-arc', 'diff-node', 'plant-halo', 'plant-c'].forEach(id => map.getLayer(id) && map.setFilter(id, yf));
 
+  const showMusic = activeLayers.has('music');
+  musicMarkers.forEach(m => { m.el.style.display = showMusic ? 'block' : 'none'; });
+
   const showSrc = activeLayers.has('sources');
   srcMarkers.forEach(m => {
     const vis = showSrc && (filterAct == null || m.act === filterAct || m.act === 0);
@@ -646,6 +735,7 @@ function drawLegend() {
   if (activeLayers.has('freedom')) rows.push(dot('#1f5f80', 'Resistance &amp; abolition'));
   if (activeLayers.has('indenture')) { rows.push(dot('#2f4a25', 'Recruiting &amp; embarkation')); rows.push(dot('#4a6f3c', 'Destination')); rows.push(line('#4a6f3c', 'Route not named in the book', true)); }
   if (activeLayers.has('science')) rows.push(dot('#5d4e86', 'The Age of Science'));
+  if (activeLayers.has('music')) rows.push(`<div class="lg"><span class="sw" style="background:#0f6e63"></span><span>Music you can hear</span></div>`);
   if (activeLayers.has('sources')) rows.push(`<div class="lg"><span class="sw" style="background:#3d3226;border-radius:2px;transform:rotate(45deg)"></span><span>Primary source</span></div>`);
   L.hidden = !rows.length; B.innerHTML = rows.join('');
 }
@@ -721,6 +811,18 @@ function openSheet(id) {
     <div><dt>In the book</dt><dd>p. ${esc(s.bookPage)}</dd></div>
     <div><dt>Rights</dt><dd>${esc(s.rights)}</dd></div>
     <div><dt>Holder</dt><dd><a href="${esc(s.link)}" target="_blank" rel="noopener">view the record ↗</a></dd></div>`;
+
+  /* A few sources have a sound to go with the picture — the 1779 stick-fighting print
+     and the 1962 field recordings of the same thing being done. */
+  const hear = document.getElementById('sheet-hear');
+  if (s.music && (DATA.music || []).some(m => m.id === s.music)) {
+    const m = DATA.music.find(x => x.id === s.music);
+    hear.hidden = false;
+    hear.innerHTML = `<button class="hearbtn" data-music="${esc(s.music)}">
+      <span class="ytmark" aria-hidden="true">▶</span>
+      <span>Hear this<i>${esc(m.tradition)} — recordings, and how the claim holds up</i></span></button>`;
+    hear.querySelector('button').addEventListener('click', () => { closeSheet(); openMusic(s.music); });
+  } else hear.hidden = true;
 
   sheet.hidden = false;
   setInert(true);
@@ -832,9 +934,14 @@ function wireUI() {
   document.getElementById('about-x').addEventListener('click', closeAbout);
   about.addEventListener('click', e => { if (e.target.id === 'about') closeAbout(); });
 
+  const musicSheet = document.getElementById('music');
+  document.getElementById('music-x').addEventListener('click', closeMusic);
+  musicSheet.addEventListener('click', e => { if (e.target.id === 'music') closeMusic(); });
+
   document.addEventListener('keydown', e => {
     const sheet = document.getElementById('sheet');
     if (!sheet.hidden) { trapTab(sheet.querySelector('.sheet-inner'), e); if (e.key === 'Escape') closeSheet(); return; }
+    if (!musicSheet.hidden) { trapTab(musicSheet.querySelector('.sheet-inner'), e); if (e.key === 'Escape') closeMusic(); return; }
     if (!about.hidden) { trapTab(about.querySelector('.sheet-inner'), e); if (e.key === 'Escape') closeAbout(); }
   });
 }
