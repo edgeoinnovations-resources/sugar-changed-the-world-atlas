@@ -1,0 +1,218 @@
+{
+  "_note": "Every figure here is traceable to Aronson & Budhos, Sugar Changed the World (Clarion, 2010), with the page in 'p'. Where the book's own map or text is ambiguous, 'flag' says so rather than inventing precision.",
+
+  "diffusion": {
+    "nodes": [
+      {"id":"newguinea","name":"New Guinea","lon":143.0,"lat":-5.5,"when":"8000–7000 BC","year":-7500,"text":"Cane first cultivated by humans — at first simply a wild plant that tasted good.","p":"134"},
+      {"id":"philippines","name":"The Philippines","lon":122.0,"lat":12.0,"when":"6000 BC","year":-6000,"text":"Cane reaches the Philippines.","p":"134"},
+      {"id":"india","name":"India","lon":79.0,"lat":25.0,"when":"1500–900 BC","year":-1200,"text":"The first written record of sugar — as an offering burned to reach the gods. Five ingredients: milk, cheese, butter, honey, and sugar cane.","p":"12"},
+      {"id":"persia","name":"Persia","lon":52.0,"lat":32.0,"when":"515 BC","year":-515,"text":"Darius I invades India; his men find 'a sweet reed that produced honey.'","p":"10"},
+      {"id":"indus","name":"Mouth of the Indus","lon":67.0,"lat":24.9,"when":"327 BC","year":-327,"text":"Nearchus, sailing for Alexander, finds reeds that 'produce honey, although there are no bees.'","p":"10"},
+      {"id":"china","name":"China","lon":113.3,"lat":23.1,"when":"286 BC","year":-286,"text":"First mention of sugar cane in China. Brown sugar was made here for over a thousand years.","p":"134"},
+      {"id":"jundishapur","name":"Jundi Shapur","lon":48.53,"lat":32.30,"when":"500s AD","year":530,"text":"The world's first true university. Greeks, Jews, Nestorian Christians and Persians together; the first teaching hospital. By the 600s its doctors wrote about a medicine from India: sharkara.","p":"13"},
+      {"id":"arabia","name":"Arabia","lon":39.83,"lat":21.42,"when":"610–632","year":622,"text":"Muhammad begins preaching. By 642 Muslim armies carry the faith — and the knowledge of sugar — across Syria, Iraq, Iran and Egypt.","p":"16"},
+      {"id":"egypt","name":"Egypt","lon":31.24,"lat":30.04,"when":"600s onward","year":700,"text":"The world's great sugar laboratory. Boil, strain, settle, strain; drain in moulds; mix with milk; boil again. Egypt was known for the 'whitest and purest' sugar.","p":"17"},
+      {"id":"andalus","name":"Al-Andalus","lon":-5.98,"lat":37.39,"when":"900s","year":950,"text":"Sugar plantations established across the Muslim Mediterranean and Spain.","p":"134"},
+      {"id":"sicily","name":"Sicily","lon":13.36,"lat":38.11,"when":"900s","year":950,"text":"Later held by Christians, who applied what they had learned from Muslims: how to plant cane and refine sugar.","p":"26"},
+      {"id":"cyprus","name":"Cyprus","lon":33.0,"lat":34.9,"when":"1100s–1300s","year":1200,"text":"A fertile Christian-held island where the Muslim plantation model was rebuilt.","p":"26"},
+      {"id":"levant","name":"The Holy Land","lon":35.20,"lat":33.27,"when":"1095 onward","year":1099,"text":"Crusaders find 'certain ripe plants which the common folk called honey cane… In our hunger we chewed them all day.'","p":"26"},
+      {"id":"champagne","name":"The Champagne fairs","lon":4.08,"lat":48.30,"when":"1150–1300","year":1200,"text":"Six fairs a year, the one place Europeans could buy the world's goods. Next to the fruits and spices: piles of a medicine called sugar.","p":"21"},
+      {"id":"venice","name":"Venice","lon":12.33,"lat":45.44,"when":"1300s","year":1350,"text":"Venice comes to dominate European trade with the Muslim world and greatly expands the sugar trade.","p":"24"},
+      {"id":"hawaii-poly","name":"Hawaii","lon":-157.86,"lat":21.31,"when":"by AD 1100","year":1100,"text":"Polynesian seafarers carry cane island to island across the Pacific — the other half of the plant's journey.","p":"11"},
+      {"id":"madeira","name":"Madeira","lon":-16.92,"lat":32.65,"when":"1420s","year":1425,"text":"Portuguese conquest. By 1450 Madeira is a leading sugar producer for Europe.","p":"135"},
+      {"id":"canaries","name":"The Canary Islands","lon":-17.11,"lat":28.10,"when":"from 1402","year":1402,"text":"Muslim-style plantations built on the Atlantic islands, some staffed by slaves purchased from nearby Africa. Columbus carried cane from Gomera.","p":"29"},
+      {"id":"azores","name":"The Azores","lon":-25.67,"lat":37.74,"when":"1439","year":1439,"text":"Europeans reach the uninhabited Azores.","p":"135"},
+      {"id":"hispaniola","name":"Hispaniola","lon":-70.0,"lat":19.0,"when":"1493","year":1493,"text":"On his second voyage, Columbus carries sugar cane plants from Gomera across the Atlantic. Everything after this follows.","p":"29"}
+    ],
+    "arcs": [
+      {"from":"newguinea","to":"philippines","year":-6000,"label":"cane, carried by people"},
+      {"from":"newguinea","to":"india","year":-2000,"label":"north to the Asian mainland"},
+      {"from":"newguinea","to":"hawaii-poly","year":1100,"label":"Polynesian voyaging"},
+      {"from":"india","to":"persia","year":-515,"label":"Darius' invasion"},
+      {"from":"india","to":"china","year":-286,"label":"eastward"},
+      {"from":"india","to":"indus","year":-327,"label":"Nearchus"},
+      {"from":"persia","to":"jundishapur","year":530,"label":"scholars gather"},
+      {"from":"jundishapur","to":"arabia","year":640,"label":"the Muslims 'swept past Jundi Shapur and learned the secrets of sugar'"},
+      {"from":"arabia","to":"egypt","year":642,"label":"conquest and refinement"},
+      {"from":"egypt","to":"sicily","year":950,"label":"across the Mediterranean"},
+      {"from":"egypt","to":"andalus","year":950,"label":"along North Africa to Iberia"},
+      {"from":"egypt","to":"china","year":1280,"label":"Egyptians at Kublai Khan's court teach white sugar"},
+      {"from":"levant","to":"champagne","year":1150,"label":"war as information exchange"},
+      {"from":"cyprus","to":"venice","year":1350,"label":"Venice takes the trade"},
+      {"from":"andalus","to":"madeira","year":1425,"label":"out into the Atlantic"},
+      {"from":"andalus","to":"canaries","year":1402,"label":"conquest of the Canaries"},
+      {"from":"andalus","to":"azores","year":1439,"label":"the Azores"},
+      {"from":"canaries","to":"hispaniola","year":1493,"label":"Columbus carries cane from Gomera","hinge":true}
+    ]
+  },
+
+  "plantations": [
+    {"name":"Madeira","lon":-16.92,"lat":32.65,"intro":1425,"peak":"1400s","peakYear":1450,"note":"A leading producer for Europe by 1450."},
+    {"name":"Canary Islands","lon":-15.60,"lat":28.10,"intro":1402,"peak":"1400s","peakYear":1450,"note":"Columbus took cane from Gomera in 1493."},
+    {"name":"Azores","lon":-25.67,"lat":37.74,"intro":1439,"peak":"1400s","peakYear":1460,"note":"Reached uninhabited in 1439."},
+    {"name":"Hispaniola","lon":-70.70,"lat":19.00,"intro":1493,"peak":"1500s","peakYear":1540,"note":"Sugar boomed here first — until news of Aztec gold pulled the Spaniards to Mexico."},
+    {"name":"Puerto Rico","lon":-66.50,"lat":18.22,"intro":1510,"peak":"1500s","peakYear":1550,"note":""},
+    {"name":"Brazil (Pernambuco)","lon":-35.00,"lat":-8.50,"intro":1516,"peak":"1600s","peakYear":1640,"note":"Some three million Africans taken to Brazil over four hundred years. 'Without sugar, no Brazil; without slaves, no sugar; without Angola, no slaves.'"},
+    {"name":"Barbados","lon":-59.54,"lat":13.19,"intro":1625,"peak":"1600s","peakYear":1670,"note":"166 square miles. 252,500 enslaved Africans brought between 1701 and 1810."},
+    {"name":"Martinique","lon":-61.02,"lat":14.64,"intro":1635,"peak":"1600s","peakYear":1680,"note":""},
+    {"name":"Guadeloupe","lon":-61.55,"lat":16.25,"intro":1635,"peak":"1600s","peakYear":1680,"note":""},
+    {"name":"Antigua","lon":-61.80,"lat":17.08,"intro":1650,"peak":"1700s","peakYear":1750,"note":"Where William Clark painted the ten views used throughout this map."},
+    {"name":"Nevis","lon":-62.58,"lat":17.15,"intro":1650,"peak":"1700s","peakYear":1740,"note":""},
+    {"name":"St Kitts","lon":-62.75,"lat":17.33,"intro":1650,"peak":"1700s","peakYear":1740,"note":""},
+    {"name":"Montserrat","lon":-62.19,"lat":16.74,"intro":1650,"peak":"1700s","peakYear":1740,"note":"Equiano: the island 'requires 20,000 new Negroes annually, to fill up the vacant places of the dead.'"},
+    {"name":"Jamaica","lon":-77.30,"lat":18.10,"intro":1665,"peak":"1700s","peakYear":1770,"note":"662,400 enslaved Africans brought between 1701 and 1810. In 1750: about 17,000 white people, 7,000 free black and mixed, and some 170,000 enslaved.","flag":"The book dates the English conquest to 1665; the invasion was in fact 1655, with Spain ceding the island in 1670. Worth checking against another source."},
+    {"name":"Saint-Domingue","lon":-72.30,"lat":18.90,"intro":1665,"peak":"1700s","peakYear":1780,"note":"By the late 1700s the world centre of sugar. So many plantations that enslaved 'commanders' managed other enslaved people."},
+    {"name":"Dutch Guiana (Surinam)","lon":-55.20,"lat":4.50,"intro":1650,"peak":"1700s","peakYear":1760,"note":""},
+    {"name":"French Guiana","lon":-53.00,"lat":4.00,"intro":1660,"peak":"1700s","peakYear":1760,"note":""},
+    {"name":"Demerara","lon":-58.16,"lat":6.50,"intro":1750,"peak":"1800s","peakYear":1850,"note":"Where the Whitby and the Hesperus landed the first indentured Indians in 1838."},
+    {"name":"Trinidad","lon":-61.30,"lat":10.40,"intro":1780,"peak":"1800s","peakYear":1860,"note":""},
+    {"name":"Cuba","lon":-78.50,"lat":22.00,"intro":1600,"peak":"1800s","peakYear":1860,"note":"Large-scale planting began in the 1800s with owners interested in modern technology; some led the way in freeing Cuban slaves. Booming Cuban production helped drive cane prices down."},
+    {"name":"Louisiana","lon":-91.30,"lat":30.10,"intro":1795,"peak":"1800s","peakYear":1850,"note":"The only American slave state where the native-born enslaved population kept dropping. Planters bought healthy young men in their late teens, expecting them to die by their thirties."},
+    {"name":"Hawaii","lon":-156.50,"lat":20.80,"intro":1835,"peak":"1900s","peakYear":1920,"note":"First plantation 1835. Chinese workers from 1852, Japanese from 1868, then Filipinos, Koreans and Portuguese."}
+  ],
+
+  "slaveTrade": {
+    "note": "The book's map gives three totals and names four destination regions. It does not break the totals down by region, and neither does this map. The named places below carry only figures the book states.",
+    "eras": [
+      {"id":"e1","label":"1600–1700","from":1600,"to":1700,"total":3000000},
+      {"id":"e2","label":"1701–1810","from":1701,"to":1810,"total":6000000},
+      {"id":"e3","label":"1811–1870","from":1811,"to":1870,"total":3000000}
+    ],
+    "embarkation": [
+      {"name":"Angola / West Central Africa","lon":13.23,"lat":-8.84,"text":"'Without Angola, no slaves.' The current that carried Cabral to Brazil by accident in 1500 made this the easiest crossing of all.","p":"32"},
+      {"name":"Bight of Benin","lon":2.09,"lat":6.36,"text":"Africans who sold other Africans insisted on being paid in fabrics from India — about 35 percent of the cargo carried from Europe to Africa began in India.","p":"37"},
+      {"name":"Gold Coast","lon":-0.20,"lat":5.55,"text":"By 1753 British ships were taking an average of 34,250 people from Africa every year. By 1768, 53,100.","p":"35"},
+      {"name":"Senegambia","lon":-17.44,"lat":14.69,"text":"Many of the soldiers who defeated Britain and France in Haiti were recently arrived Africans — warriors trained in military tactics at home.","p":"87"}
+    ],
+    "destinations": [
+      {"name":"Brazil","lon":-38.50,"lat":-12.97,"figure":"about 3,000,000 over four hundred years","era":"all","p":"32"},
+      {"name":"Jamaica","lon":-77.30,"lat":18.10,"figure":"662,400 between 1701 and 1810","era":"e2","p":"32"},
+      {"name":"Barbados","lon":-59.54,"lat":13.19,"figure":"252,500 between 1701 and 1810","era":"e2","p":"32"},
+      {"name":"Spanish America","lon":-74.10,"lat":10.40,"figure":"named on the book's map; no total given","era":"all","p":"62"},
+      {"name":"French Caribbean","lon":-61.50,"lat":15.50,"figure":"named on the book's map; no total given","era":"all","p":"62"},
+      {"name":"British Caribbean","lon":-61.00,"lat":17.50,"figure":"named on the book's map; no total given","era":"all","p":"62"},
+      {"name":"North America","lon":-79.00,"lat":32.80,"figure":"about 500,000 — only 4 percent of all Africans taken","era":"all","p":"61"}
+    ],
+    "keyFacts": [
+      "Only 4 percent of the people taken from Africa were brought to North America. 96 percent went to the Caribbean, Brazil and the rest of South America — mostly to work with sugar.",
+      "Some 500,000 enslaved people were brought to North America, and there were four million African Americans at emancipation.",
+      "On the sugar islands more than two million people were brought from Africa, and there were 670,000 at emancipation.",
+      "Sugar, with its demand for relentless labour, was a killer."
+    ]
+  },
+
+  "sphericalTrade": {
+    "note": "The book's argument on p. 37: what textbooks call the Triangle Trade 'was really as round as the globe.'",
+    "nodes": [
+      {"id":"london","name":"London","lon":-0.13,"lat":51.51},
+      {"id":"bristol","name":"Bristol","lon":-2.59,"lat":51.45},
+      {"id":"liverpool","name":"Liverpool","lon":-2.98,"lat":53.41},
+      {"id":"amsterdam","name":"Amsterdam","lon":4.90,"lat":52.37},
+      {"id":"newyork","name":"New York","lon":-74.01,"lat":40.71},
+      {"id":"newport","name":"Newport, Rhode Island","lon":-71.31,"lat":41.49},
+      {"id":"luanda","name":"Luanda","lon":13.23,"lat":-8.84},
+      {"id":"ouidah","name":"Bight of Benin","lon":2.09,"lat":6.36},
+      {"id":"barbados","name":"Barbados","lon":-59.54,"lat":13.19},
+      {"id":"jamaica2","name":"Jamaica","lon":-77.30,"lat":18.10},
+      {"id":"potosi","name":"Potosí, Bolivia","lon":-65.75,"lat":-19.59},
+      {"id":"manila","name":"Manila","lon":120.98,"lat":14.60},
+      {"id":"coromandel","name":"India","lon":80.27,"lat":13.08}
+    ],
+    "flows": [
+      {"from":"london","to":"ouidah","cargo":"fabrics, clothes, manufactured goods — about 35% of it originally from India","kind":"goods"},
+      {"from":"ouidah","to":"barbados","cargo":"enslaved people","kind":"people"},
+      {"from":"luanda","to":"jamaica2","cargo":"enslaved people","kind":"people"},
+      {"from":"barbados","to":"london","cargo":"sugar","kind":"sugar"},
+      {"from":"jamaica2","to":"bristol","cargo":"sugar","kind":"sugar"},
+      {"from":"newyork","to":"barbados","cargo":"flour, bread, corn, salted beef, timber","kind":"goods"},
+      {"from":"barbados","to":"newyork","cargo":"sugar, rum, molasses, limes, cocoa, ginger","kind":"sugar"},
+      {"from":"newport","to":"ouidah","cargo":"rum, traded directly for people — cutting Europe out entirely","kind":"people"},
+      {"from":"potosi","to":"manila","cargo":"silver from the mines of Bolivia","kind":"silver"},
+      {"from":"manila","to":"coromandel","cargo":"silver buys Asian goods","kind":"silver"},
+      {"from":"coromandel","to":"london","cargo":"Indian cloth — the thing that buys the people who make the sugar","kind":"goods"}
+    ]
+  },
+
+  "indenture": {
+    "note": "The book's map: Indian Indentured Workers, 1835–1917 (p. 107). Contracts ran five years at about 24 cents a day, with 8 cents a week deducted for food. The voyage could take 27 weeks — far longer than the Middle Passage.",
+    "origins": [
+      {"id":"calcutta","name":"Calcutta","lon":88.36,"lat":22.57,"text":"The embarkation depot — buildings behind a high wall near the harbour. Recruits were vaccinated, given metal feeding bowls and warm clothes, and a 'tin ticket' worn round the neck.","p":"106"},
+      {"id":"madras","name":"Madras","lon":80.27,"lat":13.08,"text":"The southern recruiting port.","p":"107"},
+      {"id":"bhojpur","name":"The northern countryside","lon":84.50,"lat":25.60,"text":"Where the arkatis — the recruiters — went looking. 'You want to make a better wage? There's good work upriver.'","p":"101"}
+    ],
+    "destinations": [
+      {"id":"demerara","name":"British Guiana (Demerara)","lon":-58.16,"lat":6.80,"text":"The Whitby, carrying 249 passengers, and the Hesperus, carrying 244, sailed for Demerara in 1838. Marina Budhos's great-grandparents came here.","p":"104","inBook":true},
+      {"id":"trinidad","name":"Trinidad","lon":-61.29,"lat":10.39,"text":"'E no tell e I go chinedad you know' — Bharath, who was not told where he was going, or that he would never see his parents again.","p":"106","inBook":true},
+      {"id":"mauritius","name":"Mauritius","lon":57.55,"lat":-20.28,"text":"One of the three colonies the book names alongside British Guiana and Trinidad.","p":"120","inBook":true},
+      {"id":"natal","name":"Natal, South Africa","lon":31.02,"lat":-29.86,"text":"Indians were first brought here to cut cane in 1852. Gandhi arrived in 1894 because they were already here.","p":"118","inBook":true},
+      {"id":"surinam","name":"Surinam","lon":-55.17,"lat":5.87,"text":"On the book's map of indenture destinations.","p":"107","inBook":true},
+      {"id":"jamaica3","name":"Jamaica","lon":-77.30,"lat":18.10,"text":"On the book's map of indenture destinations.","p":"107","inBook":true},
+      {"id":"fiji","name":"Fiji","lon":178.44,"lat":-18.14,"text":"A major indenture destination in this period. Not named in this book — included so the pattern is complete.","p":"—","inBook":false}
+    ],
+    "keyFacts": [
+      "Crossing the 'black water' — the kali pani — meant losing caste. You could not return and be respected without a special ceremony.",
+      "On the ships the emigrants called themselves jahajii-bhai — ship brothers.",
+      "By the end of the 1800s only about a quarter of the indentured sailed back to India.",
+      "Gandhi: indenture was 'almost as bad as slavery. Like the slave the indentured labourer was the property of his master.'"
+    ]
+  },
+
+  "freedom": [
+    {"name":"Paris — the Pauline case","lon":2.3522,"lat":48.8566,"year":1716,"act":3,"text":"Pierre Lemerre the Younger argues for an enslaved woman who wanted to stay in a convent: 'All men are equal.' Sixty years before the Declaration of Independence.","p":"72"},
+    {"name":"Narragansett Bay — the Polly","lon":-71.4128,"lat":41.8240,"year":1765,"act":3,"text":"7 April 1765: Rhode Island men, faces blackened, strip a ship of barrel after barrel of molasses rather than pay the sugar tax. Eight years before the Boston Tea Party, and the same issue.","p":"73"},
+    {"name":"Boston — the General Assembly","lon":-71.0589,"lat":42.3601,"year":1764,"act":3,"text":"'If Taxes are laid upon us … without ever having a Legal Representative where they are laid, are we not reduced from the Character of Free Subjects to the miserable status of Tributary Slaves?'","p":"76"},
+    {"name":"Cambridge — a school assignment","lon":0.1190,"lat":52.2050,"year":1785,"act":3,"text":"'Is it lawful to make slaves of others against their will?' Thomas Clarkson wrote the winning Latin essay and convinced himself. 'In the day-time I was uneasy. In the night I had little rest.'","p":"77"},
+    {"name":"Bristol","lon":-2.5879,"lat":51.4545,"year":1806,"act":3,"text":"Even in a port city whose harbour was full of slave ships, newspapers reported 'the popular sentiment has been very strongly expressed against the continuance of that traffick in human flesh.'","p":"91"},
+    {"name":"Birmingham — the Female Society","lon":-1.9026,"lat":52.4800,"year":1826,"act":3,"text":"Women sewed bags carrying abolitionist images, and read Elizabeth Heyrick's argument that all enslaved people must be freed at once, not gradually.","p":"81"},
+    {"name":"Peckham — the Ladies Anti-Slavery Association","lon":-0.0690,"lat":51.4700,"year":1825,"act":3,"text":"A pamphlet urging readers to buy only sugar from India, labelled 'Produced by the labour of FREEMEN.' Some 400,000 English people stopped buying slave-grown sugar.","p":"79"},
+    {"name":"Westminster","lon":-0.1248,"lat":51.4995,"year":1807,"act":3,"text":"At precisely noon on 25 March 1807, George III signed the law banning British involvement in the slave trade. No enslaved person was freed by it. In 1833 the Emancipation Bill followed; on 1 August 1838 slavery ended in the British empire.","p":"91"},
+    {"name":"Paris — the Bastille","lon":2.3692,"lat":48.8531,"year":1789,"act":3,"text":"July 1789. In August the National Assembly declares that 'men are born and remain free and equal in rights' — and, in the same document, that 'property is an inviolable and sacred right.' So what were slaves?","p":"81"},
+    {"name":"Alligator Woods, Saint-Domingue","lon":-72.30,"lat":19.75,"year":1791,"act":3,"text":"14 August 1791: commanders from the richest sugar plantations swear an oath to 'listen to the voice of liberty which speaks in the hearts of all of us' — and to destroy everything related to sugar. Within two months, some one thousand plantations were demolished.","p":"83","major":true},
+    {"name":"Palmares","lon":-36.35,"lat":-9.35,"year":1650,"act":2,"text":"For nearly a century, a nation of escaped African, Native American and even white slaves in the mountains behind Brazil's coastal plantations. At its peak 20,000 to 30,000 people. Zumbi is honoured in Brazil today as a great ancestor.","p":"56","major":true},
+    {"name":"Cockpit Country, Jamaica","lon":-77.72,"lat":18.32,"year":1739,"act":3,"text":"Maroons the British could not defeat. A peace treaty in 1739–40; sixty years later, with Haiti in revolt, Britain broke its word and deported as many as it could to Canada. Their descendants still live in Jamaica.","p":"86"},
+    {"name":"Demerara — the 1823 rising","lon":-58.16,"lat":6.80,"year":1823,"act":4,"text":"Over three thousand enslaved people rose after hearing John Smith preach Moses leading the Jews out of Egypt. Asked what they wanted, they answered: 'Our rights.' Quamina was hanged in chains at the entrance to Gladstone's plantation; Smith was sentenced to death and died before his ship reached London.","p":"102","major":true},
+    {"name":"The German Coast, Louisiana","lon":-90.60,"lat":30.05,"year":1811,"act":3,"text":"Charles Deslondes, a free man of colour from Saint-Domingue, led what is sometimes called the largest slave revolt in US history. Sixty-six enslaved people were killed, and two whites. The rebellion failed — and marked the link between Louisiana and Haiti.","p":"95"},
+    {"name":"Cap-Français","lon":-72.20,"lat":19.76,"year":1804,"act":3,"text":"1 January 1804: the Republic of Haiti is born. The former slaves had defeated first England, then France. Jefferson refused to recognise it; the United States did not do so until 1862.","p":"88","major":true},
+    {"name":"Durban, Natal","lon":31.0218,"lat":-29.8587,"year":1894,"act":5,"text":"Gandhi arrives to practise law because Indians were already here, cutting cane. A man came to him 'in tattered clothes, headgear in hand, two front teeth broken and his mouth bleeding' — Balasumdaram, beaten by his employer and unable to leave.","p":"118"},
+    {"name":"Empire Theatre, Johannesburg","lon":28.0473,"lat":-26.2041,"year":1906,"act":5,"text":"11 September 1906. Gandhi invites everyone present to swear not to register under the Black Act — each person facing 'not to his neighbor, but his God.' Every hand went up.","p":"122","major":true},
+    {"name":"Hamidia Mosque, Johannesburg","lon":28.0400,"lat":-26.2000,"year":1908,"act":5,"text":"16 August 1908: the certificates of 2,300 Indians burned in a great iron cauldron — the first major act of Satyagraha. By June 1914 the Black Act was off the books.","p":"124","major":true},
+    {"name":"Delhi","lon":77.2100,"lat":28.6100,"year":1947,"act":5,"text":"India becomes the first British colony since the United States to break free from foreign rule. Satyagraha would go on to shape Martin Luther King Jr. and the American civil rights movement.","p":"124"}
+  ],
+
+  "science": [
+    {"name":"Berlin — Andreas Marggraf","lon":13.40,"lat":52.52,"year":1747,"text":"He dried and mashed parsnips, then beets, and extracted what made them sweet. It was identical to the sugar from cane. For the first time a taste native to the tropics was matched by a plant grown in a cold place.","p":"113"},
+    {"name":"France — 334 beet factories","lon":3.00,"lat":49.50,"year":1814,"text":"Napoleon, locked out of the Caribbean by the British navy and by the Haitians, ordered thousands of acres of beets planted. By 1814 France had more than three hundred factories turning beets into sugar.","p":"114"},
+    {"name":"New Orleans — Norbert Rillieux","lon":-90.07,"lat":29.95,"year":1843,"text":"Born in 1806 to a wealthy white planter and a free woman of colour, educated in France, he worked out that heating syrup in a series of sealed pans instead of open cauldrons transformed the whole process. One person could do what a team had done. He returned to France because being a noted inventor was no guarantee of safety for a Black man in Louisiana.","p":"115","major":true},
+    {"name":"The northern Ukraine","lon":31.00,"lat":50.45,"year":1840,"text":"The one part of the Russian empire where landowners were trying new tools and new ideas. When word of beet sugar arrived they knew what to do. Marc Aronson's family story begins here — with a serf who found a way to give raw beet sugar sparkling hues, and made enough money to buy his freedom.","p":"116","major":true},
+    {"name":"Russia — the serfs are freed","lon":37.62,"lat":55.75,"year":1861,"text":"Two years before the Emancipation Proclamation. Beet sugar had set an example of modern farming that helped convince Russian nobles it was time.","p":"116"},
+    {"name":"Sugar City, Colorado","lon":-103.46,"lat":38.09,"year":1915,"text":"Harvesting beets was not as deadly as cutting cane, but it was hard work for little pay. Lewis Hine photographed children aged ten to eighteen working these fields.","p":"119"},
+    {"name":"Brazil — cane into fuel","lon":-47.80,"lat":-21.17,"year":2010,"text":"The land that imported more Africans than any other still has perfect soil for cane. Today much of the crop becomes ethanol.","p":"117"}
+  ],
+
+  "consumption": {
+    "note": "Sugar eaten per person per year, in pounds (p. 65–69, 116).",
+    "england": [
+      {"year":1700,"lbs":4,"label":"early 1700s — England"},
+      {"year":1800,"lbs":18,"label":"1800 — England, a 450% rise in one century"},
+      {"year":1900,"lbs":90,"label":"1900 — England"}
+    ],
+    "comparisons": [
+      {"label":"Russia, 1894","lbs":8},
+      {"label":"United States today, cane sugar only","lbs":40},
+      {"label":"United States today, all sweeteners","lbs":140}
+    ],
+    "production": [
+      {"year":1800,"tons":250000,"label":"1800 — world production, almost all sent to Europe"},
+      {"year":1900,"tons":6000000,"label":"1900 — world production"}
+    ],
+    "beetShare": [
+      {"year":1854,"pct":11},
+      {"year":1899,"pct":65}
+    ],
+    "tea": [
+      {"year":1687,"lbs":20000},
+      {"year":1711,"lbs":200000},
+      {"year":1751,"lbs":3000000}
+    ]
+  }
+}

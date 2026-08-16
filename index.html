@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sugar Changed the World — an interactive atlas</title>
+<meta name="description" content="A scrollytelling web map of Marc Aronson and Marina Budhos's Sugar Changed the World, with geolocated primary sources and OPTIC/SCRAP analysis prompts.">
+<link rel="stylesheet" href="vendor/maplibre-gl.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🗺️</text></svg>">
+</head>
+<body>
+
+<a class="skip" href="#panel">Skip to the story text</a>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <h1 class="brand-txt"><b>Sugar Changed the World</b><span class="brand-sub">an interactive atlas</span></h1>
+  </div>
+  <nav class="modes" role="tablist" aria-label="View mode">
+    <button id="btn-story"   class="mode on" role="tab" aria-selected="true"  aria-controls="story">Story</button>
+    <button id="btn-explore" class="mode"    role="tab" aria-selected="false" aria-controls="explore">Explore</button>
+    <button id="btn-sources" class="mode"    role="tab" aria-selected="false" aria-controls="sources">Sources</button>
+  </nav>
+  <button id="btn-about" class="ghost">About</button>
+</header>
+
+<main class="shell">
+
+  <!-- ═══ MAP ═══ -->
+  <div class="mapwrap">
+    <div id="map" role="application" aria-label="Interactive map of the global sugar trade"></div>
+
+    <div class="legend" id="legend" hidden>
+      <h4>Legend</h4>
+      <div id="legend-body"></div>
+    </div>
+
+    <div class="timebar" id="timebar" hidden>
+      <label for="slider">Year</label>
+      <input id="slider" type="range" min="0" max="27" value="27" step="1" aria-valuetext="1950" aria-describedby="yearout">
+      <output id="yearout">1950</output>
+      <button id="play" class="ghost sm" aria-label="Play through time">▶</button>
+    </div>
+
+    <div class="mapnote" id="mapnote" hidden></div>
+  </div>
+
+  <!-- ═══ PANEL ═══ -->
+  <aside class="panel" id="panel">
+
+    <!-- STORY -->
+    <div id="story" class="pane" role="tabpanel" aria-labelledby="btn-story" tabindex="0"></div>
+
+    <!-- EXPLORE -->
+    <div id="explore" class="pane" role="tabpanel" aria-labelledby="btn-explore" tabindex="0" hidden>
+      <div class="pad">
+        <h2>Explore</h2>
+        <p class="lede">Turn layers on and off, drag the year slider, and click anything on the map. Nothing here is decoration — every layer answers a question the book raises.</p>
+
+        <fieldset class="layers">
+          <legend>Layers</legend>
+          <label class="lyr" data-c="1"><input type="checkbox" data-layer="diffusion"> <span><b>The spread of sugar</b><i>New Guinea to Hispaniola, 8000 BC – 1493</i></span></label>
+          <label class="lyr" data-c="2"><input type="checkbox" data-layer="plantations" checked> <span><b>Plantations</b><i>where cane was grown, and when each place peaked</i></span></label>
+          <label class="lyr" data-c="2"><input type="checkbox" data-layer="slavetrade"> <span><b>Atlantic slave trade</b><i>destinations of enslaved Africans, by era</i></span></label>
+          <label class="lyr" data-c="2"><input type="checkbox" data-layer="spherical"> <span><b>The spherical trade</b><i>the book's correction of the "Triangle Trade"</i></span></label>
+          <label class="lyr" data-c="3"><input type="checkbox" data-layer="freedom"> <span><b>Resistance &amp; abolition</b><i>revolts, maroon nations, boycotts, laws</i></span></label>
+          <label class="lyr" data-c="4"><input type="checkbox" data-layer="indenture"> <span><b>Indian indenture, 1835–1917</b><i>Calcutta and Madras to the sugar colonies</i></span></label>
+          <label class="lyr" data-c="5"><input type="checkbox" data-layer="science"> <span><b>The Age of Science</b><i>beet sugar, Rillieux, and the end of cane's monopoly</i></span></label>
+          <label class="lyr" data-c="0"><input type="checkbox" data-layer="sources" checked> <span><b>Primary sources</b><i>49 geolocated sources (47 with images) and their prompts</i></span></label>
+        </fieldset>
+
+        <fieldset class="layers">
+          <legend>Basemap</legend>
+          <label class="lyr plain"><input type="checkbox" id="tog-borders" checked> <span><b>Modern borders</b><i>anachronistic, but useful for orientation</i></span></label>
+          <label class="lyr plain"><input type="checkbox" id="tog-grat"> <span><b>Graticule &amp; tropics</b><i>latitude lines — note where cane grows</i></span></label>
+        </fieldset>
+
+        <div class="callout">
+          <b>Try this.</b> Turn on <i>Plantations</i> and <i>Graticule</i> together and drag the year slider from 1400 to 1900. Nearly every dot sits between the tropics. Then ask: what does that single physical fact explain about who was moved, and where?
+        </div>
+      </div>
+    </div>
+
+    <!-- SOURCES -->
+    <div id="sources" class="pane" role="tabpanel" aria-labelledby="btn-sources" tabindex="0" hidden>
+      <div class="pad">
+        <h2>Primary sources</h2>
+        <p class="lede">Every source below is pinned to a place on the map. Click one to fly there and open it. Each carries a prompt: <b>OPTIC</b> for images, <b>SCRAP</b> for maps.</p>
+        <div class="filters" id="src-filters"></div>
+        <div id="src-grid" class="grid"></div>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<!-- ═══ SOURCE VIEWER ═══ -->
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+  <div class="sheet-inner">
+    <button class="sheet-x" id="sheet-x" aria-label="Close source">✕</button>
+    <div class="sheet-img"><img id="sheet-pic" alt=""></div>
+    <div class="sheet-txt">
+      <div class="sheet-kind" id="sheet-kind"></div>
+      <h3 id="sheet-title"></h3>
+      <p class="sheet-meta" id="sheet-meta"></p>
+      <p class="sheet-cap" id="sheet-cap"></p>
+      <div class="sheet-flag" id="sheet-flag" hidden></div>
+      <div class="prompt" id="sheet-prompt"></div>
+      <dl class="sheet-facts" id="sheet-facts"></dl>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ABOUT ═══ -->
+<div class="sheet" id="about" hidden role="dialog" aria-modal="true" aria-labelledby="about-title">
+  <div class="sheet-inner narrow">
+    <button class="sheet-x" id="about-x" aria-label="Close">✕</button>
+    <div class="sheet-txt wide">
+      <h3 id="about-title">About this atlas</h3>
+      <p>An interactive companion to <i>Sugar Changed the World: A Story of Magic, Spice, Slavery, Freedom, and Science</i> by Marc Aronson and Marina Budhos (Clarion Books, 2010).</p>
+
+      <h4>What it re-creates</h4>
+      <p>The book carries five maps. All five are rebuilt here as live layers rather than flat pictures — the spread of sugar, the areas where cane was grown, sugar crossing the Atlantic, sugar and Atlantic slavery, and Indian indentured workers 1835–1917. A sixth layer maps the book's "spherical trade" argument, which the book makes in prose but never draws.</p>
+
+      <h4>How to read the pins</h4>
+      <p>Each primary source states how confident its location is:</p>
+      <ul>
+        <li><b>Located</b> — the archive record names the place.</li>
+        <li><b>Approximate</b> — the place is inferred from the record.</li>
+        <li><b>Symbolic</b> — the object has no single place; it is pinned where it belongs in the argument.</li>
+        <li><b>Uncertain</b> — the record does not say, and the pin is a best guess.</li>
+      </ul>
+      <p>Some sources carry a <b>correction</b>. These are not errors in the map; they are places where the book's caption, the archive's title, or a common attribution disagree. They are shown on purpose.</p>
+
+      <h4>Analysis routines</h4>
+      <p><b>OPTIC</b> (Overview, Parts, Title, Interrelationships, Conclusion) for photographs and images. <b>SCRAP</b> (Spatial–temporal; Conditions/Connections/Comparisons; Region; Aura/Association/Analog; Pattern or Exceptions) for maps. Both come from Jo, Crane, Hong &amp; Huh, "GeoActivity Types in APHG: Analysis of Maps and Photos," <i>The Geography Teacher</i> 19(2), 2022.</p>
+
+      <h4>Built with</h4>
+      <p>MapLibre GL JS, and a basemap built from Natural Earth public-domain vectors served from this repository. No API keys, no tile bills, no tracking, no third-party map service. The whole site is static files.</p>
+
+      <h4>Sources and rights</h4>
+      <p>Images are web derivatives of a curated high-resolution archive. Most are public domain. Exceptions carried through from the source notes: British Library plates are CC0; the Brunias is CC0 (Yale Center for British Art); V&amp;A images are capped at 2500px by the museum; Royal Museums Greenwich at 1280px; Wellcome items carry the Public Domain Mark. Each source panel names its holder and links out.</p>
+      <p>Two images in the book could not be obtained freely and appear as pins without pictures — the Levni sugar-garden folios at Topkapı, and the Testard aloe-wood miniature in St Petersburg. Neither is openly digitised.</p>
+    </div>
+  </div>
+</div>
+
+<script src="vendor/maplibre-gl.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

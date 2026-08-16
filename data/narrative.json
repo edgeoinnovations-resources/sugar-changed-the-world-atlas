@@ -1,0 +1,755 @@
+{
+ "acts": [
+  {
+   "n": 0,
+   "title": "Opening",
+   "color": "#c8963e"
+  },
+  {
+   "n": 1,
+   "title": "From Magic to Spice",
+   "color": "#c8963e"
+  },
+  {
+   "n": 2,
+   "title": "Hell",
+   "color": "#a03530"
+  },
+  {
+   "n": 3,
+   "title": "Freedom",
+   "color": "#2e6b8a"
+  },
+  {
+   "n": 4,
+   "title": "New Workers, New Sugar",
+   "color": "#5a7d4a"
+  },
+  {
+   "n": 5,
+   "title": "The Age of Science",
+   "color": "#6b5b8a"
+  }
+ ],
+ "steps": [
+  {
+   "id": "open",
+   "act": 0,
+   "kicker": "Sugar Changed the World",
+   "title": "One plant. Five thousand years. Every continent.",
+   "body": "Marc Aronson and Marina Budhos wrote this book because they each found sugar in their own family — a serf on the Volga who invented a way to colour beet sugar, and a house in Guyana built by people brought from India to cut cane. This map follows the trail they traced.<p>Scroll to move through the story. At any point you can switch to <b>Explore</b> and take the map apart yourself.</p>",
+   "camera": {
+    "center": [
+     -10,
+     16
+    ],
+    "zoom": 1.2,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": []
+  },
+  {
+   "id": "honey",
+   "act": 0,
+   "kicker": "Before sugar",
+   "title": "The Age of Honey",
+   "body": "There was a time when those white grains did not exist anywhere on earth. A lucky wanderer in Europe, Africa or Asia might find a hive. People in the Americas had no honeybees, so they used maple, agave and mashed fruit.<p>Honey tasted like the place you lived. That was the point.</p>",
+   "quote": "People ate foods grown near them, did the same work as their parents and ancestors, and owed honor and respect to kings, nobles, those above them.",
+   "quoteAttr": "Sugar Changed the World, p. 7",
+   "camera": {
+    "center": [
+     -1.5,
+     39.5
+    ],
+    "zoom": 3.4,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": []
+  },
+  {
+   "id": "origin",
+   "act": 1,
+   "kicker": "Part One",
+   "title": "It starts in New Guinea",
+   "body": "Cane was first cultivated on New Guinea some five thousand years before the Greeks — at first simply a wild plant that tasted good. From there knowledge of it moved north to the Asian mainland, and Polynesian sailors carried stalks east across the Pacific until they reached Hawaii around 1100.",
+   "camera": {
+    "center": [
+     140,
+     -4
+    ],
+    "zoom": 3.6,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "diffusion"
+   ],
+   "diffusionYear": -1500,
+   "sources": [
+    "s01-cane-plate"
+   ]
+  },
+  {
+   "id": "india",
+   "act": 1,
+   "kicker": "Part One",
+   "title": "Written down for the first time — as a way to reach the gods",
+   "body": "In India, cane was one of five things burned as an offering: milk, cheese, butter, honey, and sugar cane. Somewhere in all that boiling, a priest noticed that the juice crystallised into sweet dark clumps.<p>The Atharva Veda calls cane <i>ikshu</i> — 'something people desire because of its sweetness.' Once they could make crystals, they used a new word: <i>sharkara</i>, which also meant gravel.</p>",
+   "camera": {
+    "center": [
+     80,
+     23
+    ],
+    "zoom": 3.6,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "diffusion"
+   ],
+   "diffusionYear": -900,
+   "sources": [
+    "s04-elephant-plough"
+   ]
+  },
+  {
+   "id": "jundishapur",
+   "act": 1,
+   "kicker": "Part One",
+   "title": "The world's first true university",
+   "body": "When Christians closed the school of Athens in 529, the remaining Greek scholars moved to Jundi Shapur. Jews joined them, and Nestorian Christians, and Persians — one of whom set off for India to gather and translate the wisdom of the Hindus. It had the first teaching hospital in the world.<p>By the 600s its doctors were writing about a medicine from India called <i>sharkara</i>. Its scholars invented better ways to refine cane.</p>",
+   "camera": {
+    "center": [
+     48.5,
+     32.3
+    ],
+    "zoom": 5.4,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "diffusion"
+   ],
+   "diffusionYear": 600,
+   "sources": [
+    "s05-shahnama-chess"
+   ]
+  },
+  {
+   "id": "islam",
+   "act": 1,
+   "kicker": "Part One",
+   "title": "The storm of God",
+   "body": "Muhammad began preaching in 610 with a few disciples. By 642 Muslim armies and Muslim argument had carried the faith across Syria, Iraq, Iran and Egypt, then along North Africa to Iberia. Wherever they went, they carried the knowledge of how to grow, mill and refine the sweet reed.<p>Egypt became the world's sugar laboratory. Its refiners boiled, strained, settled, strained again, drained the liquid off in moulds, mixed the powder with milk and boiled it all over again — and produced the whitest, purest sugar anyone had seen.</p>",
+   "camera": {
+    "center": [
+     22,
+     32
+    ],
+    "zoom": 3.1,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "diffusion"
+   ],
+   "diffusionYear": 1000,
+   "sources": [
+    "s07-arithmetic",
+    "x08-levni"
+   ]
+  },
+  {
+   "id": "europe",
+   "act": 1,
+   "kicker": "Part One",
+   "title": "Fortress Europe opens a crack",
+   "body": "Meanwhile Europe had gone the other way: isolation. There were no cookbooks in Christian Europe until the 1100s — cooks had no reason to read. Then a count in Champagne guaranteed the safety of any merchant coming to trade on his land, and six fairs a year became the one place Europeans could buy the world.<p>Next to the fruits and spices sat piles of a medicine the Italians bought from Muslims: sugar. In 1226 Henry III of England begged an official for three pounds of it, at a cost of about 450 modern dollars.</p>",
+   "camera": {
+    "center": [
+     8,
+     46
+    ],
+    "zoom": 4.0,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "diffusion"
+   ],
+   "diffusionYear": 1300,
+   "sources": [
+    "x10-testard"
+   ]
+  },
+  {
+   "id": "problem",
+   "act": 1,
+   "kicker": "Part One",
+   "title": "The problem with cane",
+   "body": "Cut cane starts to harden within a day or two. That single fact reorganised human labour.<p>The only way to make a lot of sugar is to build a system where an army of workers swarms the fields, cuts, hauls, crushes and boils without stopping. Not farming as it had been done for thousands of years — a factory, where everyone must do every step right, on time, together, or the whole thing collapses.</p><p>The Muslims worked out the rules for this. It came to be called the plantation. It had one purpose, produced one product, and could not feed the people who worked it.</p>",
+   "camera": {
+    "center": [
+     -8,
+     32
+    ],
+    "zoom": 3.4,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "diffusion"
+   ],
+   "diffusionYear": 1450
+  },
+  {
+   "id": "hinge",
+   "act": 1,
+   "kicker": "Part One",
+   "title": "1493 — the hinge",
+   "body": "Spain and Portugal, racing down the African coast for a sea route to Asia, took the Canaries and the Azores and built Muslim-style plantations on them, some staffed by people bought from nearby Africa.<p>One sailor came to know those islands well because he traded in white gold. On his second voyage he carried cane cuttings from Gomera. His name was Christopher Columbus.</p>",
+   "camera": {
+    "center": [
+     -42,
+     26
+    ],
+    "zoom": 2.3,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "diffusion"
+   ],
+   "diffusionYear": 1500,
+   "focusArc": "canaries-hispaniola"
+  },
+  {
+   "id": "crossing",
+   "act": 2,
+   "kicker": "Part Two",
+   "title": "Sugar crosses the Atlantic",
+   "body": "Hispaniola first. Then Brazil, with Portuguese and Dutch fighting over it. Then Barbados, then Jamaica, then the French half of Hispaniola all over again. The more sugar was planted, the more mills were built, the more docks were hammered into place — and the more enslaved people were brought from Africa.<p>Use the time slider to watch it spread.</p>",
+   "camera": {
+    "center": [
+     -58,
+     10
+    ],
+    "zoom": 2.9,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "plantations"
+   ],
+   "year": 1700,
+   "sources": [
+    "s12-pernambuco",
+    "s11-sugar-cycle"
+   ]
+  },
+  {
+   "id": "numbers",
+   "act": 2,
+   "kicker": "Part Two",
+   "title": "What the numbers actually say",
+   "body": "Between 1701 and 1810, 252,500 enslaved Africans were brought to Barbados — an island of 166 square miles. In the same period 662,400 were taken to Jamaica. Two islands: more than 900,000 people.<p>Only 4 percent of all the people taken from Africa were brought to North America. Ninety-six percent went to the Caribbean, Brazil and the rest of South America — mostly to work with sugar.</p>",
+   "quote": "On the sugar islands, while more than two million people were brought over from Africa, there were only 670,000 at emancipation. Sugar, with its demand for relentless labour, was a killer.",
+   "quoteAttr": "Sugar Changed the World, p. 63",
+   "camera": {
+    "center": [
+     -42,
+     6
+    ],
+    "zoom": 2.2,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "slavetrade",
+    "plantations"
+   ],
+   "era": "e2"
+  },
+  {
+   "id": "spherical",
+   "act": 2,
+   "kicker": "Part Two",
+   "title": "Not a triangle — a globe",
+   "body": "Textbooks draw a neat triangle: goods to Africa, people to the islands, sugar to Europe. The book calls that completely misleading.<p>New England ships sailed straight to the Caribbean with food and timber, cutting Europe out. Africans selling other Africans insisted on being paid in <b>Indian cloth</b> — about 35 percent of the cargo leaving Europe for Africa had started in India. To buy Indian cloth, Europeans needed silver, so Spain shipped it from Bolivia to Manila.</p>",
+   "quote": "So to get the fabrics that would buy the slaves that could be sold for sugar for the English to put into their tea, the Spanish shipped silver to the Philippines… What we call a triangle was really as round as the globe.",
+   "quoteAttr": "Sugar Changed the World, p. 37",
+   "camera": {
+    "center": [
+     -28,
+     12
+    ],
+    "zoom": 0.9,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "spherical"
+   ]
+  },
+  {
+   "id": "work",
+   "act": 2,
+   "kicker": "Part Two",
+   "title": "The work, stage by stage",
+   "body": "In 1823 William Clark painted ten views of an Antiguan estate for people in Britain who owned such places but had never seen one. They are the most complete picture we have of the sugar cycle — and they are propaganda.<p>Click any pin. Every source on this map opens with an <b>OPTIC</b> or <b>SCRAP</b> prompt.</p>",
+   "camera": {
+    "center": [
+     -61.82,
+     17.09
+    ],
+    "zoom": 9.6,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "sources"
+   ],
+   "filterAct": 2,
+   "sources": [
+    "s15f-caneholes",
+    "s13-clark-planting",
+    "s15c-cutting",
+    "s14b-grinding",
+    "s15a-boiling-6",
+    "s15g-curing",
+    "s15i-hogsheads"
+   ]
+  },
+  {
+   "id": "overseer",
+   "act": 2,
+   "kicker": "Part Two",
+   "title": "Why it was Hell",
+   "body": "Owners built Great Houses on hills for the breeze — and then left for England as soon as they could afford to, watching the crop through their account books. The daily running of the plantation went to overseers.<p>Thomas Thistlewood arrived in Jamaica in 1750, aged twenty-nine. At the time about 17,000 white people lived there, 7,000 free black and mixed people, and some 170,000 enslaved. He learned terror early, invented new tortures, and by his own count was involved with 138 enslaved women who had no choice in the matter.</p>",
+   "quote": "The plantations were Hell because the masters and overseers were treated as gods — which turned them into devils.",
+   "quoteAttr": "Sugar Changed the World, p. 61",
+   "camera": {
+    "center": [
+     -77.3,
+     18.2
+    ],
+    "zoom": 7.4,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "sources"
+   ],
+   "filterAct": 2,
+   "sources": [
+    "s27-cardiff-hall",
+    "s37-instruments"
+   ]
+  },
+  {
+   "id": "speak",
+   "act": 2,
+   "kicker": "Part Two",
+   "title": "How we can still hear them",
+   "body": "Nobody interviewed the Africans who laboured in the cane. They were meant to work and die. But they invented music, dances and songs that carry the pulse of their lives — bomba in Puerto Rico, rumba in Cuba, Maculelê in Brazil, stick fighting on the islands, and later jazz in Louisiana.<p>A master walking by saw dancing. No words of anger. But the drummers were speaking.</p>",
+   "camera": {
+    "center": [
+     -64,
+     15
+    ],
+    "zoom": 4.3,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "sources",
+    "freedom"
+   ],
+   "filterAct": 2,
+   "sources": [
+    "s25-stickfighting",
+    "s24-cuatro",
+    "s26-rebel-surinam"
+   ]
+  },
+  {
+   "id": "tea",
+   "act": 3,
+   "kicker": "Part Three",
+   "title": "Meanwhile, in England: the tea break",
+   "body": "By itself tea is bitter. So are coffee and chocolate, the two other new drinks of the 1600s. All three invited sugar.<p>In the early 1700s the average English person ate four pounds of sugar a year. A century later, eighteen — a 450 percent rise. By 1900, ninety pounds.</p><p>Why did the English in particular need a cheap, filling hot drink? Factories. Workers could not stop to eat. When the whistle blew they drank sweet tea and dipped bread in it, and a smart manufacturer noticed and sold them biscuits.</p>",
+   "quote": "English factories, you might say, were built, run, and paid for by sugar.",
+   "quoteAttr": "Sugar Changed the World, p. 68",
+   "camera": {
+    "center": [
+     -1.6,
+     52.6
+    ],
+    "zoom": 5.4,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "sources"
+   ],
+   "filterAct": 3,
+   "chart": "consumption",
+   "sources": [
+    "s31-collins-tea",
+    "s31b-nippers",
+    "s33-cruikshank",
+    "s34-cotton-factory",
+    "s30-sevin-banquet"
+   ]
+  },
+  {
+   "id": "taxation",
+   "act": 3,
+   "kicker": "Part Three",
+   "title": "All men are equal: America",
+   "body": "On 7 April 1765 Rhode Island men with blackened faces boarded the Polly and rolled barrels of molasses off it. Eight years before the Boston Tea Party, and the same issue: Parliament had taxed sugar without giving the colonists a voice.<p>Why sugar especially? Because Caribbean planters lived in England, near London, where their money could buy members of Parliament — and some of them, like William Beckford, <i>were</i> members of Parliament.</p>",
+   "camera": {
+    "center": [
+     -45,
+     42
+    ],
+    "zoom": 2.7,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "freedom",
+    "sources"
+   ],
+   "filterAct": 3,
+   "sources": [
+    "s35-beckford",
+    "s36-robertson"
+   ]
+  },
+  {
+   "id": "clarkson",
+   "act": 3,
+   "kicker": "Part Three",
+   "title": "It began with a school assignment",
+   "body": "In 1785 Cambridge set its Latin essay prize on the question: <i>Is it lawful to make slaves of others against their will?</i> Thomas Clarkson set out to win. He convinced himself instead.<p>What followed was, the book argues, the most effective public relations campaign in history. Clarkson brandished whips and handcuffs at lectures. Equiano published his memoir. And 400,000 English people boycotted slave-grown sugar, buying loaves labelled <b>'Produced by the labour of FREEMEN.'</b></p>",
+   "quote": "Sugar was a bridge — like the sneakers and T-shirts and rugs that, today, we know are made by sweatshop labor. If you wanted the product, abolitionists forced you to think about how it was made.",
+   "quoteAttr": "Sugar Changed the World, p. 79",
+   "camera": {
+    "center": [
+     -1.0,
+     52.0
+    ],
+    "zoom": 5.6,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "freedom",
+    "sources"
+   ],
+   "filterAct": 3,
+   "sources": [
+    "s39-opie",
+    "s40-birmingham",
+    "s41-reticule",
+    "s17-poundofsugar"
+   ]
+  },
+  {
+   "id": "haiti",
+   "act": 3,
+   "kicker": "Part Three",
+   "title": "Alligator Woods",
+   "body": "On the night of 14 August 1791, commanders from the richest sugar plantations in Saint Domingue gathered and swore an oath: they would rise, and they would destroy everything related to sugar. Sugar had made them slaves, so sugar must be wiped off the island.<p>By the end of the month the colony was in flames — 'a rain of fire composed of burning bits of cane-straw which whirled like thick snow.' One thousand plantations in two months.</p><p>They beat the British. Then Napoleon sent 35,000 men; nearly 50,000 French soldiers died. On 1 January 1804 the Republic of Haiti was born.</p>",
+   "quote": "We are fighting that liberty — that most precious of all earthly possessions — may not perish.",
+   "quoteAttr": "Toussaint L'Ouverture, quoted p. 87. Lincoln would use almost the same words at Gettysburg sixty-five years later.",
+   "camera": {
+    "center": [
+     -72.4,
+     19.0
+    ],
+    "zoom": 7.2,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "freedom",
+    "sources"
+   ],
+   "filterAct": 3,
+   "sources": [
+    "s42-toussaint",
+    "s43-trelawny"
+   ]
+  },
+  {
+   "id": "fear",
+   "act": 3,
+   "kicker": "Part Three",
+   "title": "And then the last enemy: fear",
+   "body": "Haiti won its freedom and then faced something no army could beat. Jefferson refused to recognise the only sister republic in the Americas — the United States would not do so until 1862. The European powers did the same. Isolated from trade and contact, Haiti floundered.<p>Meanwhile the Louisiana Territory, which Napoleon had wanted in order to feed his sugar islands, became useless to him. He sold it to Jefferson for fifteen million dollars. The book's name for it: <b>the Sugar Purchase</b>.</p>",
+   "camera": {
+    "center": [
+     -88,
+     29
+    ],
+    "zoom": 3.6,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "freedom",
+    "plantations"
+   ],
+   "year": 1830,
+   "sources": [
+    "s46-louisiana",
+    "s21a-newiberia"
+   ]
+  },
+  {
+   "id": "emancipation",
+   "act": 3,
+   "kicker": "Part Three",
+   "title": "Noon, 25 March 1807",
+   "body": "A bill banning all English involvement in slave trading passed the Commons, then the Lords. At precisely noon on 25 March 1807, George III signed it.<p>No enslaved person was freed by that law. But more people had been shipped from Africa by the British than by anyone else, and that part of the story was over. In 1833 Parliament passed the Emancipation Bill; on 1 August 1838, slavery in the British empire ended.</p><p>William Allen, a Quaker who had refused sugar for nearly fifty years, drank his first cup of tea with a spoonful of white, free sugar.</p>",
+   "camera": {
+    "center": [
+     -6,
+     32
+    ],
+    "zoom": 2.7,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "freedom",
+    "sources"
+   ],
+   "filterAct": 3,
+   "sources": [
+    "s45a-medal-front",
+    "s45b-medal-back"
+   ]
+  },
+  {
+   "id": "newsystem",
+   "act": 4,
+   "kicker": "Part Four",
+   "title": "A new system",
+   "body": "The plantations still needed cheap labour for a twenty-four-hour cycle. In 1836 John Gladstone — whose estate had displayed Quamina's chained body thirteen years earlier — wrote to a shipping company asking for a hundred workers from India.<p>The Whitby, carrying 249 people, and the Hesperus, carrying 244, sailed for Demerara in 1838.</p>",
+   "camera": {
+    "center": [
+     -58.2,
+     6.6
+    ],
+    "zoom": 7.0,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "freedom",
+    "indenture"
+   ]
+  },
+  {
+   "id": "blackwater",
+   "act": 4,
+   "kicker": "Part Four",
+   "title": "Crossing the black water",
+   "body": "A stranger at a fair: <i>You want to make a better wage? There's good work upriver.</i> He buys you food, and then you owe him. You walk.<p>For a traditional Hindu, crossing the ocean — the <i>kali pani</i> — meant losing caste: stripped of the connections that had defined your family for generations, unable to return and be respected without a special ceremony.</p><p>The journey could take twenty-seven weeks, far longer than the Middle Passage. On the ships people began calling each other <i>jahajii-bhai</i> — ship brothers.</p>",
+   "quote": "Listen my dear, listen / Come along with me / I will get you a good job… / Come, I am taking you to a country named Sitiram / … There are mines of gold / There you will get food in utensils of gold",
+   "quoteAttr": "'Ship Brothers', a song of indenture, p. 108",
+   "camera": {
+    "center": [
+     -5,
+     8
+    ],
+    "zoom": 1.15,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "indenture"
+   ]
+  },
+  {
+   "id": "inbetween",
+   "act": 4,
+   "kicker": "Part Four",
+   "title": "Slavery or freedom? The in-between",
+   "body": "Seven hours' work for about twenty-four cents a day, with eight cents a week deducted for food. In practice they worked as long as there was light. You could not leave the plantation without a pass. 'Idling' could cost a week's wages. Life, one historian wrote, was like being a prisoner on parole.<p>And the enslaved Africans who had just been freed found that every Indian who accepted those wages lowered the price they could charge. The planters were skilled at the game of divide and rule.</p><p>Yet the indentured were still individuals. Their names were written down.</p>",
+   "camera": {
+    "center": [
+     -24,
+     4
+    ],
+    "zoom": 1.6,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "indenture"
+   ],
+   "sources": [
+    "s18-stkitts",
+    "s02-boys-cane"
+   ]
+  },
+  {
+   "id": "bechu",
+   "act": 4,
+   "kicker": "Part Four",
+   "title": "Bechu writes to the newspapers",
+   "body": "An orphan from Calcutta, adopted by a missionary who taught him English, indentured in British Guiana — and from 1896 he published letters in the elite papers exposing how planters got around the contracts by paying 'by the task' rather than by the day.<p>The letters that came back were black with rage that an Indian would question the ethics of Englishmen. Some even doubted he was Indian at all.</p><p>But underneath the fury was something the planters could feel: the Age of Sugar was ending. Workers were individuals, not property — and world sugar prices were collapsing.</p>",
+   "camera": {
+    "center": [
+     -58.16,
+     6.8
+    ],
+    "zoom": 8.0,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "indenture",
+    "freedom"
+   ]
+  },
+  {
+   "id": "paradise",
+   "act": 4,
+   "kicker": "Part Four",
+   "title": "Sugar in paradise",
+   "body": "Hawaii is where the two journeys of cane meet: the Polynesian one, which brought stalks by canoe around 1100, and the westward one that ran India → Persia → the Mediterranean → the Atlantic islands → the Americas.<p>Growers brought only men from China, then — when the Chinese began asking for better wages — men from Japan, then Filipinos, Koreans and Portuguese, each group set against the last.</p><p>The plan to create division produced the most ethnically diverse place in the world.</p>",
+   "quote": "Earthquakes and thunder / Do not scare me / But a sound from the overseer / Leaves me quaking",
+   "quoteAttr": "A holehole bushi, sung by Japanese women in the cane fields, p. 98",
+   "camera": {
+    "center": [
+     -157.0,
+     20.6
+    ],
+    "zoom": 6.2,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "plantations",
+    "sources"
+   ],
+   "year": 1900,
+   "sources": [
+    "s20-hawaii"
+   ]
+  },
+  {
+   "id": "beet",
+   "act": 5,
+   "kicker": "Part Five",
+   "title": "A German chemist mashes a beet",
+   "body": "In 1747 Andreas Marggraf dried and mashed parsnips, then beets, and extracted the chemical that made them sweet. It was identical to the sugar from cane.<p>Beets grow happily in cold ground. For the first time in history, a taste native to the tropics was matched by a plant from the north. Napoleon — locked out of the Caribbean by the British navy and by the Haitians — ordered thousands of acres planted. By 1814 France had 334 beet factories.</p><p>In 1854 beets were 11 percent of world sugar. By 1899, about 65 percent.</p>",
+   "camera": {
+    "center": [
+     20,
+     50
+    ],
+    "zoom": 3.6,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "science"
+   ],
+   "chart": "beet"
+  },
+  {
+   "id": "families",
+   "act": 5,
+   "kicker": "Part Five",
+   "title": "Where the two family stories cross",
+   "body": "In the northern Ukraine, landowners who were trying new methods heard about beet sugar and planted. Family legend says one of them — a serf, Nina's grandfather — found a way to give raw beet sugar sparkling hues, and made enough money to buy his freedom.<p>In the 1890s, cane prices were collapsing and the planters of British Guiana were near bankruptcy. Beet sugar, coloured by new processes, was outselling Caribbean cane.</p><p>Nina's grandfather on the Volga and Marina's great-grandfather in Guyana were linked by sugar, and neither could have known it.</p>",
+   "camera": {
+    "center": [
+     -8,
+     38
+    ],
+    "zoom": 1.9,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "science",
+    "indenture"
+   ]
+  },
+  {
+   "id": "rillieux",
+   "act": 5,
+   "kicker": "Part Five",
+   "title": "The sugar genius",
+   "body": "Norbert Rillieux was born in New Orleans in 1806 to a wealthy white planter and a free woman of colour. His father sent him to France to be educated, and he learned the same rational, experimental method that had proved beet sugar and cane sugar were the same thing.<p>He worked out that heating syrup in a series of sealed pans — instead of open cauldrons — transformed everything: one person instead of a team, far less heat, heat transferred from pan to pan. Planters saw the value immediately.</p><p>He returned to France anyway. Being a noted inventor, legally free, was no guarantee of safety for a Black man in Louisiana.</p>",
+   "camera": {
+    "center": [
+     -90.07,
+     29.95
+    ],
+    "zoom": 8.4,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "science"
+   ]
+  },
+  {
+   "id": "gandhi",
+   "act": 5,
+   "kicker": "Part Five",
+   "title": "Satyagraha",
+   "body": "Gandhi went to Natal in 1894 to practise law because Indians were already there, cutting cane. A man came to him beaten and bleeding — Balasumdaram, who could be jailed if he left his employer. Gandhi called indenture 'almost as bad as slavery.'<p>On 11 September 1906, at the Empire Theatre in Johannesburg, he asked every person present to swear not to register under the Black Act — facing 'not to his neighbor, but his God.' Every hand went up.</p><p>On 16 August 1908 the certificates of 2,300 Indians were burned in a great iron cauldron. By June 1914 the Black Act was repealed.</p>",
+   "quote": "While the goal of violence is to defeat and vanquish the enemy, the goal of Satyagraha is to convince or convert the opponent.",
+   "quoteAttr": "Sugar Changed the World, p. 123",
+   "camera": {
+    "center": [
+     29.5,
+     -28.0
+    ],
+    "zoom": 5.0,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "freedom"
+   ],
+   "filterAct": 5
+  },
+  {
+   "id": "close",
+   "act": 5,
+   "kicker": "The end of the Age of Sugar",
+   "title": "We live in the world sugar created",
+   "body": "Saccharine in 1879. Aspartame in 1965. High-fructose corn syrup in 1967. Sucralose in 1976. Chemists now have more to say about how we get sweetness than overseers do. When sugar is in the news it is about how much of it we eat, not who cut it.<p>And yet: in the Dominican Republic and elsewhere the work is still hard, still badly paid, still dangerous.</p>",
+   "quote": "Sugar turned human beings into property, yet sugar led people to reject the idea that any person could be owned by another. Sugar murdered millions, and yet it gave the voiceless a way to speak.",
+   "quoteAttr": "Sugar Changed the World, p. 125",
+   "camera": {
+    "center": [
+     -20,
+     14
+    ],
+    "zoom": 1.1,
+    "bearing": 0,
+    "pitch": 0
+   },
+   "layers": [
+    "sources"
+   ],
+   "sources": [
+    "s19-guanica-burn",
+    "s21b-ponce"
+   ]
+  }
+ ]
+}
