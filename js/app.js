@@ -36,6 +36,21 @@ function camPad() {
   const w = el ? el.getBoundingClientRect().width : 0;
   return { top: 20, right: 30, bottom: 20, left: Math.round(w) + 30 };
 }
+/* Centre and zoom that frame a [[w,s],[e,n]] box inside the map left uncovered by the
+   story panel. Plain Web Mercator, so the answer never depends on the map's own state. */
+function fitCamera([[w, s], [e, n]]) {
+  const pad = camPad(), cv = map.getCanvas();
+  const availW = Math.max(80, cv.clientWidth - pad.left - pad.right);
+  const availH = Math.max(80, cv.clientHeight - pad.top - pad.bottom);
+  const my = lat => Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI / 180) / 2));
+  const dx = (e - w) / 360;
+  const y1 = 0.5 - my(n) / (2 * Math.PI), y2 = 0.5 - my(s) / (2 * Math.PI);
+  const zoom = Math.min(Math.log2(availW / (dx * 512)), Math.log2(availH / ((y2 - y1) * 512)));
+  const midY = (y1 + y2) / 2;
+  const lat = Math.atan(Math.sinh((0.5 - midY) * 2 * Math.PI)) * 180 / Math.PI;
+  return { center: [(w + e) / 2, lat], zoom: Math.max(0.6, Math.min(11, zoom)) };
+}
+
 const fc = features => ({ type: 'FeatureCollection', features });
 const pt = (lon, lat, props) => ({ type: 'Feature', properties: props, geometry: { type: 'Point', coordinates: [lon, lat] } });
 const ln = (coords, props) => ({ type: 'Feature', properties: props, geometry: { type: 'LineString', coordinates: coords } });
@@ -549,9 +564,12 @@ function goStep(id) {
   const fly = () => {
     if (curStep !== s.id) return;                 // a faster scroll already moved on
     /* "fit" frames a bounding box instead of a fixed centre/zoom, so every point stays
-       on screen whatever the window size. */
-    if (s.fit) map.fitBounds(s.fit, { bearing: 0, pitch: 0, duration: 1500, padding: camPad() });
-    else map.easeTo({ center: s.camera.center, zoom: s.camera.zoom, bearing: 0, pitch: 0, duration: 1500, padding: camPad() });
+       on screen whatever the window size. The centre and zoom are worked out here rather
+       than handed to fitBounds, which resolves against whatever the map is doing at the
+       time: arriving from the globe it read the longitude off a projection still
+       unwinding, and landed the Atlantic step out in the Pacific. */
+    const cam = s.fit ? fitCamera(s.fit) : s.camera;
+    map.easeTo({ center: cam.center, zoom: cam.zoom, bearing: 0, pitch: 0, duration: 1500, padding: camPad() });
   };
   curStep = s.id;
   setTimeout(fly, 0);
