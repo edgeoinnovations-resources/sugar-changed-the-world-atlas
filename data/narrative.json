@@ -247,6 +247,16 @@
    "sources": [
     "s12-pernambuco",
     "s11-sugar-cycle"
+   ],
+   "fit": [
+    [
+     -95.0,
+     -12.0
+    ],
+    [
+     -12.0,
+     41.0
+    ]
    ]
   },
   {
@@ -285,13 +295,14 @@
      -28,
      12
     ],
-    "zoom": 0.9,
+    "zoom": 1.35,
     "bearing": 0,
     "pitch": 0
    },
    "layers": [
     "spherical"
-   ]
+   ],
+   "globe": true
   },
   {
    "id": "work",
@@ -355,6 +366,15 @@
    "sources": [
     "s27-cardiff-hall",
     "s37-instruments"
+   ],
+   "places": [
+    {
+     "name": "JAMAICA",
+     "at": [
+      -77.428,
+      17.816
+     ]
+    }
    ]
   },
   {
@@ -492,6 +512,15 @@
    "sources": [
     "s42-toussaint",
     "s43-trelawny"
+   ],
+   "places": [
+    {
+     "name": "SAINT-DOMINGUE",
+     "at": [
+      -73.281,
+      18.265
+     ]
+    }
    ]
   },
   {
@@ -562,6 +591,15 @@
    "layers": [
     "freedom",
     "indenture"
+   ],
+   "places": [
+    {
+     "name": "BRITISH GUIANA",
+     "at": [
+      -60.056,
+      5.841
+     ]
+    }
    ]
   },
   {
@@ -626,6 +664,15 @@
    "layers": [
     "indenture",
     "freedom"
+   ],
+   "places": [
+    {
+     "name": "BRITISH GUIANA",
+     "at": [
+      -58.624,
+      6.42
+     ]
+    }
    ]
   },
   {
@@ -652,6 +699,15 @@
    "year": 1900,
    "sources": [
     "s20-hawaii"
+   ],
+   "places": [
+    {
+     "name": "HAWAII",
+     "at": [
+      -155.678,
+      19.278
+     ]
+    }
    ]
   },
   {
@@ -711,6 +767,15 @@
    },
    "layers": [
     "science"
+   ],
+   "places": [
+    {
+     "name": "NEW ORLEANS",
+     "at": [
+      -90.422,
+      29.662
+     ]
+    }
    ]
   },
   {

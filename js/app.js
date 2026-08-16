@@ -11,7 +11,9 @@ const fmtYear = y => y < 0 ? `${Math.abs(y).toLocaleString()} BC` : `${y}`;
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 let DATA = {}, map, srcMarkers = [], popup, activeLayers = new Set(), curYear = 1950,
-    curEra = 'e2', mode = 'story', playTimer = null, placeMarkers = [];
+    curEra = 'e2', mode = 'story', playTimer = null, placeMarkers = [],
+    gratMarkers = [], globeOn = false, userTurning = false, spinResume = null;
+const GRAT_LAYERS = ['grat-l', 'grat-polar', 'grat-trop', 'grat-eq'];
 
 /* ── geometry helpers ─────────────────────────────────────── */
 function arc(a, b, bend = 0.2, n = 64) {
@@ -101,9 +103,27 @@ function onMapLoad() {
     paint: { 'line-color': '#bfb097', 'line-width': 0.9 } });
   map.addLayer({ id: 'isl-l', type: 'line', source: 'islands', minzoom: 4,
     paint: { 'line-color': '#bfb097', 'line-width': 0.9 } });
+  map.addSource('latlines', { type: 'geojson', data: latLines() });
+
+  /* Graticule in three weights so the lines can be told apart: the equator solid, the
+     tropics heavier and warm (they are the point of the layer — cane grows between them),
+     the polar circles and the date line faint. */
   map.addLayer({ id: 'grat-l', type: 'line', source: 'grat',
+    filter: ['==', ['get', 'name'], 'International Date Line'],
     layout: { visibility: 'none' },
-    paint: { 'line-color': '#a89b7d', 'line-width': 0.8, 'line-dasharray': [3, 3], 'line-opacity': 0.75 } });
+    paint: { 'line-color': '#a89b7d', 'line-width': 1, 'line-dasharray': [2, 4], 'line-opacity': 0.4 } });
+  map.addLayer({ id: 'grat-polar', type: 'line', source: 'latlines',
+    filter: ['==', ['get', 'cls'], 'polar'],
+    layout: { visibility: 'none' },
+    paint: { 'line-color': '#a89b7d', 'line-width': 1, 'line-dasharray': [2, 4], 'line-opacity': 0.5 } });
+  map.addLayer({ id: 'grat-trop', type: 'line', source: 'latlines',
+    filter: ['==', ['get', 'cls'], 'trop'],
+    layout: { visibility: 'none', 'line-cap': 'butt' },
+    paint: { 'line-color': '#a8762c', 'line-width': 1.5, 'line-dasharray': [4, 2.5], 'line-opacity': 0.85 } });
+  map.addLayer({ id: 'grat-eq', type: 'line', source: 'latlines',
+    filter: ['==', ['get', 'cls'], 'eq'],
+    layout: { visibility: 'none' },
+    paint: { 'line-color': '#6f5f47', 'line-width': 1.6, 'line-opacity': 0.9 } });
 
   buildThematic();
   applyState();
@@ -122,6 +142,8 @@ function onMapLoad() {
   });
 
   buildSourceMarkers();
+  wireGlobeSpin();
+  map.on('move', positionGratLabels);
 }
 
 /* ── thematic layers ──────────────────────────────────────── */
@@ -282,6 +304,93 @@ function buildSourceMarkers() {
   });
 }
 
+/* ── globe ────────────────────────────────────────────────────
+   Steps marked "globe": true swap the flat map for a real 3-D globe and set it
+   turning. Students can drag it, and the spin picks itself back up afterwards. */
+const SPIN_DEG_PER_SEC = 4;                    // one full turn in about a minute and a half
+
+function setGlobe(on) {
+  if (!map || typeof map.setProjection !== 'function') return;   // no globe before MapLibre 5
+  if (on === globeOn) return;
+  globeOn = on;
+  map.setProjection({ type: on ? 'globe' : 'mercator' });
+  document.getElementById('map').classList.toggle('globe', on);
+  if (on) spinGlobe();
+}
+
+function spinGlobe() {
+  if (!globeOn || userTurning) return;
+  const c = map.getCenter();
+  map.easeTo({ center: [c.lng - SPIN_DEG_PER_SEC, c.lat], duration: 1000, easing: t => t });
+}
+
+function wireGlobeSpin() {
+  map.on('moveend', () => { if (globeOn) spinGlobe(); });       // each ease queues the next
+  ['mousedown', 'touchstart', 'wheel'].forEach(ev => map.on(ev, () => { userTurning = true; }));
+  ['mouseup', 'touchend', 'dragend', 'zoomend'].forEach(ev => map.on(ev, () => {
+    userTurning = false;
+    clearTimeout(spinResume);
+    spinResume = setTimeout(spinGlobe, 900);                     // let go, and it drifts on
+  }));
+}
+
+/* ── graticule ────────────────────────────────────────────────
+   The latitude circles are generated here rather than taken from the Natural Earth
+   lines file. That file stores each circle as a single line running the whole way
+   round the world, and MapLibre only ever drew it in one copy of the world — which is
+   why the equator gave out east of Greenwich. Short segments render everywhere. The
+   file is still used for the International Date Line, which is a political zig-zag. */
+const LAT_LINES = [
+  { name: 'Equator',             lat: 0,        cls: 'eq' },
+  { name: 'Tropic of Cancer',    lat: 23.4365,  cls: 'trop' },
+  { name: 'Tropic of Capricorn', lat: -23.4365, cls: 'trop' },
+  { name: 'Arctic Circle',       lat: 66.5635,  cls: 'polar' },
+  { name: 'Antarctic Circle',    lat: -66.5635, cls: 'polar' }
+];
+
+function latLines() {
+  const feats = [];
+  LAT_LINES.forEach(L => {
+    for (let x0 = -180; x0 < 180; x0 += 30) {
+      const pts = [];
+      for (let x = x0; x <= x0 + 30; x += 2) pts.push([x, L.lat]);
+      feats.push(ln(pts, { name: L.name, cls: L.cls }));
+    }
+  });
+  return fc(feats);
+}
+
+/* ── graticule labels ─────────────────────────────────────────
+   The lines are useless if you cannot tell which is which. These ride along the
+   left edge of the *visible* map, so they stay put as the map is panned. */
+const GRAT_LABELS = [
+  { name: 'Tropic of Cancer', lat: 23.4365 },
+  { name: 'Equator', lat: 0 },
+  { name: 'Tropic of Capricorn', lat: -23.4365 }
+];
+
+function setGratLabels(on) {
+  gratMarkers.forEach(g => g.marker.remove());
+  gratMarkers = [];
+  if (!on || !map) return;
+  GRAT_LABELS.forEach(g => {
+    const el = document.createElement('div');
+    el.innerHTML = '<span class="plabel grat"></span>';
+    el.firstChild.textContent = g.name;
+    el.style.pointerEvents = 'none';
+    gratMarkers.push({ lat: g.lat,      // anchor left, or the text runs back under the panel
+      marker: new maplibregl.Marker({ element: el, anchor: 'left' }).setLngLat([0, g.lat]).addTo(map) });
+  });
+  positionGratLabels();
+}
+
+function positionGratLabels() {
+  if (!gratMarkers.length || !map) return;
+  const h = map.getCanvas().clientHeight;
+  const lng = map.unproject([camPad().left + 20, h / 2]).lng;    // just inside the exposed map
+  gratMarkers.forEach(g => g.marker.setLngLat([lng, g.lat]));
+}
+
 /* Place names for steps that sit too close in for the reader to recognise where they are.
    Driven by an optional "places":[{name, at:[lon,lat]}] on the narrative step. */
 function setPlaceLabels(places) {
@@ -401,9 +510,13 @@ function goStep(id) {
   if (s.year) curYear = s.year;
   if (s.diffusionYear) curYear = s.diffusionYear;
   if (s.era) curEra = s.era;
-  map.easeTo({ center: s.camera.center, zoom: s.camera.zoom, bearing: 0, pitch: 0, duration: 1500, padding: camPad() });
+  /* "fit" frames a bounding box instead of a fixed centre/zoom, so every point stays
+     on screen whatever the window size. */
+  if (s.fit) map.fitBounds(s.fit, { bearing: 0, pitch: 0, duration: 1500, padding: camPad() });
+  else map.easeTo({ center: s.camera.center, zoom: s.camera.zoom, bearing: 0, pitch: 0, duration: 1500, padding: camPad() });
   setPlaceLabels(s.places);
   applyState(s.filterAct);
+  setGlobe(!!s.globe);            // after applyState: swapping projection stalls isStyleLoaded()
   const note = document.getElementById('mapnote');
   if (s.layers && s.layers.length) {
     note.hidden = false;
@@ -429,8 +542,14 @@ const GROUPS = {
   science: ['sci-c']
 };
 
-function applyState(filterAct) {
-  if (!map || !map.isStyleLoaded()) { map && map.once('idle', () => applyState(filterAct)); return; }
+function applyState(filterAct, tries = 0) {
+  /* Retry on a timer rather than map.once('idle') — while the globe is turning the map
+     never goes idle, and an 'idle' wait there would never fire. */
+  if (!map) return;
+  if (!map.isStyleLoaded()) {
+    if (tries < 60) setTimeout(() => applyState(filterAct, tries + 1), 100);
+    return;
+  }
   Object.entries(GROUPS).forEach(([k, ids]) => {
     const on = activeLayers.has(k);
     ids.forEach(id => map.getLayer(id) && map.setLayoutProperty(id, 'visibility', on ? 'visible' : 'none'));
@@ -586,6 +705,8 @@ function wireUI() {
     document.getElementById('timebar').hidden = (m === 'story');
     document.getElementById('panel').scrollTop = 0;
     if (m !== 'story') {
+      setGlobe(false);                       // the globe belongs to its own story step
+      setPlaceLabels(null);
       activeLayers = new Set([...document.querySelectorAll('[data-layer]')]
         .filter(i => i.checked).map(i => i.dataset.layer));
       curYear = 1950; syncSlider(); applyState();
@@ -604,11 +725,16 @@ function wireUI() {
       .filter(i => i.checked).map(i => i.dataset.layer));
     applyState();
   }));
-  const setBase = (layer, on) => {
-    if (map && map.getLayer(layer)) map.setLayoutProperty(layer, 'visibility', on ? 'visible' : 'none');
+  const setBase = (layers, on) => {
+    [].concat(layers).forEach(l => {
+      if (map && map.getLayer(l)) map.setLayoutProperty(l, 'visibility', on ? 'visible' : 'none');
+    });
   };
   document.getElementById('tog-borders').addEventListener('change', e => setBase('ctry-l', e.target.checked));
-  document.getElementById('tog-grat').addEventListener('change', e => setBase('grat-l', e.target.checked));
+  document.getElementById('tog-grat').addEventListener('change', e => {
+    setBase(GRAT_LAYERS, e.target.checked);
+    setGratLabels(e.target.checked);
+  });
 
   const sl = document.getElementById('slider');
   sl.addEventListener('input', () => {

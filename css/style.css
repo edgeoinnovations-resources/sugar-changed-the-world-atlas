@@ -64,6 +64,8 @@ body{
 .shell{display:flex;height:calc(100% - var(--bar));position:relative}
 .mapwrap{position:absolute;inset:0;z-index:1}
 #map{position:absolute;inset:0;background:var(--sea)}
+/* on the globe step the sphere is the sea colour, so the surround becomes paper */
+#map.globe{background:var(--paper2);transition:background .6s ease}
 .maplibregl-ctrl-attrib{font-size:10px;background:rgba(251,248,242,.86)!important}
 
 .panel{
@@ -214,9 +216,16 @@ fieldset.layers legend{
 .pin.miss .dot{background:var(--paper);box-shadow:0 0 0 2px var(--c,var(--a0)),0 1px 4px rgba(0,0,0,.25)}
 .pin:focus-visible{outline:2px solid var(--a3);outline-offset:4px;border-radius:50%}
 .plabel{
+  display:block;
   font-size:11px;font-weight:600;color:var(--ink);white-space:nowrap;pointer-events:none;
+  letter-spacing:.14em;text-transform:uppercase;
   text-shadow:0 0 3px var(--paper),0 0 3px var(--paper),0 0 5px var(--paper);
   transform:translate(11px,-8px)
+}
+/* graticule labels sit on their line, not beside a pin */
+.plabel.grat{
+  font-size:9.5px;font-weight:700;letter-spacing:.16em;color:#6f5f47;
+  transform:translate(0,-11px)
 }
 
 .maplibregl-popup-content{
