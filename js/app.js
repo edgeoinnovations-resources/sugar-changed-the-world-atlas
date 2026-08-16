@@ -14,6 +14,7 @@ let DATA = {}, map, srcMarkers = [], popup, activeLayers = new Set(), curYear = 
     curEra = 'e2', mode = 'story', playTimer = null, placeMarkers = [],
     gratMarkers = [], globeOn = false, userTurning = false, spinResume = null;
 const GRAT_LAYERS = ['grat-l', 'grat-polar', 'grat-trop', 'grat-eq'];
+const LAND_SWAP = 5;            // zoom at which the 1:110m base hands over to 1:10m
 
 /* ── geometry helpers ─────────────────────────────────────── */
 function arc(a, b, bend = 0.2, n = 64) {
@@ -92,14 +93,23 @@ function onMapLoad() {
   /* small islands the 1:110m land file drops entirely (Antigua, St Kitts, Dominica …) —
      only drawn once you zoom in, so the world view stays as designed */
   map.addSource('islands', { type: 'geojson', data: 'data/ne_islands.json' });
+  /* 1:10m coastline (~1.3 km), which takes over from the 1:110m base once the story
+     zooms in close enough for the coarse outline to stop looking like a coastline */
+  map.addSource('land10', { type: 'geojson', data: 'data/ne_land_10m.json' });
 
-  map.addLayer({ id: 'land-f', type: 'fill', source: 'land',
+  map.addLayer({ id: 'land-f', type: 'fill', source: 'land', maxzoom: LAND_SWAP,
+    paint: { 'fill-color': '#f5f0e5' } });
+  map.addLayer({ id: 'land10-f', type: 'fill', source: 'land10', minzoom: LAND_SWAP,
     paint: { 'fill-color': '#f5f0e5' } });
   map.addLayer({ id: 'isl-f', type: 'fill', source: 'islands', minzoom: 4,
     paint: { 'fill-color': '#f5f0e5' } });
-  map.addLayer({ id: 'ctry-l', type: 'line', source: 'countries',
+  /* borders are 1:110m too, so they stop where the coastline gets sharper —
+     past that they wander off the coast by more than they are worth */
+  map.addLayer({ id: 'ctry-l', type: 'line', source: 'countries', maxzoom: 6.5,
     paint: { 'line-color': '#cfc3aa', 'line-width': 0.7 } });
-  map.addLayer({ id: 'land-l', type: 'line', source: 'land',
+  map.addLayer({ id: 'land-l', type: 'line', source: 'land', maxzoom: LAND_SWAP,
+    paint: { 'line-color': '#bfb097', 'line-width': 0.9 } });
+  map.addLayer({ id: 'land10-l', type: 'line', source: 'land10', minzoom: LAND_SWAP,
     paint: { 'line-color': '#bfb097', 'line-width': 0.9 } });
   map.addLayer({ id: 'isl-l', type: 'line', source: 'islands', minzoom: 4,
     paint: { 'line-color': '#bfb097', 'line-width': 0.9 } });
