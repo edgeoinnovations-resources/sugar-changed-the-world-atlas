@@ -320,6 +320,15 @@
     "s15a-boiling-6",
     "s15g-curing",
     "s15i-hogsheads"
+   ],
+   "places": [
+    {
+     "name": "ANTIGUA",
+     "at": [
+      -61.8942,
+      16.9892
+     ]
+    }
    ]
   },
   {

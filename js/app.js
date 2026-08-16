@@ -11,7 +11,7 @@ const fmtYear = y => y < 0 ? `${Math.abs(y).toLocaleString()} BC` : `${y}`;
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 let DATA = {}, map, srcMarkers = [], popup, activeLayers = new Set(), curYear = 1950,
-    curEra = 'e2', mode = 'story', playTimer = null;
+    curEra = 'e2', mode = 'story', playTimer = null, placeMarkers = [];
 
 /* ── geometry helpers ─────────────────────────────────────── */
 function arc(a, b, bend = 0.2, n = 64) {
@@ -87,12 +87,19 @@ function onMapLoad() {
   map.addSource('land', { type: 'geojson', data: 'data/ne_land.json' });
   map.addSource('countries', { type: 'geojson', data: 'data/ne_admin_0_countries.json' });
   map.addSource('grat', { type: 'geojson', data: 'data/ne_geographic_lines.json' });
+  /* small islands the 1:110m land file drops entirely (Antigua, St Kitts, Dominica …) —
+     only drawn once you zoom in, so the world view stays as designed */
+  map.addSource('islands', { type: 'geojson', data: 'data/ne_islands.json' });
 
   map.addLayer({ id: 'land-f', type: 'fill', source: 'land',
+    paint: { 'fill-color': '#f5f0e5' } });
+  map.addLayer({ id: 'isl-f', type: 'fill', source: 'islands', minzoom: 4,
     paint: { 'fill-color': '#f5f0e5' } });
   map.addLayer({ id: 'ctry-l', type: 'line', source: 'countries',
     paint: { 'line-color': '#cfc3aa', 'line-width': 0.7 } });
   map.addLayer({ id: 'land-l', type: 'line', source: 'land',
+    paint: { 'line-color': '#bfb097', 'line-width': 0.9 } });
+  map.addLayer({ id: 'isl-l', type: 'line', source: 'islands', minzoom: 4,
     paint: { 'line-color': '#bfb097', 'line-width': 0.9 } });
   map.addLayer({ id: 'grat-l', type: 'line', source: 'grat',
     layout: { visibility: 'none' },
@@ -275,6 +282,20 @@ function buildSourceMarkers() {
   });
 }
 
+/* Place names for steps that sit too close in for the reader to recognise where they are.
+   Driven by an optional "places":[{name, at:[lon,lat]}] on the narrative step. */
+function setPlaceLabels(places) {
+  placeMarkers.forEach(m => m.remove());
+  placeMarkers = [];
+  (places || []).forEach(p => {
+    const el = document.createElement('div');           // MapLibre owns this element's transform,
+    el.innerHTML = `<span class="plabel"></span>`;      // so the offset lives on the inner span
+    el.firstChild.textContent = p.name;
+    el.style.pointerEvents = 'none';
+    placeMarkers.push(new maplibregl.Marker({ element: el }).setLngLat(p.at).addTo(map));
+  });
+}
+
 /* ── popups ───────────────────────────────────────────────── */
 function showPopup(f, lngLat) {
   const p = f.properties;
@@ -381,6 +402,7 @@ function goStep(id) {
   if (s.diffusionYear) curYear = s.diffusionYear;
   if (s.era) curEra = s.era;
   map.easeTo({ center: s.camera.center, zoom: s.camera.zoom, bearing: 0, pitch: 0, duration: 1500, padding: camPad() });
+  setPlaceLabels(s.places);
   applyState(s.filterAct);
   const note = document.getElementById('mapnote');
   if (s.layers && s.layers.length) {

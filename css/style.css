@@ -201,6 +201,7 @@ fieldset.layers legend{
 /* ── markers ─────────────────────────────────────────────── */
 .pin{cursor:pointer;background:none;border:0;padding:0;display:block}
 .pin .dot{
+  display:block;                /* span defaults to inline, where width/height/transform are ignored */
   width:13px;height:13px;border-radius:50%;background:var(--c,var(--a0));
   box-shadow:0 0 0 2px rgba(251,248,242,.95),0 1px 4px rgba(0,0,0,.3);
   transition:transform .18s
