@@ -30,6 +30,14 @@ function arc(a, b, bend = 0.2, n = 64) {
   }
   return pts;
 }
+/* The year slider is centred along the bottom and the "On the map" note sits bottom-left;
+   a long note ran straight into it. Flag the wrap so the note can lift clear. */
+function setTimebar(on) {
+  const t = document.getElementById('timebar');
+  if (t) t.hidden = !on;
+  document.querySelector('.mapwrap').classList.toggle('with-timebar', !!on);
+}
+
 function camPad() {
   if (window.innerWidth <= 900) return { top: 0, right: 0, bottom: 0, left: 0 };
   const el = document.getElementById('panel');
@@ -332,7 +340,7 @@ function buildSourceMarkers() {
 /* ── globe ────────────────────────────────────────────────────
    Steps marked "globe": true swap the flat map for a real 3-D globe and set it
    turning. Students can drag it, and the spin picks itself back up afterwards. */
-const SPIN_DEG_PER_SEC = 4;                    // one full turn in about a minute and a half
+const SPIN_DEG_PER_SEC = 12;                   // one full turn in half a minute
 
 function setGlobe(on) {
   if (!map || typeof map.setProjection !== 'function') return;   // no globe before MapLibre 5
@@ -580,7 +588,7 @@ function goStep(id) {
     note.hidden = false;
     note.innerHTML = `<b>On the map:</b> ${[...activeLayers].map(layerLabel).join(' · ')}`;
   } else note.hidden = true;
-  document.getElementById('timebar').hidden = !(activeLayers.has('plantations') || activeLayers.has('diffusion'));
+  setTimebar(activeLayers.has('plantations') || activeLayers.has('diffusion'));
   syncSlider();
 }
 const layerLabel = k => ({
@@ -760,7 +768,7 @@ function wireUI() {
       const b = document.getElementById('btn-' + k);
       b.classList.toggle('on', k === m); b.setAttribute('aria-selected', k === m);
     });
-    document.getElementById('timebar').hidden = (m === 'story');
+    setTimebar(m !== 'story');
     document.getElementById('panel').scrollTop = 0;
     if (m !== 'story') {
       setGlobe(false);                       // the globe belongs to its own story step

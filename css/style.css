@@ -196,8 +196,10 @@ fieldset.layers legend{
 
 .mapnote{
   left:calc(var(--panelw) + 14px);bottom:24px;padding:9px 13px;max-width:290px;font-size:12.5px;
-  line-height:1.45;color:var(--ink2)
+  line-height:1.45;color:var(--ink2);transition:bottom .25s ease
 }
+/* stack it above the year slider rather than run into it */
+.mapwrap.with-timebar .mapnote{bottom:82px}
 .mapnote b{color:var(--ink)}
 
 /* ── markers ─────────────────────────────────────────────── */
