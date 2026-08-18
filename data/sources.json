@@ -527,6 +527,19 @@
       "prompt": "OPTIC — Conclusion: why show the tools rather than the suffering? Think about what an eighteenth-century reader could be persuaded by."
     },
     {
+      "id": "s38-gladstone", "act": 3, "kind": "image",
+      "title": "Sir John Gladstone, 1st Baronet",
+      "creator": "Thomas Gladstones",
+      "date": "1830",
+      "lon": -2.9916, "lat": 53.4084, "certainty": "symbolic",
+      "place": "Pinned to Liverpool, where he ran the firm and chaired the West India Association; his plantations were in Demerara and Jamaica",
+      "caption": "He owned Success, the Demerara plantation where the 1823 rebellion began. When slavery ended he was paid £106,769 for 2,508 people — the largest single award any Briton received. Then he wrote to Calcutta for replacements. One man carries the whole turn from slavery to indenture.",
+      "bookPage": "102–104",
+      "rights": "Painting public domain (artist died 1832). Reproduction: National Portrait Gallery, London, NPG 5042 — the NPG asserts copyright in the photograph. See SOURCE.md.",
+      "link": "https://commons.wikimedia.org/wiki/File:Sir_John_Gladstone_by_Thomas_Gladstones.jpg",
+      "prompt": "SCRAP — Connections: you drew a line from Roaring River to Westminster for Beckford. Draw Gladstone's, and make it longer — Success plantation in Demerara, this counting house in Liverpool, and a shipping office in Calcutta. What is different about the third stop?"
+    },
+    {
       "id": "s39-opie", "act": 3, "kind": "image",
       "title": "The Black Man's Lament; or, How to Make Sugar",
       "creator": "Amelia Opie",

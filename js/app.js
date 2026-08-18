@@ -47,7 +47,7 @@ function camPad() {
 }
 /* Centre and zoom that frame a [[w,s],[e,n]] box inside the map left uncovered by the
    story panel. Plain Web Mercator, so the answer never depends on the map's own state. */
-function fitCamera([[w, s], [e, n]]) {
+function fitCamera([[w, s], [e, n]], maxZoom) {
   const pad = camPad(), cv = map.getCanvas();
   const availW = Math.max(80, cv.clientWidth - pad.left - pad.right);
   const availH = Math.max(80, cv.clientHeight - pad.top - pad.bottom);
@@ -57,7 +57,9 @@ function fitCamera([[w, s], [e, n]]) {
   const zoom = Math.min(Math.log2(availW / (dx * 512)), Math.log2(availH / ((y2 - y1) * 512)));
   const midY = (y1 + y2) / 2;
   const lat = Math.atan(Math.sinh((0.5 - midY) * 2 * Math.PI)) * 180 / Math.PI;
-  return { center: [(w + e) / 2, lat], zoom: Math.max(0.6, Math.min(11, zoom)) };
+  /* maxZoom lets a step insist on staying wide enough for something to stay drawn —
+     the country borders stop at 6.5, and a tall window would otherwise zoom past them. */
+  return { center: [(w + e) / 2, lat], zoom: Math.max(0.6, Math.min(11, maxZoom || 11, zoom)) };
 }
 
 const fc = features => ({ type: 'FeatureCollection', features });
@@ -81,7 +83,7 @@ Promise.all([
       `<div style="padding:24px;max-width:34em;font-size:14px;line-height:1.6;color:#4b4036">
          <b>The map could not start.</b><br>${esc(e.message)}<br><br>
          This usually means the browser has WebGL disabled or unavailable.
-         The story text and all 49 sources still work.</div>`;
+         The story text and all 50 sources still work.</div>`;
   }
 }).catch(e => {
   document.getElementById('story').innerHTML =
@@ -645,6 +647,17 @@ function buildStory() {
     h += `<div class="body">${s.body}</div>`;
     if (s.quote) h += `<blockquote><p>${esc(s.quote)}</p><cite>${esc(s.quoteAttr || '')}</cite></blockquote>`;
     if (s.chart) h += chartHTML(s.chart);
+    /* A step can carry one picture inline, printed with its caption rather than shrunk
+       to a thumbnail. Clicking it opens the full source and its prompt like any other. */
+    if (s.figure) {
+      const f = s.figure, src = DATA.sources.find(x => x.id === f.src);
+      h += `<figure class="stepfig">
+        <button class="stepfig-img" data-src="${esc(f.src)}" title="Open this source and its prompt">
+          <img src="img/full/${esc(f.src)}.jpg" alt="${esc(f.alt || (src ? src.title : ''))}" loading="lazy">
+        </button>
+        <figcaption>${f.caption}${f.credit ? `<span class="stepfig-credit">${f.credit}</span>` : ''}</figcaption>
+      </figure>`;
+    }
     if (s.sources && s.sources.length) {
       h += '<div class="thumbs">' + s.sources.map(id => {
         const src = DATA.sources.find(x => x.id === id);
@@ -717,7 +730,7 @@ function goStep(id) {
        than handed to fitBounds, which resolves against whatever the map is doing at the
        time: arriving from the globe it read the longitude off a projection still
        unwinding, and landed the Atlantic step out in the Pacific. */
-    const cam = s.fit ? fitCamera(s.fit) : s.camera;
+    const cam = s.fit ? fitCamera(s.fit, s.fitMax) : s.camera;
     const shot = { center: cam.center, zoom: cam.zoom, bearing: 0, pitch: 0, padding: camPad() };
     if (gapAtWiderView(cam) > ARC_SCREENS)
       map.flyTo({ ...shot, curve: ARC_CURVE, duration: arcDuration(cam) });   // up, over, and down
@@ -811,7 +824,7 @@ function syncSlider() {
 /* ── source grid ──────────────────────────────────────────── */
 function buildSourceGrid() {
   const F = document.getElementById('src-filters'), G = document.getElementById('src-grid');
-  const acts = [['all', 'All 49'], [1, 'Magic to Spice'], [2, 'Hell'], [3, 'Freedom'], [4, 'New Workers']];
+  const acts = [['all', 'All 50'], [1, 'Magic to Spice'], [2, 'Hell'], [3, 'Freedom'], [4, 'New Workers']];
   F.innerHTML = acts.map((a, i) => `<button class="chip${i === 0 ? ' on' : ''}" data-act="${a[0]}">${esc(a[1])}</button>`).join('');
   const render = f => {
     const rows = DATA.sources.filter(s => f === 'all' || s.act === +f);
