@@ -252,6 +252,32 @@
       "prompt": "SCRAP — Spatial–temporal: this is the hinge between two maps in this project. Which layer does the story move to next?"
     },
     {
+      "id": "s16-rillieux-patent", "act": 5, "kind": "image",
+      "title": "Vacuum Pan — patent drawing, Sheet 1 of 6",
+      "creator": "Norbert Rillieux; US Patent No. 3,237",
+      "date": "26 August 1843",
+      "lon": -90.07, "lat": 29.95, "certainty": "located",
+      "place": "New Orleans, Louisiana — the patent names him as 'of New Orleans'",
+      "caption": "Put this beside Clark's boiling house from 1823. There, a line of open cauldrons and a team of people ladling scalding syrup between them. Here, sealed pans that pass the heat along themselves. The drawing is what replaced those plates.",
+      "bookPage": "115",
+      "rights": "Public domain. National Archives and Records Administration, NAID 70663975.",
+      "link": "https://catalog.archives.gov/id/70663975",
+      "prompt": "OPTIC — Interrelationships: hold this next to Clark's boiling-house plates ([15a], [15b]). Name three things the machine removes from that room. Then ask who those three things were, and what happened to them."
+    },
+    {
+      "id": "s16b-rillieux-model", "act": 5, "kind": "image",
+      "title": "Rillieux's patent model, with the Patent Office tag",
+      "creator": "Norbert Rillieux",
+      "date": "1843",
+      "lon": -90.07, "lat": 29.95, "certainty": "symbolic",
+      "place": "Made for the Patent Office in Washington; pinned to New Orleans, where he worked",
+      "caption": "The object he actually mailed to Washington — tin, wood, and a red cloth ribbon, thirteen inches tall. The tag in the clerk's handwriting says N. Rillieux, Sugar Works. The Patent Office wrote his name down; the printed patent then assigned the invention to two engineers in Philadelphia.",
+      "bookPage": "115",
+      "rights": "CC0. Anacostia Community Museum, Smithsonian Institution, 1994.0001.0001.",
+      "link": "http://n2t.net/ark:/65665/dl88926d371-7be7-45cb-a81c-cef318c25521",
+      "prompt": "SCRAP — Perspective: the model, the tag and the printed patent were made by three different hands. Whose name is on each, and who ends up owning the machine?"
+    },
+    {
       "id": "s17-poundofsugar", "act": 3, "kind": "image",
       "title": "The History of a Pound of Sugar",
       "creator": "Children's book, published in England",

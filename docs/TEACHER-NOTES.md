@@ -6,7 +6,7 @@ How the atlas fits the Unit 1 lesson sequence, and what to do with it.
 
 ## The one-sentence version
 
-The atlas turns the book's five flat maps into layers students can interrogate, and puts all 50 primary sources on the same spatial canvas so students can see that a source has a *place* as well as a date.
+The atlas turns the book's five flat maps into layers students can interrogate, and puts all 52 primary sources on the same spatial canvas so students can see that a source has a *place* as well as a date.
 
 ---
 

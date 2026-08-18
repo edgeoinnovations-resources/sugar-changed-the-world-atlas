@@ -23,7 +23,7 @@ Built for a 9th-grade source-analysis unit. Every primary source on the map open
 
 **Explore mode** — eight toggleable layers and a time slider from 7500 BC to 1950.
 
-**Sources mode** — all 50 geolocated sources in a filterable grid.
+**Sources mode** — all 52 geolocated sources in a filterable grid.
 
 ### The book's five maps, rebuilt
 
@@ -79,7 +79,7 @@ Because MapLibre and the basemap are both local, the site works on a school netw
 index.html            markup and the About panel
 css/style.css         all styling
 js/app.js             map, story, explore, source viewer
-data/sources.json     50 primary sources: citation, rights, coordinates, prompt
+data/sources.json     52 primary sources: citation, rights, coordinates, prompt
 data/layers.json      every thematic layer, with page references
 data/narrative.json   the 31 story steps and their camera positions
 data/ne_*.json        Natural Earth basemap

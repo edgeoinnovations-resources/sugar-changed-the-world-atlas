@@ -804,7 +804,13 @@
       29.662
      ]
     }
-   ]
+   ],
+   "figure": {
+    "src": "s16b-rillieux-model",
+    "alt": "Rillieux's 1843 patent model: a tin and wood evaporator about thirteen inches tall, with a Patent Office tag tied to it",
+    "caption": "<b>No portrait of Norbert Rillieux is known to exist in the public domain.</b> This is the nearest thing to one: the model he mailed to the Patent Office in 1843 — tin, wood and a red cloth ribbon, thirteen inches tall. The tag is in a clerk's handwriting and reads <i>N. Rillieux, Sugar Works</i>. The Patent Office wrote his name down; the printed patent then assigned the invention to two engineers in Philadelphia.",
+    "credit": "Anacostia Community Museum, Smithsonian Institution, 1994.0001.0001 · CC0. Click the picture to open the source and its prompt."
+   }
   },
   {
    "id": "gandhi",

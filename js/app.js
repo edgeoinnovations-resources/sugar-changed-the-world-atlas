@@ -83,7 +83,7 @@ Promise.all([
       `<div style="padding:24px;max-width:34em;font-size:14px;line-height:1.6;color:#4b4036">
          <b>The map could not start.</b><br>${esc(e.message)}<br><br>
          This usually means the browser has WebGL disabled or unavailable.
-         The story text and all 50 sources still work.</div>`;
+         The story text and all 52 sources still work.</div>`;
   }
 }).catch(e => {
   document.getElementById('story').innerHTML =
@@ -824,7 +824,10 @@ function syncSlider() {
 /* ── source grid ──────────────────────────────────────────── */
 function buildSourceGrid() {
   const F = document.getElementById('src-filters'), G = document.getElementById('src-grid');
-  const acts = [['all', 'All 50'], [1, 'Magic to Spice'], [2, 'Hell'], [3, 'Freedom'], [4, 'New Workers']];
+  /* Count comes from the data so it cannot go stale, and act 5 has a chip of its own —
+     without it the Age of Science sources are in the grid but cannot be filtered to. */
+  const acts = [['all', `All ${DATA.sources.length}`], [1, 'Magic to Spice'], [2, 'Hell'],
+                [3, 'Freedom'], [4, 'New Workers'], [5, 'Age of Science']];
   F.innerHTML = acts.map((a, i) => `<button class="chip${i === 0 ? ' on' : ''}" data-act="${a[0]}">${esc(a[1])}</button>`).join('');
   const render = f => {
     const rows = DATA.sources.filter(s => f === 'all' || s.act === +f);
