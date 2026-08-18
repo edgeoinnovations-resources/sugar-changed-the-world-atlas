@@ -463,6 +463,61 @@ function setPlaceLabels(places) {
   });
 }
 
+/* ── how the camera travels between steps ─────────────────────
+   A straight glide is fine when you can still see where you are going. It fails when
+   the camera has to cross a long distance while staying close to the ground: the map
+   skims open sea with nothing recognisable in frame and the reader loses the thread.
+   Antigua to Jamaica is 1,600 km at zoom 9.6 — six screenfuls apart even from the
+   wider of the two viewpoints.
+
+   So the test is not raw distance, it is whether both places could share a frame at
+   the wider of the two views. If they could, glide. If they could not, fly: up, across,
+   and back down. Measuring at the wider view is what keeps a plain descent — the globe
+   dropping into Antigua — from being treated as a long haul when it is really a zoom. */
+const ARC_SCREENS = 2.5;          // screenfuls apart, seen from the wider of the two views
+const ARC_CURVE   = 1.6;          // how high the arc climbs; MapLibre's default is 1.42
+const ARC_SPEED   = 0.85;         // van Wijk "screenfuls per second" — deliberate, not brisk
+const ARC_MIN_MS  = 1800, ARC_MAX_MS = 3600;
+
+function exposedWidth() {
+  const pad = camPad(), cv = map.getCanvas();
+  return Math.max(320, cv.clientWidth - pad.left - pad.right);
+}
+
+/* Normalised Web Mercator offset between the current centre and the target. */
+function centreOffset(cam) {
+  const c0 = map.getCenter();
+  const my = l => 0.5 - Math.log(Math.tan(Math.PI / 4 + (l * Math.PI / 180) / 2)) / (2 * Math.PI);
+  return Math.hypot((((cam.center[0] - c0.lng) + 540) % 360 - 180) / 360,
+                    my(cam.center[1]) - my(c0.lat));
+}
+
+function gapAtWiderView(cam) {
+  const wider = Math.min(map.getZoom(), cam.zoom);
+  return centreOffset(cam) * 512 * Math.pow(2, wider) / exposedWidth();
+}
+
+/* van Wijk's flight length, so the duration can be clamped here. MapLibre's own
+   maxDuration is not a cap: if the natural duration exceeds it the flight is set to
+   zero and the map snaps — exactly wrong for the longest hauls. */
+function arcDuration(cam) {
+  const cv = map.getCanvas();
+  const w0 = Math.max(cv.clientWidth, cv.clientHeight);
+  const w1 = w0 / Math.pow(2, cam.zoom - map.getZoom());
+  const u1 = centreOffset(cam) * 512 * Math.pow(2, map.getZoom());   // travel in the start frame
+  const rho = ARC_CURVE, rho2 = rho * rho;
+  let S;
+  if (u1 < 1e-6) {
+    S = Math.abs(Math.log(w1 / w0)) / rho;
+  } else {
+    const b = i => (w1 * w1 - w0 * w0 + (i ? -1 : 1) * rho2 * rho2 * u1 * u1)
+                 / (2 * (i ? w1 : w0) * rho2 * u1);
+    const r = i => { const bi = b(i); return Math.log(Math.sqrt(bi * bi + 1) - bi); };
+    S = (r(1) - r(0)) / rho;
+  }
+  return Math.round(Math.min(ARC_MAX_MS, Math.max(ARC_MIN_MS, 1000 * S / ARC_SPEED)));
+}
+
 /* ── music ────────────────────────────────────────────────────
    Five traditions the book names on pp. 54-55. Public-domain jazz sides are served
    from this repo; everything else plays in the rights holder's own player, and no
@@ -663,7 +718,11 @@ function goStep(id) {
        time: arriving from the globe it read the longitude off a projection still
        unwinding, and landed the Atlantic step out in the Pacific. */
     const cam = s.fit ? fitCamera(s.fit) : s.camera;
-    map.easeTo({ center: cam.center, zoom: cam.zoom, bearing: 0, pitch: 0, duration: 1500, padding: camPad() });
+    const shot = { center: cam.center, zoom: cam.zoom, bearing: 0, pitch: 0, padding: camPad() };
+    if (gapAtWiderView(cam) > ARC_SCREENS)
+      map.flyTo({ ...shot, curve: ARC_CURVE, duration: arcDuration(cam) });   // up, over, and down
+    else
+      map.easeTo({ ...shot, duration: 1500 });
   };
   curStep = s.id;
   setTimeout(fly, 0);
