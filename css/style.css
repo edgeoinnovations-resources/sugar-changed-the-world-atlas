@@ -326,7 +326,10 @@ fieldset.layers legend{
 .bar{display:flex;align-items:center;gap:9px;margin-bottom:8px;font-size:12.5px}
 .bar .lb{width:118px;flex:none;color:var(--ink2);text-align:right;line-height:1.25}
 .bar .tr{flex:1;height:15px;background:#e3dac8;border-radius:3px;overflow:hidden}
-.bar .fl{height:100%;background:var(--a2);border-radius:3px}
+/* span defaults to inline, where width and height are both ignored — without this the
+   fill collapses to nothing and every bar shows only its empty track, identical at any
+   value. The colour follows the step's act, as the rest of the step furniture does. */
+.bar .fl{display:block;height:100%;background:var(--act,var(--a2));border-radius:3px;min-width:2px}
 .bar .vl{width:52px;flex:none;font-family:var(--serif);font-size:14px;font-variant-numeric:tabular-nums}
 
 /* ── responsive ──────────────────────────────────────────── */

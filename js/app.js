@@ -705,7 +705,7 @@ function chartHTML(kind) {
     const rows = [['Beet share of world sugar, 1854', 11], ['Beet share of world sugar, 1899', 65]];
     return `<div class="chart"><h5>Beet sugar takes over</h5>` +
       rows.map(([l, v]) => `<div class="bar"><span class="lb">${esc(l)}</span>
-        <span class="tr"><span class="fl" style="width:${v}%;background:#5d4e86"></span></span>
+        <span class="tr"><span class="fl" style="width:${v}%"></span></span>
         <span class="vl">${v}%</span></div>`).join('') +
       `<p style="font-size:11.5px;color:#7a6d5e;margin:8px 0 0">Sugar Changed the World, p. 117.</p></div>`;
   }
