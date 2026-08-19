@@ -14,7 +14,7 @@ let DATA = {}, map, srcMarkers = [], cubaMarkers = [], popup, activeLayers = new
     cubaPinned = false,   // the route stays on across story steps once asked for
     curEra = 'e2', mode = 'story', playTimer = null, placeMarkers = [],
     gratMarkers = [], globeOn = false, userTurning = false, spinRAF = null, curStep = null,
-    musicMarkers = [];
+    musicMarkers = [], callLabels = [];
 const GRAT_LAYERS = ['grat-l', 'grat-polar', 'grat-trop', 'grat-eq'];
 const LAND_SWAP = 5;            // zoom at which the 1:110m base hands over to 1:10m
 
@@ -176,7 +176,7 @@ function onMapLoad() {
 
   /* pointer + popups */
   const clickable = ['diff-node', 'plant-c', 'st-emb', 'st-dest', 'sph-node', 'free-c', 'ind-o', 'ind-d', 'sci-c',
-                     'cc-port', 'cc-origin', 'cc-call'];
+                     'cc-port', 'cc-origin', 'cc-call', 'ind-call'];
   clickable.forEach(id => {
     map.on('mouseenter', id, () => map.getCanvas().style.cursor = 'pointer');
     map.on('mouseleave', id, () => map.getCanvas().style.cursor = '');
@@ -199,6 +199,7 @@ function onMapLoad() {
   buildSourceMarkers();
   buildMusicMarkers();
   buildCubaMarkers();
+  buildCallLabels();
   wireGlobeSpin();
   map.on('move', positionGratLabels);
   map.on('move', updateCubaMarkers);
@@ -305,21 +306,45 @@ function buildThematic() {
     } });
 
   /* 5 · indenture ------------------------------------------------ */
-  const indArcs = [];
-  D.indenture.origins.forEach(o => D.indenture.destinations.forEach(d => {
-    if (o.id === 'bhojpur') return;
-    indArcs.push(ln(arc([o.lon, o.lat], [d.lon, d.lat], 0.15, 64),
-      { kind: 'ind-arc', name: `${o.name} → ${d.name}`, inBook: d.inBook, year: 1838 }));
-  }));
+  /* This used to be every origin joined to every destination by a bent arc, which drew the
+     Atlantic voyages straight over peninsular India and the Congo, Natal over Sri Lanka and
+     Madagascar, and Fiji across the whole of mainland Southeast Asia. The book's own map is
+     drawn that way — point to point — but a line on a world map reads as a course, and none
+     of those courses exist. The track now runs the way the ships did: one documented trunk
+     from Calcutta round the Cape to Demerara, with Madras feeding into it and each other
+     destination leaving it where its own course diverged. */
+  const IND = D.indenture;
+  const destById = Object.fromEntries(IND.destinations.map(d => [d.id, d]));
+  const indArcs = [
+    ln(IND.passage.map(w => [w.lon, w.lat]),
+      { kind: 'ind-passage', trunk: 1, inBook: true, year: 1838,
+        name: 'Calcutta → Demerara, 1838', p: IND.passageP })
+  ];
+  IND.feeders.forEach(f => {
+    const o = IND.origins.find(x => x.id === f.from);
+    indArcs.push(ln(f.via, { kind: 'ind-arc', inBook: true, year: 1838,
+      name: `${o ? o.name : f.from} → the passage` }));
+  });
+  IND.legs.forEach(l => {
+    const d = destById[l.to];
+    indArcs.push(ln(l.via, { kind: 'ind-arc', inBook: d ? d.inBook : true, year: 1838,
+      name: `the passage → ${d ? d.name : l.to}` }));
+  });
   map.addSource('ind-arcs-s', { type: 'geojson', data: fc(indArcs) });
   map.addSource('ind-o-s', { type: 'geojson', data: fc(DATA.indenture.origins.map(o =>
     pt(o.lon, o.lat, { ...o, kind: 'ind-o' }))) });
   map.addSource('ind-d-s', { type: 'geojson', data: fc(DATA.indenture.destinations.map(d =>
     pt(d.lon, d.lat, { ...d, kind: 'ind-d' }))) });
   map.addLayer({ id: 'ind-arc', type: 'line', source: 'ind-arcs-s',
-    layout: { visibility: 'none', 'line-cap': 'round' },
+    layout: { visibility: 'none', 'line-cap': 'round', 'line-join': 'round' },
     filter: ['==', ['get', 'inBook'], true],
-    paint: { 'line-color': '#4a6f3c', 'line-width': 1.6, 'line-opacity': 0.72 } });
+    /* Zoom curve outermost — MapLibre refuses to add a layer whose paint nests one inside
+       a case, and drops the whole layer rather than the expression. */
+    paint: { 'line-color': '#4a6f3c',
+      'line-width': ['interpolate', ['linear'], ['zoom'],
+        1, ['case', ['==', ['coalesce', ['get', 'trunk'], 0], 1], 2.4, 1.5],
+        5, ['case', ['==', ['coalesce', ['get', 'trunk'], 0], 1], 3.6, 2.0]],
+      'line-opacity': ['case', ['==', ['coalesce', ['get', 'trunk'], 0], 1], 0.85, 0.62] } });
   map.addLayer({ id: 'ind-arc2', type: 'line', source: 'ind-arcs-s',
     layout: { visibility: 'none', 'line-cap': 'round' },
     filter: ['==', ['get', 'inBook'], false],
@@ -333,6 +358,16 @@ function buildThematic() {
     layout: { visibility: 'none' },
     paint: { 'circle-radius': ['interpolate', ['linear'], ['zoom'], 1, 5, 6, 10],
       'circle-color': '#4a6f3c', 'circle-stroke-width': 2, 'circle-stroke-color': '#fbf8f2' } });
+  /* Ascension was called at; St Helena was asked for and refused. Both are on the track, so
+     both are marked — the refused one hollow and dashed, because what did not happen there
+     is the point of it. */
+  map.addSource('ind-call-s', { type: 'geojson', data: fc(
+    IND.passage.filter(w => w.stop || w.passed).map(w => pt(w.lon, w.lat, { ...w, kind: 'ind-call' }))) });
+  map.addLayer({ id: 'ind-call', type: 'circle', source: 'ind-call-s',
+    layout: { visibility: 'none' },
+    paint: { 'circle-radius': ['interpolate', ['linear'], ['zoom'], 1, 3.5, 6, 8],
+      'circle-color': ['case', ['==', ['coalesce', ['get', 'passed'], false], true], '#fbf8f2', '#4a6f3c'],
+      'circle-stroke-width': 2.2, 'circle-stroke-color': '#4a6f3c' } });
 
   /* 6 · the China–Cuba Connection -------------------------------
      The 1874 Commission's route through Cuba, the ports the men were shipped from,
@@ -439,6 +474,42 @@ function buildSourceMarkers() {
     const m = new maplibregl.Marker({ element: el }).setLngLat([s.lon, s.lat]).addTo(map);
     el.setAttribute('aria-label', `Primary source: ${s.title}, ${s.date}`); // after addTo — MapLibre overwrites it
     srcMarkers.push({ id: s.id, act: s.act, marker: m, el });
+  });
+}
+
+/* ── passage call labels (HTML) ───────────────────────────────
+   Anjer, St Helena and Ascension are pinpricks in an empty ocean; unlabelled they read as
+   specks of dust rather than the only land these ships touched. No glyphs endpoint in this
+   style, so the labels are HTML markers, like the place and graticule labels.
+   St Helena sits on both passages — the coolie ships watered there, the Hesperus was refused
+   there — so labels are keyed by position and one marker serves both layers. */
+function buildCallLabels() {
+  const byPos = new Map();
+  const add = (w, layer) => {
+    if (!w.name) return;
+    const key = `${w.lon.toFixed(3)},${w.lat.toFixed(3)}`;
+    const rec = byPos.get(key) || { name: w.name, lon: w.lon, lat: w.lat, layers: new Set() };
+    rec.layers.add(layer);
+    byPos.set(key, rec);
+  };
+  (DATA.cuba && DATA.cuba.passage || []).forEach(w => { if (w.stop) add(w, 'chinacuba'); });
+  (DATA.indenture && DATA.indenture.passage || []).forEach(w => { if (w.stop || w.passed) add(w, 'indenture'); });
+
+  byPos.forEach(rec => {
+    const el = document.createElement('div');
+    el.innerHTML = `<span class="plabel call"></span>`;
+    el.firstChild.textContent = rec.name;
+    el.style.pointerEvents = 'none';
+    const mk = new maplibregl.Marker({ element: el }).setLngLat([rec.lon, rec.lat]).addTo(map);
+    callLabels.push({ el, marker: mk, layers: rec.layers });
+  });
+}
+
+/* Shown only when a layer that owns the call is on. */
+function updateCallLabels() {
+  callLabels.forEach(c => {
+    const on = [...c.layers].some(l => activeLayers.has(l));
+    c.el.style.display = on ? 'block' : 'none';
   });
 }
 
@@ -862,6 +933,11 @@ function showPopup(f, lngLat) {
     if (p.inBook === false || p.inBook === 'false')
       html += `<p>A major indenture route, but <b>not named in this book</b> — shown dashed so the pattern is complete.</p>`;
     else html += `<p>An indenture route named in the book.</p>`;
+  } else if (p.kind === 'ind-passage') {
+    html += `<p>The first voyage of the Gladstone experiment. Down the Hooghly, across the Bay of Bengal, south over the equator, round the <b>Cape of Good Hope</b> on the Agulhas Current, then northwest across the South Atlantic on the trade winds. Roughly 10,000 nautical miles; the Whitby was 112 days at sea.</p>
+      <p>The <b>Whitby</b> sailed from Calcutta on 13 January 1838 with 249 aboard and lost 5. The <b>Hesperus</b> followed on 29 January with 165 and lost 13, eleven of them to cholera. Both reached Demerara on 5 May 1838.</p>`;
+  } else if (p.kind === 'ind-call') {
+    html += `<p>${esc(p.note || '')}</p>`;
   } else if (p.kind === 'cc-port') {
     if (p.n) html += `<div class="fig">${(+p.n).toLocaleString()} men shipped</div>`;
     if (p.text) html += `<p>${esc(p.text)}</p>`;
@@ -880,6 +956,11 @@ function showPopup(f, lngLat) {
     if (p.text) html += `<p>${esc(p.text)}</p>`;
     if (p.label && p.kind === 'diff-arc') html += `<p>${esc(p.label)}</p>`;
   }
+  /* 'Check this' was wired only to the plantation pins, but the same convention — say where
+     the book and the record disagree rather than silently choosing — applies to any pin that
+     carries a flag. Plantations render theirs above, so they are skipped here. */
+  if (p.flag && p.kind !== 'plant') html += `<div class="warn"><b>Check this.</b> ${esc(p.flag)}</div>`;
+
   /* Two books are cited on this map, so the pin has to say which one it came from. The
      passage and its two calls are a third case: they come from neither book. The Report
      recorded where the men embarked and landed, not the course steered, so the track is a
@@ -887,6 +968,8 @@ function showPopup(f, lngLat) {
   const ccKinds = ['cc-port', 'cc-origin', 'cc-arc', 'cc-route'];
   if (p.kind === 'cc-passage' || p.kind === 'cc-call')
     html += `<div class="cite">Reconstructed sailing route — outside the Report</div>`;
+  else if (p.kind === 'ind-passage' || p.kind === 'ind-call')
+    html += `<div class="cite">Reconstructed sailing route — outside the book${p.p ? `; ships and dates at p. ${esc(p.p)}` : ''}</div>`;
   else if (ccKinds.includes(p.kind))
     html += `<div class="cite">Cuba Commission Report${p.p ? `, p. ${esc(p.p)}` : ''}</div>`;
   else if (p.p && p.p !== '—') html += `<div class="cite">Sugar Changed the World, p. ${esc(p.p)}</div>`;
@@ -1035,7 +1118,7 @@ const GROUPS = {
   slavetrade: ['st-arc', 'st-emb', 'st-dest'],
   spherical: ['sph-flow', 'sph-node'],
   freedom: ['free-c'],
-  indenture: ['ind-arc', 'ind-arc2', 'ind-o', 'ind-d'],
+  indenture: ['ind-arc', 'ind-arc2', 'ind-o', 'ind-d', 'ind-call'],
   chinacuba: ['cc-arc', 'cc-route', 'cc-port', 'cc-origin', 'cc-call'],
   science: ['sci-c']
 };
@@ -1060,6 +1143,7 @@ function applyState(filterAct, tries = 0) {
 
   /* The numbered stops carry their own zoom rule on top of the layer toggle. */
   updateCubaMarkers();
+  updateCallLabels();
 
   const showSrc = activeLayers.has('sources');
   srcMarkers.forEach(m => {
@@ -1082,7 +1166,13 @@ function drawLegend() {
     rows.push(line('#1f5f80', 'Cloth &amp; provisions')); rows.push(line('#5d4e86', 'Silver'));
   }
   if (activeLayers.has('freedom')) rows.push(dot('#1f5f80', 'Resistance &amp; abolition'));
-  if (activeLayers.has('indenture')) { rows.push(dot('#2f4a25', 'Recruiting &amp; embarkation')); rows.push(dot('#4a6f3c', 'Destination')); rows.push(line('#4a6f3c', 'Route not named in the book', true)); }
+  if (activeLayers.has('indenture')) {
+    rows.push(dot('#2f4a25', 'Recruiting &amp; embarkation'));
+    rows.push(dot('#4a6f3c', 'Destination'));
+    rows.push(line('#4a6f3c', 'Calcutta to Demerara, 1838, by the Cape'));
+    rows.push(`<div class="lg"><span class="sw" style="background:#fbf8f2;box-shadow:inset 0 0 0 2px #4a6f3c"></span><span>Called at &mdash; and St Helena, refused</span></div>`);
+    rows.push(line('#4a6f3c', 'Route not named in the book', true));
+  }
   if (activeLayers.has('chinacuba')) {
     rows.push(dot('#7a2f6b', 'The Commission\u2019s route, 1874'));
     rows.push(line('#8a5a2b', 'The passage to Havana, by the Cape of Good Hope'));

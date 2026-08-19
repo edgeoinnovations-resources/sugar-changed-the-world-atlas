@@ -135,13 +135,59 @@
 
   "indenture": {
     "note": "The book's map: Indian Indentured Workers, 1835–1917 (p. 107). Contracts ran five years at about 24 cents a day, with 8 cents a week deducted for food. The voyage could take 27 weeks — far longer than the Middle Passage.",
+
+    "passageNote": "The sailing track from Calcutta to the Caribbean, outside the book. The book's map draws indenture as straight lines between two points, which sends the Atlantic voyages overland across peninsular India and the Congo. Ships went the only way there was before the Suez Canal: down the Hooghly, across the Bay of Bengal, south over the equator into the Indian Ocean, round the Cape of Good Hope on the Agulhas Current, then northwest across the South Atlantic on the southeast trades. About 10,000 nautical miles; the Whitby took 112 days.",
+    "passageFlag": "Waypoints reconstruct the standard course, not the log of any one ship. The named calls are the two the 1838 record actually names.",
+    "passageP": "104",
+
+    "passage": [
+      {"lon":88.36,"lat":22.57,"name":"Calcutta","note":"The Whitby sailed 13 January 1838 with 249 aboard; the Hesperus followed on 29 January with 165. Both went down the Hooghly, whose silt and shifting bars were the first hazard of the voyage."},
+      {"lon":88.10,"lat":21.30},
+      {"lon":87.5,"lat":18.0,"note":"Into the Bay of Bengal on the tail of the northeast monsoon."},
+      {"lon":85.0,"lat":12.0},
+      {"lon":83.0,"lat":6.0},
+      {"lon":80.0,"lat":0.0,"note":"South across the equator and out into the open Indian Ocean."},
+      {"lon":75.0,"lat":-8.0},
+      {"lon":68.0,"lat":-18.0},
+      {"lon":58.0,"lat":-26.0},
+      {"lon":45.0,"lat":-32.0},
+      {"lon":33.0,"lat":-35.0},
+      {"lon":19.8,"lat":-35.2,"name":"The Cape of Good Hope","note":"Rounded on the warm Agulhas Current, through the gales and swells of the Roaring Forties. The only way from the Indian Ocean to the Atlantic before the Suez Canal."},
+      {"lon":17.0,"lat":-34.9},
+      {"lon":13.0,"lat":-31.0},
+      {"lon":8.0,"lat":-25.0},
+      {"lon":2.0,"lat":-20.0},
+      {"lon":-5.71,"lat":-15.96,"name":"St Helena","passed":true,"note":"Passed, not called at. Cholera broke out aboard the Hesperus after the Cape, and the surgeon Theophilus Richmond — 22 years old, his medical stores gone — asked the captain to put in here for chalk powder and laudanum. The captain refused, citing anchorage fees and delay, and said he would stop only if Richmond insisted in law and took on the cost himself. Richmond withdrew the request. Eleven of the ship's thirteen deaths were cholera. The Whitby bypassed island stops altogether."},
+      {"lon":-10.0,"lat":-12.0},
+      {"lon":-14.36,"lat":-7.95,"name":"Ascension Island","stop":true,"note":"The Hesperus did put in here — for water and ordinary stores, not the medicines that had been refused at St Helena. A remote, arid volcanic island; the only land the ship touched between India and the Caribbean."},
+      {"lon":-22.0,"lat":-3.0},
+      {"lon":-32.0,"lat":0.5},
+      {"lon":-42.0,"lat":3.5,"note":"Northwest across the South Atlantic on the southeast trade winds."},
+      {"lon":-50.0,"lat":5.5},
+      {"lon":-54.0,"lat":6.6},
+      {"lon":-58.155,"lat":6.80,"name":"Demerara","note":"Both ships reached Demerara on 5 May 1838, the Hesperus late that night. The Whitby then ran east to Berbice to land 164 for Highbury and Waterloo, and came back between 14 and 16 May to put the remaining 80 ashore for Belle Vue."}
+    ],
+
+    "feeders": [
+      {"from":"madras","via":[[80.27,13.08],[82.0,9.0],[83.0,6.0]]}
+    ],
+
+    "legs": [
+      {"to":"surinam","via":[[-50.0,5.5],[-53.5,6.3],[-55.17,5.87]]},
+      {"to":"trinidad","via":[[-50.0,5.5],[-56.0,8.5],[-60.4,11.2],[-61.29,10.39]]},
+      {"to":"jamaica3","via":[[-50.0,5.5],[-57.0,9.5],[-61.0,12.9],[-68.0,15.0],[-75.0,17.2],[-77.3,18.1]]},
+      {"to":"mauritius","via":[[68.0,-18.0],[62.0,-19.5],[57.55,-20.28]]},
+      {"to":"natal","via":[[45.0,-32.0],[38.0,-31.5],[33.5,-30.5],[31.02,-29.86]]},
+      {"to":"fiji","via":[[80.0,0.0],[90.0,-10.0],[100.0,-20.0],[108.0,-29.0],[114.0,-36.5],[124.0,-39.5],[134.0,-41.0],[144.0,-45.0],[150.0,-45.0],[158.0,-40.0],[167.0,-31.0],[174.0,-23.0],[178.44,-18.14]]}
+    ],
+
     "origins": [
       {"id":"calcutta","name":"Calcutta","lon":88.36,"lat":22.57,"text":"The embarkation depot — buildings behind a high wall near the harbour. Recruits were vaccinated, given metal feeding bowls and warm clothes, and a 'tin ticket' worn round the neck.","p":"106"},
       {"id":"madras","name":"Madras","lon":80.27,"lat":13.08,"text":"The southern recruiting port.","p":"107"},
       {"id":"bhojpur","name":"The northern countryside","lon":84.50,"lat":25.60,"text":"Where the arkatis — the recruiters — went looking. 'You want to make a better wage? There's good work upriver.'","p":"101"}
     ],
     "destinations": [
-      {"id":"demerara","name":"British Guiana (Demerara)","lon":-58.16,"lat":6.80,"text":"The Whitby, carrying 249 passengers, and the Hesperus, carrying 244, sailed for Demerara in 1838. Marina Budhos's great-grandparents came here.","p":"104","inBook":true},
+      {"id":"demerara","name":"British Guiana (Demerara)","lon":-58.16,"lat":6.80,"text":"The Whitby, carrying 249 passengers, and the Hesperus, carrying 244, sailed for Demerara in 1838. Marina Budhos's great-grandparents came here.","p":"104","inBook":true,"flag":"The book gives the Hesperus 244. The Calcutta embarkation logs record 165. 244 is the number that came off the Whitby — 249 embarked, less 5 dead at sea — and the two figures appear to have been crossed at some point in the retelling. 414 people embarked on the two ships and 396 landed.","flagP":"104"},
       {"id":"trinidad","name":"Trinidad","lon":-61.29,"lat":10.39,"text":"'E no tell e I go chinedad you know' — Bharath, who was not told where he was going, or that he would never see his parents again.","p":"106","inBook":true},
       {"id":"mauritius","name":"Mauritius","lon":57.55,"lat":-20.28,"text":"One of the three colonies the book names alongside British Guiana and Trinidad.","p":"120","inBook":true},
       {"id":"natal","name":"Natal, South Africa","lon":31.02,"lat":-29.86,"text":"Indians were first brought here to cut cane in 1852. Gandhi arrived in 1894 because they were already here.","p":"118","inBook":true},
