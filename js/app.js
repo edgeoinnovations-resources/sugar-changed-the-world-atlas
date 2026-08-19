@@ -18,6 +18,13 @@ let DATA = {}, map, srcMarkers = [], cubaMarkers = [], popup, activeLayers = new
 const GRAT_LAYERS = ['grat-l', 'grat-polar', 'grat-trop', 'grat-eq'];
 const LAND_SWAP = 5;            // zoom at which the 1:110m base hands over to 1:10m
 
+/* The twelve numbered Commission stops sit within about two degrees of each other, so at
+   any world view they collapse into one illegible stack of pins. They only earn their
+   place once Cuba itself fills the view. Measured against the island's own bounding box
+   rather than a fixed zoom, so the rule holds at any window size or map-pane width. */
+const CUBA_BBOX = { w: -84.96, e: -74.13, s: 19.83, n: 23.28 };
+const CUBA_FILL = 0.9;          // fraction of the map pane Cuba must span to earn the numbers
+
 /* ── geometry helpers ─────────────────────────────────────── */
 function arc(a, b, bend = 0.2, n = 64) {
   let [x1, y1] = a, [x2, y2] = b;
@@ -186,6 +193,8 @@ function onMapLoad() {
   buildCubaMarkers();
   wireGlobeSpin();
   map.on('move', positionGratLabels);
+  map.on('move', updateCubaMarkers);
+  updateCubaMarkers();          // the stops start hidden at the opening world view
 }
 
 /* ── thematic layers ──────────────────────────────────────── */
@@ -406,6 +415,31 @@ function buildCubaMarkers() {
   });
 }
 
+/* Does Cuba fill the map pane? Project the island's own corners and measure the box they
+   make against the canvas. Width is what binds in practice — Cuba is about three times
+   wider than it is tall — but height is checked too so the rule still reads correctly on
+   a tall narrow window. On the globe the projection wraps and the measurement stops
+   meaning anything, so the numbers stay down. */
+function cubaFillsView() {
+  if (!map || globeOn) return false;
+  const c = map.getCanvas();
+  const W = c.clientWidth, H = c.clientHeight;
+  if (!W || !H) return false;
+  let a, b;
+  try {
+    a = map.project([CUBA_BBOX.w, CUBA_BBOX.n]);
+    b = map.project([CUBA_BBOX.e, CUBA_BBOX.s]);
+  } catch (e) { return false; }
+  const wpx = Math.abs(b.x - a.x), hpx = Math.abs(b.y - a.y);
+  return wpx >= W * CUBA_FILL || hpx >= H * CUBA_FILL;
+}
+
+/* Cheap enough to run on every move frame: twelve style writes and no layout reads. */
+function updateCubaMarkers() {
+  const show = activeLayers.has('chinacuba') && cubaFillsView();
+  cubaMarkers.forEach(m => { m.el.style.display = show ? 'block' : 'none'; });
+}
+
 /* A stop opens as a map popup rather than the full sheet — students are usually
    comparing several stops at once, and a modal each time would fight that. */
 function openCubaStop(id) {
@@ -441,6 +475,7 @@ function setGlobe(on) {
   map.setProjection({ type: on ? 'globe' : 'mercator' });
   document.getElementById('map').classList.toggle('globe', on);
   if (on) startSpin(); else stopSpin();
+  updateCubaMarkers();          // the fill test means nothing under a globe projection
 }
 
 /* One animation loop, never a chain of eased moves. An earlier version queued the next
@@ -970,8 +1005,8 @@ function applyState(filterAct, tries = 0) {
   const showMusic = activeLayers.has('music');
   musicMarkers.forEach(m => { m.el.style.display = showMusic ? 'block' : 'none'; });
 
-  const showCuba = activeLayers.has('chinacuba');
-  cubaMarkers.forEach(m => { m.el.style.display = showCuba ? 'block' : 'none'; });
+  /* The numbered stops carry their own zoom rule on top of the layer toggle. */
+  updateCubaMarkers();
 
   const showSrc = activeLayers.has('sources');
   srcMarkers.forEach(m => {
