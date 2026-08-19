@@ -628,7 +628,8 @@
     "alt": "Oil portrait of Sir John Gladstone, seated, 1830",
     "caption": "<b>John Gladstone.</b> He owned Success, the Demerara plantation where the 1823 rebellion began. When slavery ended he was paid £106,769 for 2,508 people — the largest single award any Briton received. Then he wrote to Calcutta for replacements. One man carries the whole turn from slavery to indenture.",
     "credit": "Thomas Gladstones, 1830 · National Portrait Gallery, London, NPG 5042. Click the picture to open the source and its prompt."
-   }
+   },
+   "chinaCuba": "cc-newsystem"
   },
   {
    "id": "blackwater",
@@ -649,7 +650,8 @@
    },
    "layers": [
     "indenture"
-   ]
+   ],
+   "chinaCuba": "cc-blackwater"
   },
   {
    "id": "inbetween",
@@ -672,7 +674,8 @@
    "sources": [
     "s18-stkitts",
     "s02-boys-cane"
-   ]
+   ],
+   "chinaCuba": "cc-inbetween"
   },
   {
    "id": "bechu",
@@ -701,7 +704,8 @@
       6.42
      ]
     }
-   ]
+   ],
+   "chinaCuba": "cc-bechu"
   },
   {
    "id": "paradise",
@@ -736,7 +740,8 @@
       19.278
      ]
     }
-   ]
+   ],
+   "chinaCuba": "cc-paradise"
   },
   {
    "id": "beet",

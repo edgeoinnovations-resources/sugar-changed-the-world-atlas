@@ -67,8 +67,9 @@
           <label class="lyr" data-c="2"><input type="checkbox" data-layer="spherical"> <span><b>The spherical trade</b><i>the book's correction of the "Triangle Trade"</i></span></label>
           <label class="lyr" data-c="3"><input type="checkbox" data-layer="freedom"> <span><b>Resistance &amp; abolition</b><i>revolts, maroon nations, boycotts, laws</i></span></label>
           <label class="lyr" data-c="4"><input type="checkbox" data-layer="indenture"> <span><b>Indian indenture, 1835–1917</b><i>Calcutta and Madras to the sugar colonies</i></span></label>
+          <label class="lyr" data-c="4"><input type="checkbox" data-layer="chinacuba"> <span><b>The China&ndash;Cuba Connection</b><i>the 1874 Commission's route, the ports it traced, and the districts the men came from</i></span></label>
           <label class="lyr" data-c="5"><input type="checkbox" data-layer="science"> <span><b>The Age of Science</b><i>beet sugar, Rillieux, and the end of cane's monopoly</i></span></label>
-          <label class="lyr" data-c="0"><input type="checkbox" data-layer="sources" checked> <span><b>Primary sources</b><i>52 geolocated sources (50 with images) and their prompts</i></span></label>
+          <label class="lyr" data-c="0"><input type="checkbox" data-layer="sources" checked> <span><b>Primary sources</b><i>53 geolocated sources (51 with images) and their prompts</i></span></label>
           <label class="lyr" data-c="m"><input type="checkbox" data-layer="music"> <span><b>Music you can still hear</b><i>five traditions the book names — with the recordings, and how well each claim holds up</i></span></label>
         </fieldset>
 
@@ -132,6 +133,26 @@
   </div>
 </div>
 
+<!-- ═══ CHINA–CUBA CONNECTION ═══ -->
+<div class="sheet" id="cuba" hidden role="dialog" aria-modal="true" aria-labelledby="cuba-title">
+  <div class="sheet-inner narrow">
+    <button class="sheet-x" id="cuba-x" aria-label="Close">✕</button>
+    <div class="sheet-txt wide">
+      <div class="sheet-kind" id="cuba-kicker"></div>
+      <h3 id="cuba-title"></h3>
+      <p class="sheet-cap" id="cuba-lead"></p>
+      <div class="ccnums" id="cuba-nums"></div>
+      <div class="claimcheck" id="cuba-claim"></div>
+      <h4 class="mhead">In their own words</h4>
+      <p class="cc-tnote">Every deposition below was taken down in Cuba between 17 March and 8 May 1874 and printed in the Commission's report. Names are given as the Report romanises them, with the characters it prints alongside.</p>
+      <div id="cuba-testimony"></div>
+      <div class="sheet-flag" id="cuba-compare" hidden></div>
+      <div class="ccroute" id="cuba-route"></div>
+      <dl class="sheet-facts" id="cuba-facts"></dl>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ ABOUT ═══ -->
 <div class="sheet" id="about" hidden role="dialog" aria-modal="true" aria-labelledby="about-title">
   <div class="sheet-inner narrow">
@@ -155,6 +176,12 @@
 
       <h4>Analysis routines</h4>
       <p><b>OPTIC</b> (Overview, Parts, Title, Interrelationships, Conclusion) for photographs and images. <b>SCRAP</b> (Spatial–temporal; Conditions/Connections/Comparisons; Region; Aura/Association/Analog; Pattern or Exceptions) for maps. Both come from Jo, Crane, Hong &amp; Huh, "GeoActivity Types in APHG: Analysis of Maps and Photos," <i>The Geography Teacher</i> 19(2), 2022.</p>
+
+      <h4>The China–Cuba Connection</h4>
+      <p>Five steps in Part Four carry a <b>China–Cuba Connection</b> button. These open a second primary source that the book does not use: the <i>Cuba Commission Report</i> (Shanghai: Imperial Maritime Customs Press, 1876), the Chinese government's investigation into the Chinese labourers shipped to Cuba between 1847 and 1874. Three commissioners spent seven weeks on the island in 1874 and took 1,176 depositions and 85 petitions carrying 1,665 signatures.</p>
+      <p>The book's Part Four follows Indian indenture to British Guiana. The Cuba Report is the same system running at the same time across a different ocean — with one difference the panels keep in front of students: Cuba was still a slave colony, so these men worked <i>beside</i> enslaved Africans rather than after them.</p>
+      <p>Each panel sets what the book says against what the Report found, quotes the workers directly, and ends with a comparison task. Every quotation was checked against the page image of the 1876 printing, not the OCR text layer, which reflows the printed columns and misattributes quotations. Page numbers cite the printed page of the Report.</p>
+      <p><b>One limit worth telling students.</b> The digitised copy contains the commissioners' report and the Spanish colonial regulations, but the 1,176 depositions were bound as appendices and are not in it. What you can read are the passages the commissioners chose to quote — which is itself a source question.</p>
 
       <h4>Built with</h4>
       <p>MapLibre GL JS, and a basemap built from Natural Earth public-domain vectors served from this repository. No API keys, no tile bills, no tracking, no third-party map service. The whole site is static files.</p>

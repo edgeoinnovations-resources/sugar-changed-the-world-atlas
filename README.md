@@ -18,12 +18,14 @@ Built for a 9th-grade source-analysis unit. Every primary source on the map open
 | One — From Magic to Spice | New Guinea → India → Jundi Shapur → the Islamic world → the Champagne fairs → the Atlantic islands → 1493 |
 | Two — Hell | Plantations, the Atlantic slave trade, the "spherical trade," the work stage by stage, the overseer, music as evidence |
 | Three — Freedom | Tea and factories, the sugar tax, Clarkson and the boycott, Alligator Woods and Haiti, 1807 |
-| Four — New Workers | Indenture, the black water, Bechu, Hawaii |
+| Four — New Workers | Indenture, the black water, Bechu, Hawaii — each with a China–Cuba Connection panel |
 | Five — The Age of Science | Beet sugar, the two family stories, Rillieux, Satyagraha |
 
-**Explore mode** — eight toggleable layers and a time slider from 7500 BC to 1950.
+**The China–Cuba Connection** — five buttons in Part Four that open a second primary source the book does not use: the *Cuba Commission Report* (Shanghai, 1876), the Qing government's investigation into the Chinese labourers shipped to Cuba between 1847 and 1874. Each panel sets what the book says against what the Commission found, quotes the workers directly, and ends with a comparison task. The Commission's seven-week route through Cuba in 1874 is a map layer of its own — twelve numbered stops, each opening the testimony taken there.
 
-**Sources mode** — all 52 geolocated sources in a filterable grid.
+**Explore mode** — ten toggleable layers and a time slider from 7500 BC to 1950.
+
+**Sources mode** — all 53 geolocated sources in a filterable grid.
 
 ### The book's five maps, rebuilt
 
@@ -66,8 +68,8 @@ Then open `http://localhost:8000`.
 |---|---|
 | Map engine | MapLibre GL JS 4.7.1 — vendored in `vendor/`, not loaded from a CDN |
 | Basemap | Natural Earth 1:110m, public domain, served from `data/` |
-| Data | Three JSON files, hand-authored from the book |
-| Images | 47 web derivatives (1600px max, ~19 MB total) |
+| Data | Four JSON files — three hand-authored from the book, one from the 1876 Report |
+| Images | 48 web derivatives (1600px max, ~19 MB total) |
 | Build step | None. Static files. |
 | Cost | $0 — no API keys, no tile service, no account, no tracking |
 
@@ -79,9 +81,10 @@ Because MapLibre and the basemap are both local, the site works on a school netw
 index.html            markup and the About panel
 css/style.css         all styling
 js/app.js             map, story, explore, source viewer
-data/sources.json     52 primary sources: citation, rights, coordinates, prompt
+data/sources.json     53 primary sources: citation, rights, coordinates, prompt
 data/layers.json      every thematic layer, with page references
 data/narrative.json   the 31 story steps and their camera positions
+data/china-cuba.json  the Cuba Commission Report: 5 panels, 12 itinerary stops, 25 depositions
 data/ne_*.json        Natural Earth basemap
 img/full, img/thumb   source images
 vendor/               MapLibre GL JS
@@ -93,6 +96,7 @@ docs/                 teacher notes
 - **Change wording or add a step** → `data/narrative.json`. Each step has a `camera` (`center` is `[longitude, latitude]`), a list of `layers`, and optional `sources`.
 - **Add a source** → add an entry to `data/sources.json` and drop `<id>.jpg` into both `img/full/` and `img/thumb/`.
 - **Fix a fact** → `data/layers.json`. Every entry carries a `p` field with the book page it came from.
+- **Edit a China–Cuba panel** → `data/china-cuba.json`. Each connection names the `step` it attaches to; add `"chinaCuba": "<connection-id>"` to a step in `narrative.json` to put the button on a different step.
 
 No rebuild needed — save the file and reload.
 
@@ -106,6 +110,12 @@ No rebuild needed — save the file and reload.
 
 **One thing to check.** The book dates the English conquest of Jamaica to 1665. The invasion was 1655, with Spain ceding the island in 1670. The Jamaica pin flags this rather than silently correcting it — it makes a good exercise in checking a text against another source.
 
+**Why the China–Cuba Connection is separate from the book.** *Sugar Changed the World* tells the indenture story through the Indian system — Calcutta and Madras to British Guiana, Trinidad, Mauritius. The Chinese traffic to Cuba ran on the same logic in the same decades, and the 1876 Report is the fullest first-person record of any sugar workforce anywhere. But it is evidence to test the book against, not the book's own claim, and the panels say so. One difference is kept in front of students throughout: British Guiana turned to indenture *after* emancipation, whereas Cuba was still a slave colony until 1886, so these men worked beside enslaved Africans rather than after them.
+
+**Every Cuba quotation was checked against the page image.** The HathiTrust scan carries an OCR text layer, and it is not trustworthy for this book: it reflows the printed columns and misattributes quotations. Checking against the page images corrected six wrong attributions and one reversed statistic — the Report says the Trocha labour force was one-tenth Black and nine-tenths Chinese, and the OCR renders it the other way round. Page numbers in the panels are the printed page of the Report.
+
+**What the Cuba layer does not have.** The digitised volume holds the commissioners' report and the Spanish colonial regulations. The 1,176 depositions were bound as appendices and are not in it, so the quotations are the ones the commissioners chose to print. The Report's population tables are likewise absent, which is why there is no map of Chinese population by Cuban jurisdiction — the totals it states in prose are the only figures shown.
+
 **What the slave-trade layer does not claim.** The book gives three era totals (3 million, 6 million, 3 million) and names four destination regions, but does not break the totals down by region. Neither does this map. The only figures shown are the ones the book states.
 
 ---
@@ -113,6 +123,8 @@ No rebuild needed — save the file and reload.
 ## Credits and rights
 
 Content follows Aronson & Budhos, *Sugar Changed the World* (Clarion Books, 2010). This is an educational companion, not a substitute for the book.
+
+Second primary source: *Chinese Emigration. The Cuba Commission. Report of the Commission Sent by China to Ascertain the Condition of Chinese Coolies in Cuba* (Shanghai: Imperial Maritime Customs Press, 1876). Public domain; Yale University Library copy, digitised by HathiTrust, [hdl.handle.net/2027/yale.39002005464905](https://hdl.handle.net/2027/yale.39002005464905).
 
 Basemap: [Natural Earth](https://www.naturalearthdata.com/), public domain.
 Map engine: [MapLibre GL JS](https://maplibre.org/), BSD-3-Clause.

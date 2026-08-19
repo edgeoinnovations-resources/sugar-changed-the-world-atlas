@@ -415,3 +415,76 @@ fieldset.layers legend{
 }
 .stepfig figcaption b{color:var(--ink)}
 .stepfig-credit{display:block;margin-top:5px;font-size:11.5px;color:var(--ink3)}
+
+/* ── the China–Cuba Connection ─────────────────────────────
+   A second primary source running alongside the book, so it gets a colour that belongs
+   to none of the five acts and is not the music teal either: a mulberry that reads as
+   "another voice" rather than "another chapter". */
+:root{ --cc:#7a2f6b; --cc2:#8a5a2b; }
+
+/* the button in a story step */
+.ccbtn{
+  display:flex;gap:11px;align-items:center;width:100%;margin:20px 0 4px;padding:12px 14px;
+  border:1px solid var(--cc);border-radius:9px;background:rgba(122,47,107,.05);
+  font:inherit;color:var(--ink);cursor:pointer;text-align:left
+}
+.ccbtn:hover{background:rgba(122,47,107,.11)}
+.ccbtn:focus-visible{outline:2px solid var(--a3);outline-offset:2px}
+.ccbtn-mark{
+  flex:none;width:34px;height:34px;border-radius:50%;background:var(--cc);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:17px;line-height:1
+}
+.ccbtn-txt b{display:block;font-size:14px}
+.ccbtn-txt i{display:block;font-style:normal;font-size:12.5px;color:var(--ink3);margin-top:2px;line-height:1.4}
+
+/* the panel it opens */
+#cuba .claimcheck{border-left-color:var(--cc)}
+#cuba .cc-verdict{color:var(--cc)}
+#cuba .sheet-kind{color:var(--cc)}
+.cc-tnote{font-size:12px;line-height:1.5;color:var(--ink3);margin:4px 0 14px}
+
+/* the three headline numbers */
+.ccnums{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 4px}
+.ccnum{
+  flex:1 1 30%;min-width:132px;padding:11px 12px;border-radius:8px;
+  background:var(--paper2);border-left:3px solid var(--cc)
+}
+.ccnum b{display:block;font-family:var(--serif);font-size:20px;line-height:1.15;color:var(--ink)}
+.ccnum span{display:block;font-size:12px;line-height:1.4;color:var(--ink2);margin-top:3px}
+.ccnum i{display:block;font-style:normal;font-size:10.5px;color:var(--ink3);margin-top:4px}
+
+/* testimony — set in the serif, because these are people speaking, not data */
+.ccq{
+  margin:14px 0;padding:13px 16px;background:var(--paper2);
+  border-left:3px solid var(--cc);border-radius:0 6px 6px 0
+}
+.ccq p{font-family:var(--serif);font-size:16px;font-style:italic;color:var(--ink);margin:0 0 7px;line-height:1.55}
+.ccq cite{font-style:normal;font-size:12.5px;color:var(--ink3);line-height:1.5;display:block}
+.hz{font-size:13px;color:var(--ink2)}
+#cuba .sheet-flag{border-left-color:var(--cc);background:rgba(122,47,107,.06)}
+#cuba .sheet-flag b{color:var(--cc)}
+.ccroute .hearbtn{border-color:var(--cc);background:rgba(122,47,107,.05)}
+.ccroute .hearbtn:hover{background:rgba(122,47,107,.11)}
+.ccroute .ytmark{background:var(--cc)}
+
+/* numbered stops on the map */
+.pin.ccstop .ccn{
+  display:flex;align-items:center;justify-content:center;
+  width:21px;height:21px;border-radius:50%;background:var(--cc);color:#fff;
+  font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;
+  box-shadow:0 0 0 2px rgba(251,248,242,.95),0 1px 4px rgba(0,0,0,.3);
+  transition:transform .18s
+}
+.pin.ccstop:hover .ccn,.pin.ccstop:focus-visible .ccn{transform:scale(1.25)}
+
+/* the stop popup carries a quotation, so it needs more room than the others */
+.maplibregl-popup-content:has(.pop.cc){max-width:330px}
+.pop.cc .ccsites{font-size:11.5px;color:var(--ink3);margin:0 0 8px;line-height:1.45}
+.pop.cc .ccq{margin:9px 0 8px;padding:9px 11px}
+.pop.cc .ccq p{font-size:13.5px;margin:0 0 5px;line-height:1.45}
+.pop.cc .ccq cite{font-size:11px}
+.pop.cc .badge{margin:2px 0 6px}
+.hearbtn.ccjump{border-color:var(--cc);background:rgba(122,47,107,.05)}
+.hearbtn.ccjump:hover{background:rgba(122,47,107,.11)}
+.hearbtn.ccjump .ytmark{background:var(--cc);font-family:var(--serif);font-size:14px;padding-left:0}

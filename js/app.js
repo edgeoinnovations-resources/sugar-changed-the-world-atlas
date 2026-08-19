@@ -10,7 +10,8 @@ const EPOCHS = [-7500,-6000,-2000,-900,-515,-327,-286,530,640,700,950,1100,1200,
 const fmtYear = y => y < 0 ? `${Math.abs(y).toLocaleString()} BC` : `${y}`;
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-let DATA = {}, map, srcMarkers = [], popup, activeLayers = new Set(), curYear = 1950,
+let DATA = {}, map, srcMarkers = [], cubaMarkers = [], popup, activeLayers = new Set(), curYear = 1950,
+    cubaPinned = false,   // the route stays on across story steps once asked for
     curEra = 'e2', mode = 'story', playTimer = null, placeMarkers = [],
     gratMarkers = [], globeOn = false, userTurning = false, spinRAF = null, curStep = null,
     musicMarkers = [];
@@ -71,9 +72,10 @@ Promise.all([
   fetch('data/sources.json').then(r => r.json()),
   fetch('data/layers.json').then(r => r.json()),
   fetch('data/narrative.json').then(r => r.json()),
-  fetch('data/music.json').then(r => r.json())
-]).then(([s, l, n, mu]) => {
-  DATA = { sources: s.sources, ...l, ...n, music: mu.music };
+  fetch('data/music.json').then(r => r.json()),
+  fetch('data/china-cuba.json').then(r => r.json())
+]).then(([s, l, n, mu, cc]) => {
+  DATA = { sources: s.sources, ...l, ...n, music: mu.music, cuba: cc };
   // Build the readable site first so a map failure never costs the text and sources.
   buildStory();
   buildSourceGrid();
@@ -83,7 +85,7 @@ Promise.all([
       `<div style="padding:24px;max-width:34em;font-size:14px;line-height:1.6;color:#4b4036">
          <b>The map could not start.</b><br>${esc(e.message)}<br><br>
          This usually means the browser has WebGL disabled or unavailable.
-         The story text and all 52 sources still work.</div>`;
+         The story text and all 53 sources still work.</div>`;
   }
 }).catch(e => {
   document.getElementById('story').innerHTML =
@@ -166,13 +168,14 @@ function onMapLoad() {
   applyState();
 
   /* pointer + popups */
-  const clickable = ['diff-node', 'plant-c', 'st-emb', 'st-dest', 'sph-node', 'free-c', 'ind-o', 'ind-d', 'sci-c'];
+  const clickable = ['diff-node', 'plant-c', 'st-emb', 'st-dest', 'sph-node', 'free-c', 'ind-o', 'ind-d', 'sci-c',
+                     'cc-port', 'cc-origin'];
   clickable.forEach(id => {
     map.on('mouseenter', id, () => map.getCanvas().style.cursor = 'pointer');
     map.on('mouseleave', id, () => map.getCanvas().style.cursor = '');
     map.on('click', id, e => showPopup(e.features[0], e.lngLat));
   });
-  ['diff-arc', 'sph-flow', 'ind-arc', 'ind-arc2'].forEach(id => {
+  ['diff-arc', 'sph-flow', 'ind-arc', 'ind-arc2', 'cc-arc', 'cc-route'].forEach(id => {
     map.on('mouseenter', id, () => map.getCanvas().style.cursor = 'pointer');
     map.on('mouseleave', id, () => map.getCanvas().style.cursor = '');
     map.on('click', id, e => showPopup(e.features[0], e.lngLat));
@@ -180,6 +183,7 @@ function onMapLoad() {
 
   buildSourceMarkers();
   buildMusicMarkers();
+  buildCubaMarkers();
   wireGlobeSpin();
   map.on('move', positionGratLabels);
 }
@@ -313,7 +317,51 @@ function buildThematic() {
     paint: { 'circle-radius': ['interpolate', ['linear'], ['zoom'], 1, 5, 6, 10],
       'circle-color': '#4a6f3c', 'circle-stroke-width': 2, 'circle-stroke-color': '#fbf8f2' } });
 
-  /* 6 · science -------------------------------------------------- */
+  /* 6 · the China–Cuba Connection -------------------------------
+     The 1874 Commission's route through Cuba, the ports the men were shipped from,
+     and the home districts the depositions name. Drawn in the Part Four green so it
+     reads as a sibling of the indenture layer, not a rival to it. */
+  const CC = DATA.cuba, stops = CC.itinerary.stops;
+  /* The route joins the stops in the order the Commissioners travelled. The last stop
+     is the departure from Havana, which is the same point as the first — drawing to it
+     would double a line back over itself, so the leg is left off and the pin says it. */
+  const legs = stops.slice(0, -1).map(s => [s.lon, s.lat]);
+  map.addSource('cc-route-s', { type: 'geojson',
+    data: fc([ln(legs, { kind: 'cc-route', name: 'The Commission’s route, 1874' })]) });
+  map.addSource('cc-port-s', { type: 'geojson', data: fc(CC.ports.map(p =>
+    pt(p.lon, p.lat, { ...p, kind: 'cc-port' }))) });
+  map.addSource('cc-origin-s', { type: 'geojson', data: fc(CC.origins.map(o =>
+    pt(o.lon, o.lat, { ...o, kind: 'cc-origin' }))) });
+  /* Passage arcs, port → Havana. arc() already resolves the antimeridian to the shorter
+     way round, so the destination goes in unmodified — nudging it by 360 here fought that
+     and sent the line the long way west. Like the slave-trade and indenture arcs, these
+     join two points; they are not the track a ship sailed, and the popup says so. */
+  const d = CC.destination;
+  map.addSource('cc-arc-s', { type: 'geojson', data: fc(CC.ports.map(p =>
+    ln(arc([p.lon, p.lat], [d.lon, d.lat], -0.22, 72),
+      { kind: 'cc-arc', name: `${p.name} → Havana`, n: p.n || null, p: p.p }))) });
+
+  map.addLayer({ id: 'cc-arc', type: 'line', source: 'cc-arc-s',
+    layout: { visibility: 'none', 'line-cap': 'round' },
+    paint: { 'line-color': '#8a5a2b',
+      'line-width': ['case', ['>', ['coalesce', ['get', 'n'], 0], 50000], 2.6, 1.5],
+      'line-opacity': 0.6 } });
+  map.addLayer({ id: 'cc-route', type: 'line', source: 'cc-route-s',
+    layout: { visibility: 'none', 'line-cap': 'round', 'line-join': 'round' },
+    paint: { 'line-color': '#7a2f6b', 'line-width': 2.4, 'line-opacity': 0.85 } });
+  map.addLayer({ id: 'cc-origin', type: 'circle', source: 'cc-origin-s',
+    layout: { visibility: 'none' },
+    paint: { 'circle-radius': ['interpolate', ['linear'], ['zoom'], 1, 3, 6, 7],
+      'circle-color': '#c08a3e', 'circle-stroke-width': 1.5, 'circle-stroke-color': '#fbf8f2' } });
+  map.addLayer({ id: 'cc-port', type: 'circle', source: 'cc-port-s',
+    layout: { visibility: 'none' },
+    paint: { 'circle-radius': ['interpolate', ['linear'], ['zoom'], 1, 5, 6, 11],
+      'circle-color': '#8a5a2b', 'circle-stroke-width': 2, 'circle-stroke-color': '#fbf8f2' } });
+  /* The twelve stops are HTML markers rather than a circle layer, because the number has
+     to be readable and this style carries no glyphs endpoint — the same reason the place
+     labels and graticule labels are HTML. */
+
+  /* 7 · science -------------------------------------------------- */
   map.addSource('sci-s', { type: 'geojson', data: fc(DATA.science.map(s =>
     pt(s.lon, s.lat, { ...s, kind: 'sci' }))) });
   map.addLayer({ id: 'sci-c', type: 'circle', source: 'sci-s',
@@ -340,6 +388,45 @@ function buildSourceMarkers() {
     el.setAttribute('aria-label', `Primary source: ${s.title}, ${s.date}`); // after addTo — MapLibre overwrites it
     srcMarkers.push({ id: s.id, act: s.act, marker: m, el });
   });
+}
+
+/* ── China–Cuba itinerary markers (HTML) ──────────────────────
+   Numbered so the order of the seven weeks reads off the map. Clicking one opens the
+   stop, its sites, and whatever a man said there. */
+function buildCubaMarkers() {
+  DATA.cuba.itinerary.stops.forEach(s => {
+    const el = document.createElement('button');
+    el.className = 'pin ccstop';
+    el.innerHTML = `<span class="ccn">${s.n}</span>`;
+    el.title = `${s.n}. ${s.name} — ${s.dateLabel}`;
+    el.addEventListener('click', ev => { ev.stopPropagation(); openCubaStop(s.id); });
+    const mk = new maplibregl.Marker({ element: el }).setLngLat([s.lon, s.lat]).addTo(map);
+    el.setAttribute('aria-label', `Commission stop ${s.n}: ${s.name}, ${s.dateLabel}`);
+    cubaMarkers.push({ id: s.id, marker: mk, el });
+  });
+}
+
+/* A stop opens as a map popup rather than the full sheet — students are usually
+   comparing several stops at once, and a modal each time would fight that. */
+function openCubaStop(id) {
+  const s = DATA.cuba.itinerary.stops.find(x => x.id === id); if (!s) return;
+  let html = `<div class="pop cc"><h5>${s.n}. ${esc(s.name)}</h5>
+    <div class="when">${esc(s.dateLabel)}</div>`;
+  if (s.sites && s.sites.length)
+    html += `<p class="ccsites">${s.sites.map(esc).join(' · ')}</p>`;
+  html += `<p>${esc(s.text)}</p>`;
+  [s.testimony, s.testimony2].filter(Boolean).forEach(t => {
+    html += `<blockquote class="ccq"><p>${esc(t.text)}</p>
+      <cite>${esc(t.who)}${t.hanzi ? ` <span class="hz">${esc(t.hanzi)}</span>` : ''} · p. ${esc(t.p)}</cite></blockquote>`;
+  });
+  html += `<div class="badge ${esc(s.certainty)}">${esc(s.certainty)}</div>`;
+  /* Two page references are in play here — the itinerary and the deposition — so the
+     footer names which is which rather than leaving a bare number to be guessed at. */
+  html += `<div class="cite">Itinerary: <i>Cuba Commission Report</i>, pp. ${esc(DATA.cuba.itinerary.p)}${
+    s.testimony ? '; the deposition, p. ' + esc(s.testimony.p) : ''}</div></div>`;
+  if (popup) popup.remove();
+  popup = new maplibregl.Popup({ closeButton: true, maxWidth: '330px', offset: 14 })
+    .setLngLat([s.lon, s.lat]).setHTML(html).addTo(map);
 }
 
 /* ── globe ────────────────────────────────────────────────────
@@ -603,6 +690,78 @@ function closeMusic() {
   lastFocus && lastFocus.focus();
 }
 
+/* ── the China–Cuba Connection ────────────────────────────────
+   A second primary source set against the book at five points in Part Four. The panel
+   always runs the same way: what the book says, what the Report found, the workers'
+   own words, then a comparison task. The order matters — students meet the evidence
+   before they are asked to judge it. */
+function openCuba(id) {
+  const c = (DATA.cuba.connections || []).find(x => x.id === id); if (!c) return;
+  const doc = DATA.cuba.document;
+  lastFocus = document.activeElement;
+
+  document.getElementById('cuba-kicker').textContent = c.kicker;
+  document.getElementById('cuba-title').textContent = c.title;
+  document.getElementById('cuba-lead').textContent = c.lead;
+
+  document.getElementById('cuba-nums').innerHTML = (c.numbers || []).map(([big, lab, p]) =>
+    `<div class="ccnum"><b>${esc(big)}</b><span>${esc(lab)}</span>
+     ${p && p !== '—' ? `<i>Report, p. ${esc(p)}</i>` : ''}</div>`).join('');
+
+  document.getElementById('cuba-claim').innerHTML =
+    `<p class="cc-claim"><b>The book says</b> (p. ${esc(c.theBookP)}) ${c.theBook}</p>
+     <p class="cc-verdict"><b>The Commission found</b> (Report, p. ${esc(c.theReportP)}) — ${c.theReport}</p>`;
+
+  document.getElementById('cuba-testimony').innerHTML = c.testimony.map(t =>
+    `<blockquote class="ccq"><p>${esc(t.text)}</p>
+      <cite>${esc(t.who)}${t.hanzi ? ` <span class="hz">${esc(t.hanzi)}</span>` : ''}
+      · <i>Cuba Commission Report</i>, p. ${esc(t.p)}</cite></blockquote>`).join('');
+
+  const cmp = document.getElementById('cuba-compare');
+  if (c.compare) { cmp.hidden = false; cmp.innerHTML = `<b>Put the two together.</b> ${esc(c.compare)}`; }
+  else cmp.hidden = true;
+
+  /* The route is the same object in every panel, so it gets one button rather than being
+     repeated as prose five times. */
+  document.getElementById('cuba-route').innerHTML =
+    `<button class="hearbtn" id="cuba-showroute">
+       <span class="ytmark" aria-hidden="true">◷</span>
+       <span>Show the Commission’s route<i>twelve stops, 17 March – 8 May 1874 — click a number to read what was found there</i></span></button>`;
+  document.getElementById('cuba-showroute').addEventListener('click', () => {
+    closeCuba();
+    cubaPinned = true;
+    activeLayers.add('chinacuba');
+    const box = document.querySelector('[data-layer="chinacuba"]'); if (box) box.checked = true;
+    applyState();
+    map && map.flyTo({ center: [-81.4, 22.9], zoom: 6.9, duration: 1600, padding: camPad() });
+  });
+
+  document.getElementById('cuba-facts').innerHTML = `
+    <div><dt>Source</dt><dd><i>${esc(doc.title)}</i></dd></div>
+    <div><dt>Compiled by</dt><dd>${esc(doc.creator)}</dd></div>
+    <div><dt>Published</dt><dd>${esc(doc.imprint)}; despatched to the Tsungli Yamên ${esc(doc.despatched)}</dd></div>
+    <div><dt>This copy</dt><dd>${esc(doc.copy)}</dd></div>
+    <div><dt>Rights</dt><dd>${esc(doc.rights)}</dd></div>
+    <div><dt>Read it</dt><dd><a href="${esc(doc.link)}" target="_blank" rel="noopener">the full 1876 volume ↗</a></dd></div>`;
+
+  document.getElementById('cuba').hidden = false;
+  setInert(true);
+  document.getElementById('cuba-x').focus();
+  document.querySelector('#cuba .sheet-inner').scrollTop = 0;
+  if (map && c.camera) {
+    activeLayers = new Set(c.layers || ['chinacuba']);
+    const box = document.querySelector('[data-layer="chinacuba"]'); if (box) box.checked = true;
+    applyState();
+    map.flyTo({ center: c.camera.center, zoom: c.camera.zoom, duration: 1600, padding: camPad() });
+  }
+}
+
+function closeCuba() {
+  document.getElementById('cuba').hidden = true;
+  setInert(false);
+  lastFocus && lastFocus.focus();
+}
+
 /* ── popups ───────────────────────────────────────────────── */
 function showPopup(f, lngLat) {
   const p = f.properties;
@@ -625,11 +784,24 @@ function showPopup(f, lngLat) {
     if (p.inBook === false || p.inBook === 'false')
       html += `<p>A major indenture route, but <b>not named in this book</b> — shown dashed so the pattern is complete.</p>`;
     else html += `<p>An indenture route named in the book.</p>`;
+  } else if (p.kind === 'cc-port') {
+    if (p.n) html += `<div class="fig">${(+p.n).toLocaleString()} men shipped</div>`;
+    if (p.text) html += `<p>${esc(p.text)}</p>`;
+  } else if (p.kind === 'cc-origin') {
+    html += `<p>A home district named by deponents in the Report${p.hanzi ? ` — <span class="hz">${esc(p.hanzi)}</span>` : ''}.</p>`;
+  } else if (p.kind === 'cc-arc') {
+    html += `<p>The passage to Havana${p.n ? `, ${(+p.n).toLocaleString()} men` : ''}. The line joins the two ports; it is not the course a ship steered. Ships took three to six months and went by the Cape of Good Hope or round Cape Horn.</p>`;
+  } else if (p.kind === 'cc-route') {
+    html += `<p>The route of the Chinese Commission through Cuba, 17 March – 8 May 1874. Click a numbered stop to see what was found there.</p>`;
   } else {
     if (p.text) html += `<p>${esc(p.text)}</p>`;
     if (p.label && p.kind === 'diff-arc') html += `<p>${esc(p.label)}</p>`;
   }
-  if (p.p && p.p !== '—') html += `<div class="cite">Sugar Changed the World, p. ${esc(p.p)}</div>`;
+  /* Two books are cited on this map, so the pin has to say which one it came from. */
+  const ccKinds = ['cc-port', 'cc-origin', 'cc-arc', 'cc-route'];
+  if (ccKinds.includes(p.kind))
+    html += `<div class="cite">Cuba Commission Report${p.p ? `, p. ${esc(p.p)}` : ''}</div>`;
+  else if (p.p && p.p !== '—') html += `<div class="cite">Sugar Changed the World, p. ${esc(p.p)}</div>`;
   html += '</div>';
 
   if (popup) popup.remove();
@@ -647,6 +819,15 @@ function buildStory() {
     h += `<div class="body">${s.body}</div>`;
     if (s.quote) h += `<blockquote><p>${esc(s.quote)}</p><cite>${esc(s.quoteAttr || '')}</cite></blockquote>`;
     if (s.chart) h += chartHTML(s.chart);
+    /* A second primary source, running alongside the book rather than inside it. The
+       button is deliberately quiet until pressed — the book's own argument comes first. */
+    if (s.chinaCuba) {
+      const cc = (DATA.cuba.connections || []).find(c => c.id === s.chinaCuba);
+      if (cc) h += `<button class="ccbtn" data-cuba="${esc(cc.id)}">
+        <span class="ccbtn-mark" aria-hidden="true">華</span>
+        <span class="ccbtn-txt"><b>China–Cuba Connection</b>
+        <i>${esc(cc.title)}</i></span></button>`;
+    }
     /* A step can carry one picture inline, printed with its caption rather than shrunk
        to a thumbnail. Clicking it opens the full source and its prompt like any other. */
     if (s.figure) {
@@ -673,6 +854,8 @@ function buildStory() {
   }).join('');
 
   host.addEventListener('click', e => {
+    const c = e.target.closest('[data-cuba]');
+    if (c) { openCuba(c.dataset.cuba); return; }
     const b = e.target.closest('[data-src]');
     if (b) openSheet(b.dataset.src);
   });
@@ -716,6 +899,7 @@ function goStep(id) {
   const s = DATA.steps.find(x => x.id === id);
   if (!s || !map) return;
   activeLayers = new Set(s.layers || []);
+  if (cubaPinned) activeLayers.add('chinacuba');
   if (s.year) curYear = s.year;
   if (s.diffusionYear) curYear = s.diffusionYear;
   if (s.era) curEra = s.era;
@@ -742,7 +926,7 @@ function goStep(id) {
   setPlaceLabels(s.places);
   applyState(s.filterAct);
   const note = document.getElementById('mapnote');
-  if (s.layers && s.layers.length) {
+  if (activeLayers.size) {
     note.hidden = false;
     note.innerHTML = `<b>On the map:</b> ${[...activeLayers].map(layerLabel).join(' · ')}`;
   } else note.hidden = true;
@@ -752,7 +936,8 @@ function goStep(id) {
 const layerLabel = k => ({
   diffusion: 'the spread of sugar', plantations: 'plantations', slavetrade: 'the Atlantic slave trade',
   spherical: 'the spherical trade', freedom: 'resistance & abolition',
-  indenture: 'Indian indenture', sources: 'primary sources', science: 'the Age of Science'
+  indenture: 'Indian indenture', sources: 'primary sources', science: 'the Age of Science',
+  chinacuba: 'the China\u2013Cuba Connection'
 }[k] || k);
 
 /* ── state → map ──────────────────────────────────────────── */
@@ -763,6 +948,7 @@ const GROUPS = {
   spherical: ['sph-flow', 'sph-node'],
   freedom: ['free-c'],
   indenture: ['ind-arc', 'ind-arc2', 'ind-o', 'ind-d'],
+  chinacuba: ['cc-arc', 'cc-route', 'cc-port', 'cc-origin'],
   science: ['sci-c']
 };
 
@@ -783,6 +969,9 @@ function applyState(filterAct, tries = 0) {
 
   const showMusic = activeLayers.has('music');
   musicMarkers.forEach(m => { m.el.style.display = showMusic ? 'block' : 'none'; });
+
+  const showCuba = activeLayers.has('chinacuba');
+  cubaMarkers.forEach(m => { m.el.style.display = showCuba ? 'block' : 'none'; });
 
   const showSrc = activeLayers.has('sources');
   srcMarkers.forEach(m => {
@@ -806,6 +995,11 @@ function drawLegend() {
   }
   if (activeLayers.has('freedom')) rows.push(dot('#1f5f80', 'Resistance &amp; abolition'));
   if (activeLayers.has('indenture')) { rows.push(dot('#2f4a25', 'Recruiting &amp; embarkation')); rows.push(dot('#4a6f3c', 'Destination')); rows.push(line('#4a6f3c', 'Route not named in the book', true)); }
+  if (activeLayers.has('chinacuba')) {
+    rows.push(dot('#7a2f6b', 'The Commission\u2019s route, 1874'));
+    rows.push(dot('#8a5a2b', 'Port of embarkation'));
+    rows.push(dot('#c08a3e', 'Home district named in a deposition'));
+  }
   if (activeLayers.has('science')) rows.push(dot('#5d4e86', 'The Age of Science'));
   if (activeLayers.has('music')) rows.push(`<div class="lg"><span class="sw" style="background:#0f6e63"></span><span>Music you can hear</span></div>`);
   if (activeLayers.has('sources')) rows.push(`<div class="lg"><span class="sw" style="background:#3d3226;border-radius:2px;transform:rotate(45deg)"></span><span>Primary source</span></div>`);
@@ -837,7 +1031,7 @@ function buildSourceGrid() {
         ${s.kind === 'missing'
           ? '<div class="none">not obtainable</div>'
           : `<figure><img src="img/thumb/${s.id}.jpg" alt="${esc(s.title)}" loading="lazy"></figure>`}
-        <span class="cap"><b>${esc(s.title)}</b><i>${esc(s.date)}${s.kind === 'map' ? ' · map' : ''}</i></span>
+        <span class="cap"><b>${esc(s.title)}</b><i>${esc(s.date)}${s.kind === 'map' ? ' · map' : s.kind === 'document' ? ' · document' : ''}</i></span>
       </button>`).join('');
   };
   render('all');
@@ -866,7 +1060,9 @@ function openSheet(id) {
     pic.src = `img/full/${id}.jpg`; pic.alt = s.title;
   }
   document.getElementById('sheet-kind').textContent =
-    s.kind === 'map' ? 'Primary source · map' : s.kind === 'missing' ? 'Referenced — image not obtainable' : 'Primary source · image';
+    s.kind === 'map' ? 'Primary source · map'
+    : s.kind === 'document' ? 'Primary source · document'
+    : s.kind === 'missing' ? 'Referenced — image not obtainable' : 'Primary source · image';
   document.getElementById('sheet-title').textContent = s.title;
   document.getElementById('sheet-meta').innerHTML =
     `${esc(s.creator)}, ${esc(s.date)}<br>${esc(s.place)} <span class="badge ${esc(s.certainty)}">${esc(s.certainty)}</span>`;
@@ -878,7 +1074,9 @@ function openSheet(id) {
 
   const routine = s.prompt.startsWith('SCRAP')
       ? (s.kind === 'map' ? 'SCRAP · reading a map' : 'SCRAP · read this against the map')
-      : s.prompt.startsWith('OPTIC') ? 'OPTIC · reading an image' : 'Think about it';
+      : s.prompt.startsWith('OPTIC')
+        ? (s.kind === 'document' ? 'OPTIC · reading a document' : 'OPTIC · reading an image')
+        : 'Think about it';
   document.getElementById('sheet-prompt').innerHTML =
     `<span class="tag">${esc(routine)}</span><p>${esc(s.prompt.replace(/^(OPTIC|SCRAP)\s*—\s*/, ''))}</p>`;
 
@@ -897,6 +1095,13 @@ function openSheet(id) {
       <span class="ytmark" aria-hidden="true">▶</span>
       <span>Hear this<i>${esc(m.tradition)} — recordings, and how the claim holds up</i></span></button>`;
     hear.querySelector('button').addEventListener('click', () => { closeSheet(); openMusic(s.music); });
+  } else if (s.id === 's53-cuba-commission') {
+    /* Found from the Sources grid rather than from a story step — so offer the way in. */
+    hear.hidden = false;
+    hear.innerHTML = `<button class="hearbtn ccjump" data-cuba="cc-inbetween">
+      <span class="ytmark" aria-hidden="true">華</span>
+      <span>Open the China–Cuba Connection<i>what the Commission found, set against the book — five panels in Part Four</i></span></button>`;
+    hear.querySelector('button').addEventListener('click', () => { closeSheet(); openCuba('cc-inbetween'); });
   } else hear.hidden = true;
 
   sheet.hidden = false;
@@ -964,6 +1169,7 @@ function wireUI() {
     document.getElementById('btn-' + k).addEventListener('click', () => setMode(k)));
 
   document.querySelectorAll('[data-layer]').forEach(cb => cb.addEventListener('change', () => {
+    if (cb.dataset.layer === 'chinacuba') cubaPinned = cb.checked;
     activeLayers = new Set([...document.querySelectorAll('[data-layer]')]
       .filter(i => i.checked).map(i => i.dataset.layer));
     applyState();
@@ -1013,10 +1219,15 @@ function wireUI() {
   document.getElementById('music-x').addEventListener('click', closeMusic);
   musicSheet.addEventListener('click', e => { if (e.target.id === 'music') closeMusic(); });
 
+  const cubaSheet = document.getElementById('cuba');
+  document.getElementById('cuba-x').addEventListener('click', closeCuba);
+  cubaSheet.addEventListener('click', e => { if (e.target.id === 'cuba') closeCuba(); });
+
   document.addEventListener('keydown', e => {
     const sheet = document.getElementById('sheet');
     if (!sheet.hidden) { trapTab(sheet.querySelector('.sheet-inner'), e); if (e.key === 'Escape') closeSheet(); return; }
     if (!musicSheet.hidden) { trapTab(musicSheet.querySelector('.sheet-inner'), e); if (e.key === 'Escape') closeMusic(); return; }
+    if (!cubaSheet.hidden) { trapTab(cubaSheet.querySelector('.sheet-inner'), e); if (e.key === 'Escape') closeCuba(); return; }
     if (!about.hidden) { trapTab(about.querySelector('.sheet-inner'), e); if (e.key === 'Escape') closeAbout(); }
   });
 }

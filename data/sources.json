@@ -682,6 +682,20 @@
       "rights": "Not openly digitised. Russian National Library, fr. F.v.VI,1, f. 143.",
       "link": "https://nlr.ru/",
       "prompt": "SCRAP — Aura: Europeans put the source of spices in paradise. What does a wrong map tell you about the people who drew it?"
+    },
+    {
+      "id": "s53-cuba-commission", "act": 4, "kind": "document",
+      "title": "Chinese Emigration. The Cuba Commission. Report of the Commission Sent by China to Ascertain the Condition of Chinese Coolies in Cuba",
+      "creator": "Ch'ên Lanpin, A. Macpherson and A. Huber, Commissioners; Imperial Maritime Customs Press",
+      "date": "1876 (enquiry conducted 1874)",
+      "lon": -82.3589, "lat": 23.1136, "certainty": "located",
+      "place": "Havana — where the enquiry opened on 20 March 1874",
+      "caption": "The Chinese government sent three officials to Cuba to find out what had become of the men shipped there as contract labourers. In seven weeks they took 1,176 depositions and received 85 petitions carrying 1,665 signatures. This is a source in which the workers of a sugar colony speak in the first person, at length, and by name — which almost nothing else in this atlas does.",
+      "bookPage": "107 — the book's indenture map; the Report is not used in the book",
+      "rights": "Public domain. Yale University Library copy, digitised by HathiTrust.",
+      "link": "https://hdl.handle.net/2027/yale.39002005464905",
+      "prompt": "OPTIC — Overview: this is testimony collected by one government about another government's colony, and the men were interviewed in dépôts and prisons whose visiting hours the Cuban officials fixed. Who is speaking, who is writing it down, and what does each of them want the reader to conclude?",
+      "correction": "The book does not cite this source. It is added here because Part Four's account of indenture is drawn from the Indian system, and the Chinese traffic to Cuba ran at the same time under the same logic — but beside slavery rather than after it. Treat the Report as evidence to test the book against, not as the book's own claim."
     }
   ]
 }

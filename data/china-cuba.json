@@ -1,0 +1,545 @@
+{
+  "_note": "The China–Cuba Connection. Every quotation, figure and date below is taken from the English version of the Cuba Commission Report (Shanghai: Imperial Maritime Customs Press, 1876), and every one was checked against the page image rather than the OCR text layer, which reflows the printed columns and misattributes quotations. Page numbers are the printed page of the Report, not the PDF page. Where a fact comes from outside the Report it is marked 'outside the Report' in the text itself.",
+
+  "document": {
+    "title": "Chinese Emigration. The Cuba Commission. Report of the Commission Sent by China to Ascertain the Condition of Chinese Coolies in Cuba",
+    "short": "Cuba Commission Report",
+    "creator": "Ch'ên Lanpin, A. Macpherson and A. Huber, Commissioners",
+    "imprint": "Shanghai: Imperial Maritime Customs Press, 1876",
+    "despatched": "20 October 1874",
+    "copy": "Yale University Library, digitised by HathiTrust",
+    "rights": "Public domain.",
+    "link": "https://hdl.handle.net/2027/yale.39002005464905",
+    "what": "In 1873 the Chinese government sent three officials to Cuba to find out what had happened to the men shipped there as contract labourers. They spent seven weeks on the island, from 17 March to 8 May 1874, and took 1,176 depositions and 85 petitions carrying 1,665 signatures. This is their report.",
+    "limits": "This copy contains the Commissioners' report and the Spanish colonial regulations. The 1,176 depositions themselves were bound as appendices and are not in this scan — what you read here are the passages the Commissioners quoted."
+  },
+
+  "figures": {
+    "shipped": "More than 140,000 Chinese sailed for Cuba between 1847 and April 1874.",
+    "shippedP": "3, 12",
+    "died": "More than 16,000 died on the voyages — about one in nine.",
+    "diedP": "12",
+    "kidnapped": "Eight out of every ten told the Commission they had been kidnapped or decoyed.",
+    "kidnappedP": "3",
+    "population": "58,410 Chinese were counted in Cuba by the Spanish census of 1872; the Commissioners estimated 68,825 by 1874.",
+    "populationP": "51",
+    "plantations": "Ninety per cent were sold to the sugar plantations.",
+    "plantationsP": "18",
+    "byPort": [
+      { "port": "Macao", "n": 99149, "note": "63,455 up to 1866, then 35,694 more — shipped in breach of the 1866 Emigration Convention, which barred Macao as a place of engagement." },
+      { "port": "Swatow, Hong Kong, Canton, Whampoa, Amoy, Annam and Manila", "n": 43273, "note": "The Report gives this group as a single total and does not break it down by port." }
+    ],
+    "byPortP": "7",
+    "byPortNote": "The three figures the Report gives — 43,273 and 63,455 and 35,694 — sum exactly to its stated total of 142,422."
+  },
+
+  "connections": [
+    {
+      "id": "cc-newsystem",
+      "step": "newsystem",
+      "kicker": "The China–Cuba Connection",
+      "title": "Nine years after the Whitby, a second system — and this one ran beside slavery",
+      "lead": "The book follows John Gladstone's letter to Calcutta and the two ships that sailed for Demerara in 1838. The same argument — cheap bound labour for a twenty-four-hour crop — was being made in Havana at the same time, and answered from a different ocean.",
+      "theBook": "The Whitby, carrying 249 people, and the Hesperus, carrying 244, sailed for Demerara in 1838.",
+      "theBookP": "104",
+      "theReport": "The first Chinese contract labourers landed at Havana in 1847. Over the next twenty-seven years more than 140,000 followed. The difference matters: British Guiana turned to indenture <i>after</i> emancipation, but Cuba was still a slave colony and would be until 1886. Chinese men were not brought in to replace enslaved Africans. They were put to work beside them.",
+      "theReportP": "7, 12, 59",
+      "numbers": [
+        ["More than 140,000", "sailed for Cuba, 1847–1874", "12"],
+        ["8 in 10", "said they were kidnapped or decoyed", "3"],
+        ["90%", "were sold to sugar plantations", "18"]
+      ],
+      "testimony": [
+        {
+          "who": "Hsü A-fa",
+          "hanzi": "許阿發",
+          "text": "I asked where Havana was, and was told that it was the name of a vessel. I, in consequence, thought I was being engaged for service on board ship and signed the contract.",
+          "p": "11–12"
+        },
+        {
+          "who": "Hsieh A-fa",
+          "hanzi": "謝阿發",
+          "text": "At the time of signing the contract, I was told that one foreign year equalled six Chinese months.",
+          "p": "12"
+        },
+        {
+          "who": "The petition of Li Chao-ch'un and 165 others",
+          "hanzi": "李肇春",
+          "text": "When the contracts are being translated much is passed over, only a few clauses are read out, and Annan or Singapore is stated to be the destination, so that, as we are not deprived of all hope of return, it seems better, to avoid immediate death, to affix our signatures, and to embark.",
+          "p": "11"
+        },
+        {
+          "who": "T'ang Yü and 6 others",
+          "hanzi": "湯玉",
+          "text": "The contracts were read to us, but we did not know what they contained.",
+          "p": "12"
+        }
+      ],
+      "compare": "Gladstone's recruits were promised wages and a return passage. So were these men. Put the two recruitments side by side: what is the same about how each was sold to the people who signed, and what does the difference in destination — a colony that had abolished slavery, and a colony that had not — change about what happened next?",
+      "camera": { "center": [-40, 20], "zoom": 1.9 },
+      "layers": ["chinacuba", "indenture"]
+    },
+
+    {
+      "id": "cc-blackwater",
+      "step": "blackwater",
+      "kicker": "The China–Cuba Connection",
+      "title": "The other black water",
+      "lead": "The book gives you the kali pani — the ocean a Hindu could not cross without losing caste, and a voyage that could take twenty-seven weeks. The Pacific crossing to Cuba was its twin, and the Commission put a number on what it cost.",
+      "theBook": "The journey could take twenty-seven weeks, far longer than the Middle Passage. On the ships people began calling each other jahajii-bhai — ship brothers.",
+      "theBookP": "103",
+      "theReport": "\"Of the more than 140,000 Chinese who sailed for Cuba, more than 16,000 died during the voyages, a fact which is sufficient evidence of the absence of effective regulations.\" That is roughly one death in nine — and the Commissioners noted that the ships flew many different flags, so no single set of rules applied to any of them.",
+      "theReportP": "12",
+      "numbers": [
+        ["16,000+", "died at sea", "12"],
+        ["1 in 9", "of everyone who embarked", "12"],
+        ["$1", "for a single cup of water on board", "12"]
+      ],
+      "testimony": [
+        {
+          "who": "The petition of Li Chao-ch'un and 165 others",
+          "hanzi": "李肇春",
+          "text": "When, quitting Macao, we proceeded to sea, we were confined in the hold below; some were even shut up in bamboo cages, or chained to iron posts, and a few were indiscriminately selected and flogged as a means of intimidating all others; whilst we cannot estimate the deaths that, in all, took place, from sickness, blows, hunger, thirst, or from suicide by leaping into the sea.",
+          "p": "12"
+        },
+        {
+          "who": "The petition of Yeh Fu-chün and 52 others",
+          "hanzi": "葉福君",
+          "text": "The winds and waves on the ocean were great, and three months had passed away, but we had not arrived; as there was no water issued it had to be bought, and for a single cup a dollar was paid. The hatchway only allowed one man at a time to come down or go up, and the stench below from the crowd of men was most offensive.",
+          "p": "12"
+        },
+        {
+          "who": "The petition of Ch'iu Pi-shan and 35 others",
+          "hanzi": "邱碧山",
+          "text": "If the master be a good man the sufferings are only those produced by grave maladies, but if his disposition be cruel there is no limit to the ill-usage, and there have been cases when more than half the number on board have died. Ten thousand hardships have to be endured during the voyage of several months.",
+          "p": "12"
+        },
+        {
+          "who": "The petition of Tiao Mu and 30 others",
+          "hanzi": "刁木",
+          "text": "Many die from sickness, and many jump into the sea to be devoured by the fish.",
+          "p": "12"
+        }
+      ],
+      "compare": "The book's song of indenture promises 'mines of gold' and 'food in utensils of gold.' These men were told the destination was Annam or Singapore. Both crossings were sold with a story. Using the two together, write down what the recruiters had to hide, and why an ocean was the thing that made hiding it possible.",
+      "camera": { "center": [-170, 22], "zoom": 1.15 },
+      "layers": ["chinacuba"]
+    },
+
+    {
+      "id": "cc-inbetween",
+      "step": "inbetween",
+      "kicker": "The China–Cuba Connection",
+      "title": "The men-market at Havana",
+      "lead": "This is the step where the book asks its hardest question — slavery, or freedom, or the in-between? In 1874 three officials went to Cuba to answer exactly that question about a different group of workers, and wrote down what they were told.",
+      "theBook": "Seven hours' work for about twenty-four cents a day … Life, one historian wrote, was like being a prisoner on parole.",
+      "theBookP": "105",
+      "theReport": "The Commissioners' own finding was blunter. Men who were sold on landing, resold between employers, forced into new contracts when the first expired, and shut in dépôts if they refused, \"cannot be regarded as occupying a position different from that of the negroes whose servitude has so long existed in the island.\"",
+      "theReportP": "59",
+      "numbers": [
+        ["8 years", "the contract term signed at Macao", "23"],
+        ["20 of 24", "hours worked, by the workers' account", "18"],
+        ["77 of 82", "men resold, in one deponent's shipload", "59"]
+      ],
+      "testimony": [
+        {
+          "who": "The petition of Li Chao-ch'un and 165 others",
+          "hanzi": "李肇春",
+          "text": "At Havana, after a detention at the quarantine station our queues were cut, and we awaited in the men-market the inspection of a buyer, and the settlement of the price.",
+          "p": "18"
+        },
+        {
+          "who": "The petition of Yeh Fu-chün and 52 others",
+          "hanzi": "葉福君",
+          "text": "When offered for sale in the men-market we were divided into three classes — 1st, 2nd and 3rd, and were forced to remove all our clothes, so that our persons might be examined and the price fixed. This covered us with shame.",
+          "p": "18"
+        },
+        {
+          "who": "Chiang San",
+          "hanzi": "江三",
+          "text": "In the Havana barracoon, for refusing to permit the removal of my queue, I was beaten almost to death.",
+          "p": "18"
+        },
+        {
+          "who": "Liu A-jui",
+          "hanzi": "劉阿瑞",
+          "text": "I am treated exactly like a negro slave.",
+          "p": "59"
+        },
+        {
+          "who": "Hsü Shao-lin",
+          "hanzi": "徐紹麟",
+          "text": "The inhabitants are accustomed to employ the negro slaves, but their treatment of us is even worse than that of the latter.",
+          "p": "59"
+        },
+        {
+          "who": "Li A-pao",
+          "hanzi": "李阿保",
+          "text": "I was originally sold to a railway company for $238; at the close of three years I was disposed of to a jeweller for $170; and afterwards I redeemed myself by an outlay of $306.",
+          "p": "59"
+        },
+        {
+          "who": "The petition of Li Chao-ch'un and 165 others",
+          "hanzi": "李肇春",
+          "text": "The administrator who forces the Chinese to work 20 hours out of the 24 is a man of capacity, if he extorts 21 hours his qualities are of a still higher order, but he may strike, or flog, or chain us, as his fancy suggests to him. If we complain of sickness we are beaten and starved; if we work slowly dogs are urged after us to bite us.",
+          "p": "18"
+        },
+        {
+          "who": "The petition of Wu A-fa and 39 others",
+          "hanzi": "吳阿發",
+          "text": "Foreigners in no way consider themselves bound by the provisions of the contracts. After the eight years are completed they refuse us the cedulas and we are forced to remain slaves in perpetuity.",
+          "p": "23"
+        },
+        {
+          "who": "The petition of Jên Shih-chên and 2 others",
+          "hanzi": "任世貞",
+          "text": "At the end of the contract term, when we thought that we would be able to procure other and better remunerated employment, our employer delivered us to the dépôt, whence on the following day we were sent out to labour in chains, on the roads, receiving no wages, and in every way treated like criminals of the jail. Afterwards we were forced to sign fresh contracts… so that by means of these successive engagements, not one day of freedom was accorded to us.",
+          "p": "43"
+        }
+      ],
+      "compare": "The book says the indentured 'were still individuals. Their names were written down.' So were these men — that is why you can read their words. Take one deposition above and one detail from the book's account of indenture in British Guiana, and argue whether 'the in-between' is the right description for both, for one, or for neither.",
+      "camera": { "center": [-82.36, 23.11], "zoom": 8.4 },
+      "layers": ["chinacuba"]
+    },
+
+    {
+      "id": "cc-bechu",
+      "step": "bechu",
+      "kicker": "The China–Cuba Connection",
+      "title": "1,176 people testify — twenty-two years before Bechu",
+      "lead": "Bechu's weapon was a letter to a newspaper. In Cuba in 1874 the same weapon was used on a scale that is hard to take in: over seven weeks, 1,176 men gave depositions and 85 petitions were handed in carrying 1,665 signatures.",
+      "theBook": "From 1896 he published letters in the elite papers exposing how planters got around the contracts by paying 'by the task' rather than by the day.",
+      "theBookP": "112",
+      "theReport": "The Commissioners recorded that they conducted every examination \"verbally and in person by ourselves,\" and that the local officials fixed the hours at which the dépôts and prisons could be entered, while plantations could be visited only with the owner's assent. Men still queued to speak. Some of them stated in their depositions that they expected to be punished for it.",
+      "theReportP": "3–4",
+      "numbers": [
+        ["1,176", "depositions taken", "4"],
+        ["85", "petitions handed in", "4"],
+        ["1,665", "signatures on them", "4"]
+      ],
+      "testimony": [
+        {
+          "who": "Chu Chia-hsien",
+          "hanzi": "朱甲先",
+          "text": "As I saw Liu A-k'o receive 150 lashes dealt with severity, I, in indignation, proceeded to Havana in order to prefer a charge against the overseer. The official gave no heed to me, but sent me back to the plantation, where an exactly similar chastisement was inflicted upon me. The flogging continued from 8 to 10 a.m., and an hour afterwards Liu A-k'o threw himself into a sugar caldron.",
+          "p": "31"
+        },
+        {
+          "who": "Lin Kuei-hsing",
+          "hanzi": "林貴興",
+          "text": "On the plantation, though wrongs of every kind have to be endured, there are no means of preferring complaints, as all egress is prohibited.",
+          "p": "31"
+        },
+        {
+          "who": "The petition of Ts'ai 'Heng and 79 others",
+          "hanzi": "蔡恒",
+          "text": "The paper without which we could not move a single step was refused, but we had no means of complaint or protest in regard to this injustice.",
+          "p": "23"
+        },
+        {
+          "who": "The petition of Yang Yün and 130 others",
+          "hanzi": "楊允",
+          "text": "The contracts signed at Macao were for a term of eight years, but here we find there is no limit to our labours.",
+          "p": "23"
+        }
+      ],
+      "compare": "Bechu wrote alone and was doubted — some readers refused to believe he was even Indian. These men testified in their thousands to officials sent by their own government. Compare the two kinds of evidence: which was harder to dismiss, and why? What did each one need in order to exist at all?",
+      "camera": { "center": [-80.6, 22.7], "zoom": 6.6 },
+      "layers": ["chinacuba"]
+    },
+
+    {
+      "id": "cc-paradise",
+      "step": "paradise",
+      "kicker": "The China–Cuba Connection",
+      "title": "The same villages, a different ocean",
+      "lead": "The book says Hawaii's growers 'brought only men from China,' then switched to Japan when the Chinese asked for better wages. Those men came from the same handful of districts in Guangdong that sent men to Cuba — often the same decade, sometimes the same county.",
+      "theBook": "Growers brought only men from China, then — when the Chinese began asking for better wages — men from Japan, then Filipinos, Koreans and Portuguese, each group set against the last.",
+      "theBookP": "98",
+      "theReport": "The Report names the home district of deponent after deponent, and the same county names keep returning: Nanhai, Panyu, Xiangshan, Shunde, Xinhui, Xinning, Kaiping, Dongguan, Huizhou, Yangjiang. Nearly all of them lie within about 150 km of Canton. This was not emigration from 'China'. It was emigration from one river delta.",
+      "theReportP": "12, 71–80",
+      "numbers": [
+        ["24", "home districts named in the Report", "—"],
+        ["4 ports", "Macao, Amoy, Swatow, Canton", "7"],
+        ["99,149", "shipped from Macao alone", "7"]
+      ],
+      "testimony": [
+        {
+          "who": "Hsieh A-hsing",
+          "hanzi": "謝阿興",
+          "text": "I saw a native of Hweichow, by name Lin A-fa, and a native of Hiangshan, by name A-man, killed by blows. Another man, too, who was placed in foot irons, wounded on the legs by blows, and deprived of food, hanged himself.",
+          "p": "76"
+        },
+        {
+          "who": "Ch'ên Hua",
+          "hanzi": "陳華",
+          "text": "On the plantation I saw a native of Sinhwei, by name Huang A-fang, who worked in the sugar storehouse and who was detected asleep, beaten and bitten to death by dogs incited to attack him.",
+          "p": "76"
+        },
+        {
+          "who": "Li A-pei",
+          "hanzi": "李阿北",
+          "text": "The name on my contract was Lin Jih, a native of Yangkiang.",
+          "p": "11"
+        },
+        {
+          "who": "Li Ming",
+          "hanzi": "李明",
+          "text": "When being inspected by the Portuguese official I declared that, as my parents were living I did not wish to proceed abroad, and was then assured by the latter functionary that, if on arrival in Cuba I was dissatisfied, the cost of a passage back would be supplied to me.",
+          "p": "11"
+        }
+      ],
+      "compare": "Hawaii, Cuba, Peru, California and the goldfields of Australia were all recruiting in the same delta at the same time. Turn on the origins layer and look at how small the area is. What does that tell you about how labour recruitment actually worked — and about what was happening in those particular counties in the 1850s and 1860s?",
+      "camera": { "center": [113.5, 23.0], "zoom": 6.0 },
+      "layers": ["chinacuba"]
+    }
+  ],
+
+  "itinerary": {
+    "note": "The Commission's route, 17 March – 8 May 1874, exactly as the Commissioners set it out on pp. 2–3. Dates in square brackets in the Report are the Gregorian equivalents of the Chinese lunar dates; those are the dates used here.",
+    "p": "2–3",
+    "stops": [
+      {
+        "id": "cc-havana",
+        "n": 1,
+        "name": "Havana",
+        "lon": -82.3589,
+        "lat": 23.1136,
+        "from": "1874-03-17",
+        "to": "1874-04-04",
+        "dateLabel": "17 March – 4 April 1874",
+        "certainty": "located",
+        "sites": ["Mr Ibañez's barracoon", "the dépôt", "the jail", "the plantation Las Cañas"],
+        "text": "The Commissioners reached Havana on 17 March and called on the Captain General, the Governor, the Commission of Colonization and eleven consuls before beginning work. They opened the enquiry in a barracoon on 20 March, moved to the dépôt, and spent 30–31 March and 1 April in the jail.",
+        "testimony": {
+          "who": "The petition of Chang Ting-chia and 127 others",
+          "hanzi": "張定加",
+          "text": "On landing at Havana we were exposed for sale, our persons being examined by intending purchasers, in a manner shameless and before unheard of by us.",
+          "p": "18"
+        }
+      },
+      {
+        "id": "cc-lascanas",
+        "n": 2,
+        "name": "The plantation Las Cañas",
+        "lon": -81.9,
+        "lat": 22.95,
+        "from": "1874-04-03",
+        "to": "1874-04-04",
+        "dateLabel": "3–4 April 1874",
+        "certainty": "approximate",
+        "sites": ["a sugar plantation"],
+        "text": "The first plantation the Commission was allowed onto. The Report names it only as \"Las Cañas\" and gives no jurisdiction; more than one estate carried that name. It is pinned to the Havana–Matanzas sugar corridor, which is as precise as the Report allows.",
+        "testimony": null
+      },
+      {
+        "id": "cc-matanzas",
+        "n": 3,
+        "name": "Matanzas",
+        "lon": -81.575,
+        "lat": 23.0411,
+        "from": "1874-04-08",
+        "to": "1874-04-13",
+        "dateLabel": "from 8 April 1874",
+        "certainty": "located",
+        "sites": ["the dépôt", "the prison", "San Cayetano", "Concepción", "Armonía"],
+        "text": "The first stop outside the capital, and the first time the Commission worked through a dépôt, a prison and three plantations in the same jurisdiction.",
+        "testimony": null
+      },
+      {
+        "id": "cc-cardenas",
+        "n": 4,
+        "name": "Cárdenas",
+        "lon": -81.205,
+        "lat": 23.0378,
+        "from": "1874-04-14",
+        "to": "1874-04-17",
+        "dateLabel": "from 14 April 1874",
+        "certainty": "located",
+        "sites": ["the dépôt", "the prison", "Esperanza", "Recreo", "San Antonio"],
+        "text": "Three plantations here, and a side trip to the neighbouring town the Report spells Cimmarones.",
+        "testimony": null
+      },
+      {
+        "id": "cc-cimarrones",
+        "n": 5,
+        "name": "Cimmarones",
+        "lon": -81.13,
+        "lat": 22.87,
+        "from": "1874-04-14",
+        "to": "1874-04-17",
+        "dateLabel": "mid-April 1874",
+        "certainty": "approximate",
+        "sites": ["the town"],
+        "text": "\"A visit was also paid to the adjacent town of Cimmarones.\" The Report gives no more than that. The town is now Carlos Rojas, in Matanzas province.",
+        "testimony": null
+      },
+      {
+        "id": "cc-colon",
+        "n": 6,
+        "name": "Colón",
+        "lon": -80.9075,
+        "lat": 22.7208,
+        "from": "1874-04-18",
+        "to": "1874-04-20",
+        "dateLabel": "from 18 April 1874",
+        "certainty": "located",
+        "sites": ["the dépôt", "the prison", "España", "Flor de Cuba"],
+        "text": "The Colón dépôt appears again and again in the depositions taken elsewhere on the island — men whose cédulas were seized were sent here.",
+        "testimony": {
+          "who": "Yang A-t'ien",
+          "hanzi": "楊阿田",
+          "text": "I came to Cuba in a ship from California, on board of which I was employed, and losses by gambling compelling me to remain, I was seized and placed in the dépôt of this city (Colon). I have now been here four months, receiving no wages and constantly beaten. Chinese are certainly treated as if they were fowls or dogs.",
+          "p": "53"
+        },
+        "testimony2": {
+          "who": "Liang A-po",
+          "hanzi": "梁阿鉑",
+          "text": "In the Colon dépôt I have seen two men beaten for breaking wind.",
+          "p": "53"
+        }
+      },
+      {
+        "id": "cc-sagua",
+        "n": 7,
+        "name": "Sagua la Grande",
+        "lon": -80.0742,
+        "lat": 22.8117,
+        "from": "1874-04-21",
+        "to": "1874-04-23",
+        "dateLabel": "from 21 April 1874",
+        "certainty": "located",
+        "sites": ["the dépôt", "the prison", "Santa Anna", "Santa Isabella", "Capitolis"],
+        "text": "At Sagua a deponent pointed out of the window. The church he was describing was the one standing in front of the hotel the Commissioners were sitting in.",
+        "testimony": {
+          "who": "Wên Ch'ang-t'ai",
+          "hanzi": "文長泰",
+          "text": "Seven years ago Chinese of every class, those who had completed their contracts and those who had not, were forced to labour in the construction of the church which stands in front of this hotel. A white man was in charge of every four Chinese, and the slightest slowness on the part of the latter was punished by blows. I myself saw within a very brief space of time, seven men commit suicide by jumping into wells.",
+          "p": "52"
+        }
+      },
+      {
+        "id": "cc-cienfuegos",
+        "n": 8,
+        "name": "Cienfuegos",
+        "lon": -80.4444,
+        "lat": 22.1461,
+        "from": "1874-04-24",
+        "to": "1874-04-27",
+        "dateLabel": "from 24 April 1874",
+        "certainty": "located",
+        "sites": ["the dépôt", "the prison", "Juniata", "Candelaria"],
+        "text": "The southernmost point of the tour, and the closest the Commission came to the districts the Report describes as held by insurgents.",
+        "testimony": null
+      },
+      {
+        "id": "cc-guanajay",
+        "n": 9,
+        "name": "Guanajay",
+        "lon": -82.69,
+        "lat": 22.9269,
+        "from": "1874-04-28",
+        "to": "1874-05-01",
+        "dateLabel": "from 28 April 1874",
+        "certainty": "located",
+        "sites": ["the dépôt", "the prison"],
+        "text": "A dépôt and a prison, no plantations. The quarantine station at Mariel, where most arriving ships were held before being allowed on to Havana, lies just up the coast from here.",
+        "testimony": {
+          "who": "Liang Yu-tê",
+          "hanzi": "梁有德",
+          "text": "Having entered into conversation with three Chinese whom I met on the street, I was arrested by the police on the charge of inciting them to run away. I was confined in the Guanajay jail. The food is not sufficient, but on bribing the jailer, an improvement takes place.",
+          "p": "56"
+        }
+      },
+      {
+        "id": "cc-sanantonio",
+        "n": 10,
+        "name": "San Antonio de los Baños",
+        "lon": -82.5033,
+        "lat": 22.8869,
+        "from": "1874-05-01",
+        "to": "1874-05-01",
+        "dateLabel": "on the road back, about 1 May 1874",
+        "certainty": "approximate",
+        "sites": ["passed through"],
+        "text": "\"Returning to Havana viâ the town of San Antonio.\" The Commissioners noted that besides the official visits, \"in the places where we stayed, as well as on the road, independent enquiries were instituted\" — so the road itself is part of the record.",
+        "testimony": null
+      },
+      {
+        "id": "cc-guanabacoa",
+        "n": 11,
+        "name": "Guanabacoa",
+        "lon": -82.3,
+        "lat": 23.1272,
+        "from": "1874-05-02",
+        "to": "1874-05-02",
+        "dateLabel": "2 May 1874",
+        "certainty": "located",
+        "sites": ["the town", "the Regla sugar-warehouse", "the Santa Catalina sugar-warehouse"],
+        "text": "The last day of fieldwork, and the only stop aimed at the warehouses rather than the fields — the end of the sugar chain rather than its beginning. Chinese men worked here for the Guanabacoa railway company as well.",
+        "testimony": {
+          "who": "The petition of Huang Erh and 5 others",
+          "hanzi": "黃二",
+          "text": "Last year in the 3rd moon our contracts expired, but still we have been kept at work up to this date. More than a year has thus already elapsed and the superintendent (of the Guanabacoa Railway Co.) declares that he desires us to enter into other contracts for four years.",
+          "p": "43"
+        }
+      },
+      {
+        "id": "cc-departure",
+        "n": 12,
+        "name": "Havana — departure",
+        "lon": -82.3589,
+        "lat": 23.1136,
+        "from": "1874-05-08",
+        "to": "1874-05-08",
+        "dateLabel": "8 May 1874",
+        "certainty": "located",
+        "sites": ["sailed"],
+        "text": "\"Our stay in Cuba, commencing on the 29th of the 1st moon [17th March], ended on the 23rd of the 3rd moon [8th May]. Almost every Chinese met during this period was, or had been, undergoing suffering, and suffering was the purport of almost every word heard; and these men were seen by us all, and these words were heard by us all.\"",
+        "testimony": null
+      }
+    ]
+  },
+
+  "ports": [
+    { "id": "cc-macao", "name": "Macao", "lon": 113.5439, "lat": 22.1987, "n": 99149, "text": "The single largest source: 63,455 men to 1866, then 35,694 more. The Report points out that the second figure was shipped after the 1866 Emigration Convention had specifically excluded Macao as a place where labourers could be engaged.", "p": "7" },
+    { "id": "cc-canton", "name": "Canton", "lon": 113.2644, "lat": 23.1291, "text": "Named as one of the four main ports of embarkation.", "p": "7" },
+    { "id": "cc-whampoa", "name": "Whampoa", "lon": 113.4333, "lat": 23.0833, "text": "Canton's deep-water anchorage, named separately in the Report.", "p": "7" },
+    { "id": "cc-hongkong", "name": "Hong Kong", "lon": 114.1694, "lat": 22.3193, "text": "Grouped with Swatow, Canton, Whampoa, Amoy, Annam and Manila in a single total of 43,273.", "p": "7" },
+    { "id": "cc-swatow", "name": "Swatow", "lon": 116.6822, "lat": 23.3541, "text": "The Chaozhou-speaking port. Deponents from Ch'aochow and Hweilai sailed from here.", "p": "7" },
+    { "id": "cc-amoy", "name": "Amoy", "lon": 118.0894, "lat": 24.4798, "text": "The Fujian port. Deponents from Changchow and Ts'üanchow sailed from here.", "p": "7" },
+    { "id": "cc-manila", "name": "Manila", "lon": 120.9842, "lat": 14.5995, "text": "Named in the Report's list of embarkation points. Thirty-five men who sailed from here gave depositions; all but one said they were kidnapped or decoyed.", "p": "7" },
+    { "id": "cc-annam", "name": "Annam", "lon": 108.2, "lat": 16.05, "text": "Named in the Report's list. Also, with Singapore, one of the false destinations recruiters gave men at the moment of signing.", "p": "7, 11" }
+  ],
+
+  "destination": { "id": "cc-havana-port", "name": "Havana", "lon": -82.3589, "lat": 23.1136, "text": "Ships were required to land at Havana except in emergency, after quarantine at Mariel near Guanajay.", "p": "17" },
+
+  "origins": [
+    { "name": "Nanhai", "hanzi": "南海", "lon": 113.15, "lat": 23.03 },
+    { "name": "Panyü", "hanzi": "番禺", "lon": 113.38, "lat": 22.94 },
+    { "name": "Hiangshan", "hanzi": "香山", "lon": 113.39, "lat": 22.52 },
+    { "name": "Shunteh", "hanzi": "順德", "lon": 113.29, "lat": 22.8 },
+    { "name": "Sinhwei", "hanzi": "新會", "lon": 113.03, "lat": 22.46 },
+    { "name": "Sinning", "hanzi": "新寧", "lon": 112.79, "lat": 22.25 },
+    { "name": "K'aip'ing", "hanzi": "開平", "lon": 112.7, "lat": 22.38 },
+    { "name": "Hoshan", "hanzi": "鶴山", "lon": 112.96, "lat": 22.77 },
+    { "name": "Tungkwan", "hanzi": "東莞", "lon": 113.75, "lat": 23.02 },
+    { "name": "Sanshui", "hanzi": "三水", "lon": 112.87, "lat": 23.16 },
+    { "name": "Kaoming", "hanzi": "高明", "lon": 112.79, "lat": 22.9 },
+    { "name": "Kaoyao", "hanzi": "高要", "lon": 112.46, "lat": 23.03 },
+    { "name": "Hwa", "hanzi": "花縣", "lon": 113.22, "lat": 23.4 },
+    { "name": "Polo", "hanzi": "博羅", "lon": 114.29, "lat": 23.18 },
+    { "name": "Kweishan", "hanzi": "歸善", "lon": 114.41, "lat": 23.08 },
+    { "name": "Hweichow", "hanzi": "惠州", "lon": 114.41, "lat": 23.11 },
+    { "name": "Hoyüen", "hanzi": "河源", "lon": 114.7, "lat": 23.74 },
+    { "name": "Yangkiang", "hanzi": "陽江", "lon": 111.98, "lat": 21.86 },
+    { "name": "Yangch'un", "hanzi": "陽春", "lon": 111.79, "lat": 22.17 },
+    { "name": "Kaochow", "hanzi": "高州", "lon": 110.85, "lat": 21.92 },
+    { "name": "Hweilai", "hanzi": "惠來", "lon": 116.3, "lat": 23.03 },
+    { "name": "Ch'aochow", "hanzi": "潮州", "lon": 116.62, "lat": 23.66 },
+    { "name": "Changchow", "hanzi": "漳州", "lon": 117.65, "lat": 24.51 },
+    { "name": "Ts'üanchow", "hanzi": "泉州", "lon": 118.59, "lat": 24.87 }
+  ],
+  "originsNote": "Every district named as a deponent's birthplace in the English version of the Report. Twenty-two of the twenty-four are in Guangdong or the neighbouring Fujian coast; the Report also names single deponents from Chihli, Hunan, Kiangsi and Shanghai, who are not mapped here because one man is not a pattern.",
+  "originsP": "12, 71–80"
+}
