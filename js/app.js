@@ -176,16 +176,24 @@ function onMapLoad() {
 
   /* pointer + popups */
   const clickable = ['diff-node', 'plant-c', 'st-emb', 'st-dest', 'sph-node', 'free-c', 'ind-o', 'ind-d', 'sci-c',
-                     'cc-port', 'cc-origin'];
+                     'cc-port', 'cc-origin', 'cc-call'];
   clickable.forEach(id => {
     map.on('mouseenter', id, () => map.getCanvas().style.cursor = 'pointer');
     map.on('mouseleave', id, () => map.getCanvas().style.cursor = '');
     map.on('click', id, e => showPopup(e.features[0], e.lngLat));
   });
+  /* Lines are registered after the points, so their handler fires last and its popup would
+     win any overlap. That is the wrong way round: a stop sitting exactly on its own route —
+     St Helena and Anjer both do — should open the stop, not the line it sits on. So a line
+     stands down whenever a clickable point is under the same pixel. */
   ['diff-arc', 'sph-flow', 'ind-arc', 'ind-arc2', 'cc-arc', 'cc-route'].forEach(id => {
     map.on('mouseenter', id, () => map.getCanvas().style.cursor = 'pointer');
     map.on('mouseleave', id, () => map.getCanvas().style.cursor = '');
-    map.on('click', id, e => showPopup(e.features[0], e.lngLat));
+    map.on('click', id, e => {
+      const over = map.queryRenderedFeatures(e.point, { layers: clickable.filter(l => map.getLayer(l)) });
+      if (over.length) return;
+      showPopup(e.features[0], e.lngLat);
+    });
   });
 
   buildSourceMarkers();
@@ -341,20 +349,50 @@ function buildThematic() {
     pt(p.lon, p.lat, { ...p, kind: 'cc-port' }))) });
   map.addSource('cc-origin-s', { type: 'geojson', data: fc(CC.origins.map(o =>
     pt(o.lon, o.lat, { ...o, kind: 'cc-origin' }))) });
-  /* Passage arcs, port → Havana. arc() already resolves the antimeridian to the shorter
-     way round, so the destination goes in unmodified — nudging it by 360 here fought that
-     and sent the line the long way west. Like the slave-trade and indenture arcs, these
-     join two points; they are not the track a ship sailed, and the popup says so. */
-  const d = CC.destination;
-  map.addSource('cc-arc-s', { type: 'geojson', data: fc(CC.ports.map(p =>
-    ln(arc([p.lon, p.lat], [d.lon, d.lat], -0.22, 72),
-      { kind: 'cc-arc', name: `${p.name} → Havana`, n: p.n || null, p: p.p }))) });
+  /* The passage. This used to be a single bent arc from each port straight to Havana,
+     which drew a line across Central America — not a simplification but a falsehood, since
+     no ship ever sailed it and the Pacific route to Cuba was rejected outright. The track
+     below is the real one: west by the Sunda Strait, the Cape of Good Hope and the South
+     Atlantic. Waypoints live in china-cuba.json and are a reconstruction of the standard
+     course, not a page of the Report — the popup and the legend both say so.
+     The trunk carries the common route; each departure port joins it by a short feeder to
+     the nearest point on the track, so eight ports do not redraw the same ocean eight times. */
+  const way = CC.passage.map(w => [w.lon, w.lat]);
+  const joinPoint = p => {
+    let best = way[0], bd = Infinity;
+    way.forEach(w => {
+      /* Rough equirectangular distance is plenty for picking a join — all the ports sit in
+         the same corner of the map, and cos(lat) keeps longitude honest at 20°N. */
+      const dx = (w[0] - p.lon) * Math.cos(p.lat * Math.PI / 180), dy = w[1] - p.lat;
+      const dd = dx * dx + dy * dy;
+      if (dd < bd) { bd = dd; best = w; }
+    });
+    return best;
+  };
+  map.addSource('cc-arc-s', { type: 'geojson', data: fc([
+    ln(way, { kind: 'cc-passage', trunk: 1, name: 'The passage to Havana' }),
+    ...CC.ports.map(p => ln(arc([p.lon, p.lat], joinPoint(p), -0.1, 24),
+      { kind: 'cc-arc', name: `${p.name} → the passage`, n: p.n || null, p: p.p }))
+  ]) });
+  /* The two victualling stops. Without them the track is just a line; these are why it
+     bends where it does, and they are the only two places the men saw in five months. */
+  map.addSource('cc-call-s', { type: 'geojson', data: fc(
+    CC.passage.filter(w => w.stop).map(w => pt(w.lon, w.lat, { ...w, kind: 'cc-call' }))) });
 
+  /* The trunk reads as the route; the feeders are deliberately lighter and thinner so the
+     eye follows the ocean track rather than the eight short stubs on the China coast. */
   map.addLayer({ id: 'cc-arc', type: 'line', source: 'cc-arc-s',
-    layout: { visibility: 'none', 'line-cap': 'round' },
+    layout: { visibility: 'none', 'line-cap': 'round', 'line-join': 'round' },
     paint: { 'line-color': '#8a5a2b',
-      'line-width': ['case', ['>', ['coalesce', ['get', 'n'], 0], 50000], 2.6, 1.5],
-      'line-opacity': 0.6 } });
+      /* The zoom interpolation has to be the outermost expression — MapLibre rejects a
+         zoom curve nested inside a case, and rejects it by refusing to add the layer at
+         all rather than by falling back, so the whole passage silently vanishes. */
+      'line-width': ['interpolate', ['linear'], ['zoom'],
+        1, ['case', ['==', ['coalesce', ['get', 'trunk'], 0], 1], 2.4,
+                    ['>', ['coalesce', ['get', 'n'], 0], 50000], 2.0, 1.2],
+        5, ['case', ['==', ['coalesce', ['get', 'trunk'], 0], 1], 3.6,
+                    ['>', ['coalesce', ['get', 'n'], 0], 50000], 2.8, 1.8]],
+      'line-opacity': ['case', ['==', ['coalesce', ['get', 'trunk'], 0], 1], 0.85, 0.5] } });
   map.addLayer({ id: 'cc-route', type: 'line', source: 'cc-route-s',
     layout: { visibility: 'none', 'line-cap': 'round', 'line-join': 'round' },
     paint: { 'line-color': '#7a2f6b', 'line-width': 2.4, 'line-opacity': 0.85 } });
@@ -366,6 +404,11 @@ function buildThematic() {
     layout: { visibility: 'none' },
     paint: { 'circle-radius': ['interpolate', ['linear'], ['zoom'], 1, 5, 6, 11],
       'circle-color': '#8a5a2b', 'circle-stroke-width': 2, 'circle-stroke-color': '#fbf8f2' } });
+  /* Hollow, to read as a place touched in passing rather than a place men were shipped from. */
+  map.addLayer({ id: 'cc-call', type: 'circle', source: 'cc-call-s',
+    layout: { visibility: 'none' },
+    paint: { 'circle-radius': ['interpolate', ['linear'], ['zoom'], 1, 3.5, 6, 8],
+      'circle-color': '#fbf8f2', 'circle-stroke-width': 2.2, 'circle-stroke-color': '#8a5a2b' } });
   /* The twelve stops are HTML markers rather than a circle layer, because the number has
      to be readable and this style carries no glyphs endpoint — the same reason the place
      labels and graticule labels are HTML. */
@@ -825,16 +868,26 @@ function showPopup(f, lngLat) {
   } else if (p.kind === 'cc-origin') {
     html += `<p>A home district named by deponents in the Report${p.hanzi ? ` — <span class="hz">${esc(p.hanzi)}</span>` : ''}.</p>`;
   } else if (p.kind === 'cc-arc') {
-    html += `<p>The passage to Havana${p.n ? `, ${(+p.n).toLocaleString()} men` : ''}. The line joins the two ports; it is not the course a ship steered. Ships took three to six months and went by the Cape of Good Hope or round Cape Horn.</p>`;
+    html += `<p>Where ships out of ${esc(p.name.replace(' → the passage', ''))} joined the passage${p.n ? ` — ${(+p.n).toLocaleString()} men shipped from here` : ''}.</p>`;
+  } else if (p.kind === 'cc-passage') {
+    html += `<p>The course to Havana: down the South China Sea, through the Sunda Strait, across the Indian Ocean below the equator, round the <b>Cape of Good Hope</b>, north on the Benguela Current, then west across the Atlantic to the Guianas and into the Caribbean between Trinidad and Barbados. Cuba was approached from underneath and entered round its western cape.</p>
+      <p>Some 14,000–15,000 nautical miles, four to five months. Ships went <b>west, not east</b> — the Pacific and Cape Horn route was rejected as too cold and too dangerous for men carried with almost no clothing.</p>`;
+  } else if (p.kind === 'cc-call') {
+    html += `<p>${esc(p.note || 'A victualling stop on the passage.')}</p>`;
   } else if (p.kind === 'cc-route') {
     html += `<p>The route of the Chinese Commission through Cuba, 17 March – 8 May 1874. Click a numbered stop to see what was found there.</p>`;
   } else {
     if (p.text) html += `<p>${esc(p.text)}</p>`;
     if (p.label && p.kind === 'diff-arc') html += `<p>${esc(p.label)}</p>`;
   }
-  /* Two books are cited on this map, so the pin has to say which one it came from. */
+  /* Two books are cited on this map, so the pin has to say which one it came from. The
+     passage and its two calls are a third case: they come from neither book. The Report
+     recorded where the men embarked and landed, not the course steered, so the track is a
+     reconstruction and must not borrow the Report's authority. */
   const ccKinds = ['cc-port', 'cc-origin', 'cc-arc', 'cc-route'];
-  if (ccKinds.includes(p.kind))
+  if (p.kind === 'cc-passage' || p.kind === 'cc-call')
+    html += `<div class="cite">Reconstructed sailing route — outside the Report</div>`;
+  else if (ccKinds.includes(p.kind))
     html += `<div class="cite">Cuba Commission Report${p.p ? `, p. ${esc(p.p)}` : ''}</div>`;
   else if (p.p && p.p !== '—') html += `<div class="cite">Sugar Changed the World, p. ${esc(p.p)}</div>`;
   html += '</div>';
@@ -983,7 +1036,7 @@ const GROUPS = {
   spherical: ['sph-flow', 'sph-node'],
   freedom: ['free-c'],
   indenture: ['ind-arc', 'ind-arc2', 'ind-o', 'ind-d'],
-  chinacuba: ['cc-arc', 'cc-route', 'cc-port', 'cc-origin'],
+  chinacuba: ['cc-arc', 'cc-route', 'cc-port', 'cc-origin', 'cc-call'],
   science: ['sci-c']
 };
 
@@ -1032,7 +1085,9 @@ function drawLegend() {
   if (activeLayers.has('indenture')) { rows.push(dot('#2f4a25', 'Recruiting &amp; embarkation')); rows.push(dot('#4a6f3c', 'Destination')); rows.push(line('#4a6f3c', 'Route not named in the book', true)); }
   if (activeLayers.has('chinacuba')) {
     rows.push(dot('#7a2f6b', 'The Commission\u2019s route, 1874'));
+    rows.push(line('#8a5a2b', 'The passage to Havana, by the Cape of Good Hope'));
     rows.push(dot('#8a5a2b', 'Port of embarkation'));
+    rows.push(`<div class="lg"><span class="sw" style="background:#fbf8f2;box-shadow:inset 0 0 0 2px #8a5a2b"></span><span>Victualling stop &mdash; Anjer, St Helena</span></div>`);
     rows.push(dot('#c08a3e', 'Home district named in a deposition'));
   }
   if (activeLayers.has('science')) rows.push(dot('#5d4e86', 'The Age of Science'));
