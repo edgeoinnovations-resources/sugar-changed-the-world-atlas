@@ -494,3 +494,80 @@ fieldset.layers legend{
 .hearbtn.ccjump{border-color:var(--cc);background:rgba(122,47,107,.05)}
 .hearbtn.ccjump:hover{background:rgba(122,47,107,.11)}
 .hearbtn.ccjump .ytmark{background:var(--cc);font-family:var(--serif);font-size:14px;padding-left:0}
+
+/* ═══ THE KNOCK-OUT TAB ═══════════════════════════════════════
+   Built for the machines this is actually used on: laptops and classroom desktops, mouse
+   and keyboard, a panel wide enough to read a cascade without scrolling it out of view.
+   Type follows the atlas's own scale rather than a phone floor — the constraint that set
+   that floor does not apply here — but nothing in the reading path goes under 13px, and
+   the step log, which is the thing being read while the map moves, sits at 14px. */
+.sysh{
+  font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink3);margin:22px 0 9px
+}
+.sysnodes{display:flex;flex-wrap:wrap;gap:6px}
+.sysnode{
+  font-family:var(--sans);font-size:13px;line-height:1.2;
+  padding:7px 11px;border:1px solid var(--rule);border-radius:999px;
+  background:var(--paper);color:var(--ink);cursor:pointer;
+  transition:background .12s,border-color .12s,color .12s
+}
+.sysnode:hover{background:#efe9dc;border-color:#c3b79c}
+.sysnode:focus-visible{outline:2px solid var(--a2);outline-offset:2px}
+.sysnode.out{
+  background:#9c2f2a;border-color:#9c2f2a;color:#fff;font-weight:600;
+  text-decoration:line-through;text-decoration-thickness:1.5px
+}
+.syshint{font-family:var(--sans);font-size:13px;color:var(--ink3);margin:10px 0 0}
+.syshint .ghost{font-size:13px;padding:3px 9px;vertical-align:baseline}
+
+.syslog{
+  border:1px solid var(--rule);border-radius:8px;background:var(--paper);
+  padding:4px 0;max-height:340px;overflow-y:auto
+}
+.sys-line{font-family:var(--sans);font-size:14px;line-height:1.5;padding:8px 13px;border-top:1px solid var(--rule)}
+.sys-line:first-child{border-top:0}
+.sys-line.head{background:#f4eee1;font-size:14px}
+.sys-line.step{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.stepn{
+  flex:0 0 auto;width:21px;height:21px;border-radius:50%;
+  background:#9c2f2a;color:#fff;font-size:12px;font-weight:700;
+  display:inline-flex;align-items:center;justify-content:center;margin-top:1px
+}
+/* a stopped flow is struck through as well as greyed — the map does the same thing, and for
+   the same reason: this tab is entirely about telling apart what still runs and what does not */
+.floline{flex:1 1 190px;cursor:pointer;color:var(--ink3);min-width:0}
+.floline s{display:block;text-decoration-thickness:1.5px;color:#6f675c}
+.floline i{display:block;font-size:13px;font-style:normal;color:#8b8271;margin-top:1px}
+.floline:hover s,.floline:hover i{color:var(--ink)}
+.sys-line.end{background:#f4eee1;font-weight:600}
+.sys-line.end.dark{background:rgba(156,47,42,.09);color:#7d2420}
+.sys-idle{font-family:var(--sans);font-size:13px;color:var(--ink3);padding:11px 13px;margin:0}
+
+.syswhy{border:1px solid var(--rule);border-radius:8px;background:var(--paper);min-height:76px}
+.syswhy>p{font-family:var(--sans);font-size:14px;line-height:1.55;margin:0;padding:0 13px 11px}
+.whyhead{
+  font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.03em;
+  padding:11px 13px 5px;color:var(--ink)
+}
+.whycargo{color:var(--ink3);font-style:italic}
+.whyneeds{border-top:1px solid var(--rule);padding-top:9px !important;margin-top:3px !important}
+.whyneeds em{font-style:normal;font-weight:700;color:#9c2f2a}
+.syswhy .cite{padding:0 13px 11px}
+
+/* the outcome — an effect, not a place, so it is a card and not a pin */
+.cup{
+  display:flex;gap:9px;align-items:center;width:212px;cursor:pointer;
+  background:var(--paper);border:1.5px solid #b8791f;border-radius:9px;
+  padding:9px 11px;box-shadow:var(--shadow);
+  transition:opacity .45s,filter .45s,border-color .45s
+}
+.cup:hover{border-color:#8a5a2b}
+.cupglyph{font-size:21px;line-height:1;flex:0 0 auto}
+.cuptext{font-family:var(--sans);min-width:0}
+.cuptext b{display:block;font-size:13px;line-height:1.3;color:var(--ink)}
+.cupwhat{display:block;font-size:12px;line-height:1.4;color:var(--ink3);margin-top:3px}
+.cup.dark{filter:grayscale(1);opacity:.62;border-color:#9c968b;background:#f1ede4}
+/* only the claim is struck, not the sentence explaining it — a struck-through explanation
+   is the one thing on this card nobody can read */
+.cup.dark .cuptext b{color:#6f675c;text-decoration:line-through;text-decoration-thickness:1.5px}

@@ -119,18 +119,54 @@
       {"id":"coromandel","name":"India","lon":80.27,"lat":13.08}
     ],
     "flows": [
-      {"from":"london","to":"ouidah","cargo":"fabrics, clothes, manufactured goods — about 35% of it originally from India","kind":"goods"},
-      {"from":"ouidah","to":"barbados","cargo":"enslaved people","kind":"people"},
-      {"from":"luanda","to":"jamaica2","cargo":"enslaved people","kind":"people"},
-      {"from":"barbados","to":"london","cargo":"sugar","kind":"sugar"},
-      {"from":"jamaica2","to":"bristol","cargo":"sugar","kind":"sugar"},
-      {"from":"newyork","to":"barbados","cargo":"flour, bread, corn, salted beef, timber","kind":"goods"},
-      {"from":"barbados","to":"newyork","cargo":"sugar, rum, molasses, limes, cocoa, ginger","kind":"sugar"},
-      {"from":"newport","to":"ouidah","cargo":"rum, traded directly for people — cutting Europe out entirely","kind":"people"},
-      {"from":"potosi","to":"manila","cargo":"silver from the mines of Bolivia","kind":"silver"},
-      {"from":"manila","to":"coromandel","cargo":"silver buys Asian goods","kind":"silver"},
-      {"from":"coromandel","to":"london","cargo":"Indian cloth — the thing that buys the people who make the sugar","kind":"goods"}
-    ]
+      {"id":"f-lon-oui","from":"london","to":"ouidah","cargo":"fabrics, clothes, manufactured goods — about 35% of it originally from India","kind":"goods",
+       "requires":[["f-ind-lon"]],
+       "because":"About a third of what left Europe to buy people in Africa was Indian cloth. Without it London has too little of what buyers on the coast will take."},
+      {"id":"f-oui-bar","from":"ouidah","to":"barbados","cargo":"enslaved people","kind":"people",
+       "requires":[["f-lon-oui","f-new-oui"]],
+       "because":"People were bought, not taken for nothing. Either European trade goods or New England rum has to arrive first — either one will do."},
+      {"id":"f-lua-jam","from":"luanda","to":"jamaica2","cargo":"enslaved people","kind":"people",
+       "requires":[["f-lon-oui"]],
+       "because":"The same condition on the other African coast: something has to arrive to trade with."},
+      {"id":"f-bar-lon","from":"barbados","to":"london","cargo":"sugar","kind":"sugar",
+       "requires":[["f-oui-bar"]],
+       "because":"The sugar is made by the people who were landed here. No arrivals, no crop."},
+      {"id":"f-jam-bri","from":"jamaica2","to":"bristol","cargo":"sugar","kind":"sugar",
+       "requires":[["f-lua-jam"]],
+       "because":"The same condition, on the other island."},
+      {"id":"f-ny-bar","from":"newyork","to":"barbados","cargo":"flour, bread, corn, salted beef, timber","kind":"goods",
+       "requires":[],
+       "because":"Grown and cut on North American farms and forests. Nothing on this map has to arrive first."},
+      {"id":"f-bar-ny","from":"barbados","to":"newyork","cargo":"sugar, rum, molasses, limes, cocoa, ginger","kind":"sugar",
+       "requires":[["f-oui-bar"]],
+       "because":"Also made by the people landed at Barbados — the molasses in this hold is what New England distils."},
+      {"id":"f-new-oui","from":"newport","to":"ouidah","cargo":"rum, traded directly for people — cutting Europe out entirely","kind":"people",
+       "requires":[["f-bar-ny"]],
+       "because":"Newport's rum is distilled from Caribbean molasses. Cutting Europe out does not cut out the islands."},
+      {"id":"f-pot-man","from":"potosi","to":"manila","cargo":"silver from the mines of Bolivia","kind":"silver",
+       "requires":[],
+       "because":"Dug out of the mountain. Nothing on this map has to arrive first."},
+      {"id":"f-man-ind","from":"manila","to":"coromandel","cargo":"silver buys Asian goods","kind":"silver",
+       "requires":[["f-pot-man"]],
+       "because":"Manila is a transfer point. What it sends on is the silver that reached it."},
+      {"id":"f-ind-lon","from":"coromandel","to":"london","cargo":"Indian cloth — the thing that buys the people who make the sugar","kind":"goods",
+       "requires":[["f-man-ind"]],
+       "because":"The cloth is bought with silver. No silver, no cloth going west."}
+    ],
+
+    "systemNote": "Explore answers what the parts are and what moves between them. It cannot answer what else stops if one part stops, because a line from A to B does not know what had to reach A first. That is what 'requires' is for. Each flow lists what must arrive before it can run: every group must be satisfied, and within a group any one member will do.",
+    "systemAssumption": "Two readings are built in and worth arguing with. The book draws one European goods flow to Africa, so it stands here for that trade as a whole and both African embarkation flows depend on it. And a flow only counts as running if it can be traced back to something intact — so a loop that holds only itself up (Barbados molasses to Newport, Newport rum to Ouidah, Ouidah people to Barbados) is not enough on its own.",
+    "systemP": "37",
+
+    "outcome": {
+      "id": "teacup",
+      "label": "Cheap sugar in an ordinary English teacup",
+      "lon": -45.0, "lat": 57.0,
+      "requires": [["f-bar-lon","f-jam-bri"]],
+      "because": "Sugar has to reach Britain from somewhere. Either island will do — which is why knocking out one of them is not enough.",
+      "live": "Sugar is cheap enough that an ordinary household sweetens its tea without thinking about it.",
+      "dead": "No cheap sugar. The tea is still tea; the sugar is back to being a luxury for people who can afford a luxury."
+    }
   },
 
   "indenture": {

@@ -15,6 +15,8 @@ let DATA = {}, map, srcMarkers = [], cubaMarkers = [], popup, activeLayers = new
     curEra = 'e2', mode = 'story', playTimer = null, placeMarkers = [],
     gratMarkers = [], globeOn = false, userTurning = false, spinRAF = null, curStep = null,
     musicMarkers = [], callLabels = [];
+const SYS = { flows: [], byId: {}, geom: {}, base: {}, alive: {}, dead: new Set(), knocked: null, flowById: {} };
+let sysRunning = null, sysCupMarker = null;
 const GRAT_LAYERS = ['grat-l', 'grat-polar', 'grat-trop', 'grat-eq'];
 const LAND_SWAP = 5;            // zoom at which the 1:110m base hands over to 1:10m
 
@@ -186,6 +188,15 @@ function onMapLoad() {
      win any overlap. That is the wrong way round: a stop sitting exactly on its own route —
      St Helena and Anjer both do — should open the stop, not the line it sits on. So a line
      stands down whenever a clickable point is under the same pixel. */
+  map.on('mouseenter', 'sys-flow', () => map.getCanvas().style.cursor = 'pointer');
+  map.on('mouseleave', 'sys-flow', () => map.getCanvas().style.cursor = '');
+  map.on('click', 'sys-flow', e => sysShowEvidence({ flow: e.features[0].properties.id }));
+  map.on('mouseenter', 'sys-node', () => map.getCanvas().style.cursor = 'pointer');
+  map.on('mouseleave', 'sys-node', () => map.getCanvas().style.cursor = '');
+  map.on('click', 'sys-node', e => {
+    const id = e.features[0].properties.id;
+    if (id === SYS.knocked) sysReset(); else sysKnockOut(id);
+  });
   ['diff-arc', 'sph-flow', 'ind-arc', 'ind-arc2', 'cc-arc', 'cc-route'].forEach(id => {
     map.on('mouseenter', id, () => map.getCanvas().style.cursor = 'pointer');
     map.on('mouseleave', id, () => map.getCanvas().style.cursor = '');
@@ -200,6 +211,10 @@ function onMapLoad() {
   buildMusicMarkers();
   buildCubaMarkers();
   buildCallLabels();
+  SYS.flowById = Object.fromEntries(SYS.flows.map(f => [f.id, f]));
+  SYS.alive = SYS.base;
+  buildOutcomeCard();
+  setSystemMap(false);
   wireGlobeSpin();
   map.on('move', positionGratLabels);
   map.on('move', updateCubaMarkers);
@@ -292,6 +307,44 @@ function buildThematic() {
     layout: { visibility: 'none' },
     paint: { 'circle-radius': 4.5, 'circle-color': '#3d3226',
       'circle-stroke-width': 2, 'circle-stroke-color': '#fbf8f2' } });
+
+  /* 3b · the system tab's own copy of the spherical trade ---------
+     Same geometry, separate layers. Explore's version must keep reading as the book's
+     argument whatever the System tab is doing to it, and one set of layers cannot be both
+     a picture and a simulation. */
+  SYS.byId = sphById;
+  SYS.flows = D.sphericalTrade.flows;
+  SYS.outcome = D.sphericalTrade.outcome;
+  SYS.geom = Object.fromEntries(SYS.flows.map(f => {
+    const a = sphById[f.from], b = sphById[f.to];
+    return [f.id, arc([a.lon, a.lat], [b.lon, b.lat], 0.17, 56)];
+  }));
+  SYS.base = sysGrounded(new Set());
+  SYS.kindC = KIND_C;
+  map.addSource('sys-flows', { type: 'geojson', data: fc([]) });
+  map.addSource('sys-nodes', { type: 'geojson', data: fc([]) });
+  /* Dead flows are drawn twice: a grey dashed line, and a solid rule struck through it.
+     Colour alone would carry the whole meaning of this tab, and this is the one tab where
+     a student who cannot separate grey from blue would be unable to do the task at all. */
+  map.addLayer({ id: 'sys-flow', type: 'line', source: 'sys-flows',
+    layout: { visibility: 'none', 'line-cap': 'round' },
+    paint: {
+      'line-color': ['case', ['get', 'dead'], '#9c968b', ['get', 'color']],
+      'line-width': ['case', ['get', 'failing'], 4.5, ['get', 'dead'], 1.6, 2.4],
+      'line-opacity': ['case', ['get', 'dead'], 0.5, 0.9],
+      'line-dasharray': ['case', ['get', 'dead'], ['literal', [2, 2]], ['literal', [1, 0]]] } });
+  map.addLayer({ id: 'sys-strike', type: 'line', source: 'sys-flows',
+    layout: { visibility: 'none', 'line-cap': 'butt' },
+    filter: ['==', ['get', 'dead'], true],
+    paint: { 'line-color': '#6f675c', 'line-width': 1.4, 'line-opacity': 0.9,
+      'line-dasharray': [0.6, 5.2] } });
+  map.addLayer({ id: 'sys-node', type: 'circle', source: 'sys-nodes',
+    layout: { visibility: 'none' },
+    paint: {
+      'circle-radius': ['case', ['get', 'out'], 8, 5.5],
+      'circle-color': ['case', ['get', 'out'], '#fbf8f2', '#3d3226'],
+      'circle-stroke-width': ['case', ['get', 'out'], 3, 2],
+      'circle-stroke-color': ['case', ['get', 'out'], '#9c2f2a', '#fbf8f2'] } });
 
   /* 4 · freedom -------------------------------------------------- */
   map.addSource('free-s', { type: 'geojson', data: fc(D.freedom.map(f =>
@@ -475,6 +528,214 @@ function buildSourceMarkers() {
     el.setAttribute('aria-label', `Primary source: ${s.title}, ${s.date}`); // after addTo — MapLibre overwrites it
     srcMarkers.push({ id: s.id, act: s.act, marker: m, el });
   });
+}
+
+/* ═══ THE SYSTEM TAB ══════════════════════════════════════════
+   Explore answers what the parts are and what moves between them. It cannot answer what
+   else stops when one part stops, because a line from A to B carries no record of what had
+   to reach A first. That is what 'requires' adds, and this tab is the only place it is used.
+
+   Grounded semantics, and it matters. A flow runs only if it can be traced back through
+   living suppliers to something that needs nothing — silver out of the mountain, grain off
+   a North American farm. The alternative, "a flow lives if its suppliers live", lets a ring
+   hold itself up: Barbados molasses feeds Newport rum, Newport rum buys people at Ouidah,
+   those people make the molasses. Under the loose rule that ring survives the loss of
+   Potosí and the cascade stops four steps early. Under this one it does not, because
+   nothing outside the ring is holding it up. The least fixed point below is what enforces
+   that: nothing is alive until something makes it alive. */
+const SYS_STEP_MS = 520;                 // slow enough to read a step, brisk enough to rewatch
+
+/* Least fixed point over the flows. Returns id → depth, where depth is how many links of
+   support stand between a flow and the nearest thing that needs nothing. Depth doubles as
+   the cascade's running order: a flow cannot fail before the thing that fed it. */
+function sysGrounded(deadNodes) {
+  const alive = {};
+  for (let changed = true; changed;) {
+    changed = false;
+    SYS.flows.forEach(f => {
+      if (f.id in alive) return;
+      if (deadNodes.has(f.from) || deadNodes.has(f.to)) return;
+      let depth = 0;
+      for (const group of (f.requires || [])) {
+        /* every group must be satisfied; within a group any one supplier will do */
+        const supplied = group.filter(g => g in alive).map(g => alive[g]);
+        if (!supplied.length) return;
+        depth = Math.max(depth, Math.min(...supplied) + 1);
+      }
+      alive[f.id] = depth; changed = true;
+    });
+  }
+  return alive;
+}
+
+function sysOutcomeLit(alive) {
+  return SYS.outcome.requires.every(g => g.some(id => id in alive));
+}
+
+/* Build the waves for a knock-out: which flows stop, and in what order. */
+function sysCascade(nodeId) {
+  const after = sysGrounded(new Set([nodeId]));
+  const lost = Object.keys(SYS.base).filter(id => !(id in after));
+  const byDepth = new Map();
+  lost.forEach(id => {
+    const d = SYS.base[id];
+    if (!byDepth.has(d)) byDepth.set(d, []);
+    byDepth.get(d).push(id);
+  });
+  return { after, waves: [...byDepth.keys()].sort((a, b) => a - b).map(d => byDepth.get(d)) };
+}
+
+/* Paint the map from the current state. `failing` is the wave being animated right now —
+   it is the only thing that moves, because a flow that merely animates is decoration and
+   the thing being taught is which flow took which one down. */
+function sysPaint(failing) {
+  if (!map || !map.getSource('sys-flows')) return;
+  const fail = new Set(failing || []);
+  map.getSource('sys-flows').setData(fc(SYS.flows.map(f =>
+    ln(SYS.geom[f.id], {
+      ...f, requires: undefined, kind: 'sys-flow',
+      color: SYS.kindC[f.kind],
+      name: `${SYS.byId[f.from].name} → ${SYS.byId[f.to].name}`,
+      dead: SYS.dead.has(f.id), failing: fail.has(f.id)
+    }))));
+  map.getSource('sys-nodes').setData(fc(DATA.sphericalTrade.nodes.map(n =>
+    pt(n.lon, n.lat, { ...n, kind: 'sys-node', out: n.id === SYS.knocked }))));
+  sysPaintOutcome();
+}
+
+function sysPaintOutcome() {
+  const el = document.getElementById('sys-cup');
+  if (!el) return;
+  const lit = sysOutcomeLit(SYS.alive);
+  el.classList.toggle('dark', !lit);
+  el.querySelector('.cupwhat').textContent = lit ? SYS.outcome.live : SYS.outcome.dead;
+}
+
+/* The outcome is not a place, so it is not a pin. It is a card, parked in the ocean off
+   Britain where nothing else is competing for the space, and it is the only thing on this
+   map that is an effect rather than a location. */
+function buildOutcomeCard() {
+  const o = DATA.sphericalTrade.outcome;
+  const el = document.createElement('div');
+  el.innerHTML = `<div class="cup" id="sys-cup">
+      <div class="cupglyph" aria-hidden="true">☕</div>
+      <div class="cuptext"><b>${esc(o.label)}</b><span class="cupwhat"></span></div>
+    </div>`;
+  el.addEventListener('click', e => { e.stopPropagation(); sysShowEvidence({ outcome: true }); });
+  sysCupMarker = new maplibregl.Marker({ element: el }).setLngLat([o.lon, o.lat]).addTo(map);
+}
+
+/* ── running a knock-out ──────────────────────────────────────
+   Each wave is one step: mark it failing, hold, then leave it dead and move on. */
+function sysKnockOut(nodeId) {
+  sysStopRun();
+  SYS.knocked = nodeId;
+  SYS.dead = new Set();
+  const { after, waves } = sysCascade(nodeId);
+  SYS.alive = SYS.base;                       // still whole until the first wave lands
+  const log = document.getElementById('sys-log');
+  log.innerHTML = '';
+  sysLogLine(`<b>${esc(SYS.byId[nodeId].name)} is gone.</b> Watch what stops.`, 'head');
+  let i = 0;
+  const runWave = () => {
+    if (i >= waves.length) {
+      SYS.alive = after;
+      sysPaint([]);
+      const lit = sysOutcomeLit(after);
+      sysLogLine(lit
+        ? `Nothing else stops. Sugar still reaches Britain, so the teacup stays full — something else was covering for it.`
+        : `Nothing else is left to stop. <b>The teacup goes dark.</b>`, lit ? 'end' : 'end dark');
+      sysRunning = null;
+      sysRenderNodes();
+      return;
+    }
+    const wave = waves[i++];
+    sysPaint(wave);                            // highlight the wave that is failing now
+    sysLogLine(`<span class="stepn">${i}</span>` + wave.map(id => {
+      const f = SYS.flowById[id];
+      return `<span class="floline" data-flow="${esc(id)}"><s>${esc(SYS.byId[f.from].name)} → ${esc(SYS.byId[f.to].name)}</s><i>${esc(f.cargo)}</i></span>`;
+    }).join(''), 'step');
+    sysRunning = setTimeout(() => {
+      wave.forEach(id => SYS.dead.add(id));
+      /* What is still standing *at this moment* — the waves that have landed so far, not the
+         end state. Re-running the fixpoint here would kill everything on the first tick and
+         the teacup would go dark before the sugar had stopped, which is the one beat the
+         whole animation exists to land. */
+      SYS.alive = Object.fromEntries(
+        Object.entries(SYS.base).filter(([id]) => !SYS.dead.has(id)));
+      sysPaint([]);
+      sysRunning = setTimeout(runWave, Math.round(SYS_STEP_MS * 0.35));
+    }, SYS_STEP_MS);
+  };
+  runWave();
+}
+
+function sysStopRun() { if (sysRunning) { clearTimeout(sysRunning); sysRunning = null; } }
+
+/* Show or hide the System tab's own layers and its outcome card. */
+function setSystemMap(on) {
+  if (!map) return;
+  ['sys-flow', 'sys-strike', 'sys-node'].forEach(id =>
+    map.getLayer(id) && map.setLayoutProperty(id, 'visibility', on ? 'visible' : 'none'));
+  const cup = sysCupMarker && sysCupMarker.getElement();
+  if (cup) cup.style.display = on ? 'block' : 'none';
+  if (!on) sysStopRun();
+}
+
+function sysReset() {
+  sysStopRun();
+  SYS.knocked = null; SYS.dead = new Set(); SYS.alive = SYS.base;
+  const log = document.getElementById('sys-log');
+  if (log) log.innerHTML = `<p class="sys-idle">Remove a part of the system and watch what else fails. Nothing here tells you the answer — you have to run it and read what stops.</p>`;
+  sysPaint([]);
+  sysRenderNodes();
+}
+
+function sysLogLine(html, cls) {
+  const log = document.getElementById('sys-log');
+  const d = document.createElement('div');
+  d.className = 'sys-line ' + (cls || '');
+  d.innerHTML = html;
+  log.appendChild(d);
+  d.querySelectorAll('[data-flow]').forEach(s =>
+    s.addEventListener('click', () => sysShowEvidence({ flow: s.dataset.flow })));
+  log.scrollTop = log.scrollHeight;
+}
+
+/* Clicking is the only way to get at why. There is deliberately no reveal button: if the
+   answer can be copied without clicking, the tab has taught nothing. */
+function sysShowEvidence(what) {
+  const box = document.getElementById('sys-why');
+  if (!box) return;
+  if (what.outcome) {
+    const o = SYS.outcome;
+    box.innerHTML = `<div class="whyhead">${esc(o.label)}</div><p>${esc(o.because)}</p>
+      <div class="cite">Sugar Changed the World, p. ${esc(DATA.sphericalTrade.systemP)}</div>`;
+    return;
+  }
+  const f = SYS.flowById[what.flow];
+  if (!f) return;
+  const needs = (f.requires || []).map(g =>
+    g.map(id => `${SYS.byId[SYS.flowById[id].from].name} → ${SYS.byId[SYS.flowById[id].to].name}`)
+      .join(' <em>or</em> ')).join('; and ');
+  box.innerHTML = `<div class="whyhead">${esc(SYS.byId[f.from].name)} → ${esc(SYS.byId[f.to].name)}</div>
+    <p class="whycargo">${esc(f.cargo)}</p>
+    <p>${esc(f.because)}</p>
+    <p class="whyneeds"><b>Needs first:</b> ${needs || 'nothing on this map'}</p>
+    <div class="cite">Sugar Changed the World, p. ${esc(DATA.sphericalTrade.systemP)}</div>`;
+}
+
+function sysRenderNodes() {
+  const wrap = document.getElementById('sys-nodes-list');
+  if (!wrap) return;
+  wrap.innerHTML = DATA.sphericalTrade.nodes.map(n =>
+    `<button class="sysnode${n.id === SYS.knocked ? ' out' : ''}" data-node="${esc(n.id)}">${esc(n.name)}</button>`
+  ).join('');
+  wrap.querySelectorAll('[data-node]').forEach(b =>
+    b.addEventListener('click', () => {
+      if (b.dataset.node === SYS.knocked) sysReset();
+      else sysKnockOut(b.dataset.node);
+    }));
 }
 
 /* ── passage call labels (HTML) ───────────────────────────────
@@ -1321,17 +1582,29 @@ function stopPlay() {
 
 /* ── UI wiring ────────────────────────────────────────────── */
 function wireUI() {
-  const panes = { story: 'story', explore: 'explore', sources: 'sources' };
+  const panes = { story: 'story', explore: 'explore', system: 'system', sources: 'sources' };
   const setMode = m => {
     mode = m;
     stopPlay();
-    ['story', 'explore', 'sources'].forEach(k => {
+    ['story', 'explore', 'system', 'sources'].forEach(k => {
       document.getElementById(panes[k]).hidden = k !== m;
       const b = document.getElementById('btn-' + k);
       b.classList.toggle('on', k === m); b.setAttribute('aria-selected', k === m);
     });
-    setTimebar(m !== 'story');
+    setTimebar(m !== 'story' && m !== 'system');
     document.getElementById('panel').scrollTop = 0;
+    /* The System tab owns the map while it is up. Every other layer comes off — a knock-out
+       is unreadable over the top of eight other layers, and the question it asks is only
+       about these thirteen places. */
+    setSystemMap(m === 'system');
+    if (m === 'system') {
+      setGlobe(false); setPlaceLabels(null);
+      activeLayers = new Set(); applyState();
+      document.getElementById('mapnote').hidden = true;
+      sysReset();
+      map && map.easeTo({ center: [-30, 16], zoom: 1.25, duration: 900, padding: camPad() });
+      return;
+    }
     if (m !== 'story') {
       setGlobe(false);                       // the globe belongs to its own story step
       setPlaceLabels(null);
@@ -1345,8 +1618,10 @@ function wireUI() {
       on && goStep(on.dataset.step);
     }
   };
-  ['story', 'explore', 'sources'].forEach(k =>
+  ['story', 'explore', 'system', 'sources'].forEach(k =>
     document.getElementById('btn-' + k).addEventListener('click', () => setMode(k)));
+
+  document.getElementById('sys-reset').addEventListener('click', sysReset);
 
   document.querySelectorAll('[data-layer]').forEach(cb => cb.addEventListener('change', () => {
     if (cb.dataset.layer === 'chinacuba') cubaPinned = cb.checked;

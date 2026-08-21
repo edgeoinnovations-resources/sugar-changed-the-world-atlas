@@ -21,6 +21,7 @@
   <nav class="modes" role="tablist" aria-label="View mode">
     <button id="btn-story"   class="mode on" role="tab" aria-selected="true"  aria-controls="story">Story</button>
     <button id="btn-explore" class="mode"    role="tab" aria-selected="false" aria-controls="explore">Explore</button>
+    <button id="btn-system"  class="mode"    role="tab" aria-selected="false" aria-controls="system">Knock-out</button>
     <button id="btn-sources" class="mode"    role="tab" aria-selected="false" aria-controls="sources">Sources</button>
   </nav>
   <button id="btn-about" class="ghost">About</button>
@@ -81,6 +82,27 @@
 
         <div class="callout">
           <b>Try this.</b> Turn on <i>Plantations</i> and <i>Graticule</i> together and drag the year slider from 1400 to 1900. Nearly every dot sits between the tropics. Then ask: what does that single physical fact explain about who was moved, and where?
+        </div>
+      </div>
+    </div>
+
+    <!-- KNOCK-OUT -->
+    <div id="system" class="pane" role="tabpanel" aria-labelledby="btn-system" tabindex="0" hidden>
+      <div class="pad">
+        <h2>If one part stops, what else fails?</h2>
+        <p class="lede">Explore shows you the parts and what moves between them. It cannot tell you what depends on what — a line from one place to another carries no record of what had to arrive first.</p>
+        <p>Take a place out of the system and watch the failure travel. Some places bring the whole thing down. Some barely matter. A few look essential and turn out not to be, because something else was quietly covering for them.</p>
+
+        <h3 class="sysh">Take one out</h3>
+        <div class="sysnodes" id="sys-nodes-list"></div>
+        <p class="syshint">Click the same place again, or <button class="ghost sm" id="sys-reset">put it all back</button>.</p>
+
+        <h3 class="sysh">What stopped</h3>
+        <div class="syslog" id="sys-log"></div>
+
+        <h3 class="sysh">Why did that stop?</h3>
+        <div class="syswhy" id="sys-why">
+          <p class="sys-idle">Click any line on the map, or any flow in the list above, to see what it needed before it could run.</p>
         </div>
       </div>
     </div>
