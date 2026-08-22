@@ -5,6 +5,12 @@
 'use strict';
 
 const ACT_COLOR = { 0:'#3d3226', 1:'#b8791f', 2:'#9c2f2a', 3:'#1f5f80', 4:'#4a6f3c', 5:'#5d4e86' };
+/* How sure we are that a source belongs where it is pinned. Deliberately visible to
+   students in Lesson 4 — 'approximate' and 'symbolic' are findings, not failures. */
+const CERT_COLOR = { located:'#4a6f3c', approximate:'#b8791f', symbolic:'#5d4e86', uncertain:'#9c2f2a' };
+let srcColourMode = 'act';
+const srcPinColor = s => srcColourMode === 'certainty'
+  ? (CERT_COLOR[s.certainty] || ACT_COLOR[0]) : (ACT_COLOR[s.act] || ACT_COLOR[0]);
 const EPOCHS = [-7500,-6000,-2000,-900,-515,-327,-286,530,640,700,950,1100,1200,1300,1400,1450,
                 1493,1550,1600,1650,1700,1750,1800,1838,1870,1900,1917,1950];
 const fmtYear = y => y < 0 ? `${Math.abs(y).toLocaleString()} BC` : `${y}`;
@@ -88,6 +94,7 @@ Promise.all([
   // Build the readable site first so a map failure never costs the text and sources.
   buildStory();
   buildSourceGrid();
+  buildScrapAid();
   wireUI();
   try { buildMap(); } catch (e) {
     document.getElementById('map').innerHTML =
@@ -519,7 +526,7 @@ function buildSourceMarkers() {
   DATA.sources.forEach(s => {
     const el = document.createElement('button');
     el.className = 'pin src' + (s.kind === 'map' ? ' map-kind' : '') + (s.kind === 'missing' ? ' miss' : '');
-    el.style.setProperty('--c', ACT_COLOR[s.act] || ACT_COLOR[0]);
+    el.style.setProperty('--c', srcPinColor(s));
     el.innerHTML = '<span class="dot"></span>';
     el.title = s.title;
     el.setAttribute('aria-label', `Primary source: ${s.title}, ${s.date}`);
@@ -1483,6 +1490,57 @@ function buildSourceGrid() {
   });
   G.addEventListener('click', e => {
     const c = e.target.closest('[data-src]'); if (c) openSheet(c.dataset.src);
+  });
+}
+
+/* ── Sources tab · the SCRAP reading aid ──────────────────────
+   Lesson 4 runs SCRAP on the record itself: not "what does this source show?"
+   but "where did the surviving record get made, and where did it not?".
+   Every number below is counted from sources.json at run time, so it cannot
+   drift from the data the way a hand-written figure would. */
+const REGION = {
+  caribbean: s => s.lon >= -100 && s.lon <= -58 && s.lat >= 5   && s.lat <= 28,
+  europe:    s => s.lon >= -25  && s.lon <= 45  && s.lat >= 35  && s.lat <= 72,
+  westAfrica:s => s.lon >= -18  && s.lon <= 15  && s.lat >= -5  && s.lat <= 20,
+};
+
+function buildScrapAid() {
+  const S = DATA.sources, T = document.getElementById('src-tally');
+  if (!T) return;
+  const n = f => S.filter(f).length;
+  const clark = n(s => /clark/i.test(s.creator));
+  const cells = [
+    [S.length, 'sources on this map', false],
+    [n(REGION.caribbean), 'in the Caribbean', false],
+    [n(REGION.europe), 'in Europe', false],
+    [n(REGION.westAfrica), 'in West Africa &mdash; and both are two faces of the same British medal', true],
+    [clark, 'of them made by one man, William Clark', true],
+    [n(s => s.kind === 'missing'), 'exist, but no picture could be obtained', true],
+  ];
+  T.innerHTML = cells.map(([v, l, flag]) =>
+    `<div class="${flag ? 'flag' : ''}"><b>${v}</b><span>${l}</span></div>`).join('');
+
+  const KEY = document.getElementById('cert-key');
+  KEY.innerHTML = [
+    ['located', 'the record names the place'],
+    ['approximate', 'inferred from the record'],
+    ['symbolic', 'no single place — pinned where it belongs in the argument'],
+    ['uncertain', 'the record does not say'],
+  ].map(([k, d]) => `<span><i style="background:${CERT_COLOR[k]}"></i><b>${k}</b>&nbsp;— ${d}</span>`).join('')
+   + '<span><i class="hollow"></i><b>hollow</b>&nbsp;— no picture obtainable</span>';
+
+  const row = document.querySelector('.aidrow');
+  row.addEventListener('click', e => {
+    const c = e.target.closest('.chip'); if (!c) return;
+    row.querySelectorAll('.chip').forEach(x => x.classList.remove('on'));
+    c.classList.add('on');
+    srcColourMode = c.dataset.colour;
+    KEY.hidden = srcColourMode !== 'certainty';
+    const byId = Object.fromEntries(S.map(x => [x.id, x]));
+    srcMarkers.forEach(m => {
+      const rec = byId[m.id];
+      if (rec) m.el.style.setProperty('--c', srcPinColor(rec));
+    });
   });
 }
 

@@ -571,3 +571,44 @@ fieldset.layers legend{
 /* only the claim is struck, not the sentence explaining it — a struck-through explanation
    is the one thing on this card nobody can read */
 .cup.dark .cuptext b{color:#6f675c;text-decoration:line-through;text-decoration-thickness:1.5px}
+
+
+/* ── Sources tab · the SCRAP reading aid ──────────────────────
+   Added for Lesson 4 ("The Blank Pages"), where students run SCRAP on the
+   record itself rather than on a source. The counts are computed from
+   sources.json at run time so they cannot drift from the data. */
+.scrapaid{
+  border:1px solid var(--rule);border-radius:8px;background:var(--paper2);
+  padding:14px 15px 15px;margin:0 0 18px
+}
+.aidlede{font-family:var(--sans);font-size:13.5px;line-height:1.55;color:var(--ink2);margin:0 0 12px}
+.aidrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 10px}
+.aidlab{
+  font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink3);margin-right:2px
+}
+.certkey{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 12px}
+.certkey[hidden]{display:none}   /* [hidden] alone loses to display:flex */
+.certkey span{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)}
+.certkey i{width:11px;height:11px;transform:rotate(45deg);border-radius:2px;display:block;flex:none}
+.certkey i.hollow{background:var(--paper);box-shadow:0 0 0 2px var(--a0)}
+
+.tally{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;
+  background:var(--rule);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.tally div{background:var(--paper);padding:9px 11px}
+.tally b{display:block;font-family:var(--serif);font-size:21px;line-height:1.1;color:var(--ink)}
+.tally span{display:block;font-size:11.5px;line-height:1.35;color:var(--ink3);margin-top:3px}
+.tally div.flag b{color:var(--a2)}
+
+.aiddet{margin:12px 0 0;font-size:13.5px}
+.aiddet summary{
+  cursor:pointer;font-weight:700;color:var(--ink2);font-size:12.5px;
+  letter-spacing:.04em;padding:2px 0
+}
+.aiddet[open] summary{margin-bottom:8px}
+.scrapdl{display:grid;grid-template-columns:auto 1fr;gap:7px 11px;margin:0}
+.scrapdl dt{
+  font-family:var(--serif);font-weight:700;font-size:16px;color:var(--a2);
+  line-height:1.35;text-align:center
+}
+.scrapdl dd{margin:0;font-size:13.2px;line-height:1.5;color:var(--ink2)}

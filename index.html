@@ -112,6 +112,32 @@
       <div class="pad">
         <h2>Primary sources</h2>
         <p class="lede">Every source below is pinned to a place on the map. Click one to fly there and open it. Each carries a prompt: <b>OPTIC</b> for images, <b>SCRAP</b> for maps.</p>
+
+        <div class="scrapaid">
+          <h3 class="sysh" style="margin-top:0">Read the map before you read the sources</h3>
+          <p class="aidlede">Every pin is a record that <b>survived</b> — someone made it, and someone kept it. Nothing is pinned where a record was never made, or was made and thrown away. <b>So where this map is empty is evidence too.</b></p>
+
+          <div class="aidrow" role="group" aria-label="Colour the pins by">
+            <span class="aidlab">Colour the pins by</span>
+            <button class="chip on" data-colour="act">part of the book</button>
+            <button class="chip" data-colour="certainty">how sure we are</button>
+          </div>
+          <div id="cert-key" class="certkey" hidden></div>
+
+          <div id="src-tally" class="tally"></div>
+
+          <details class="aiddet">
+            <summary>SCRAP — five questions for this map</summary>
+            <dl class="scrapdl">
+              <dt>S</dt><dd><b>Spatial–temporal.</b> Where are the pins, and what years do they cover? There is no scale bar on this map, so make no claim about distance — say that out loud.</dd>
+              <dt>C</dt><dd><b>Conditions, connections, comparisons.</b> Turn on <i>Plantations</i> in Explore and compare. Sugar was grown in one set of places. Was the record made in the same places?</dd>
+              <dt>R</dt><dd><b>Region.</b> Draw a line around the part of the map that is crowded, and another around a part that is empty. What holds each one together?</dd>
+              <dt>A</dt><dd><b>Aura.</b> The map looks full. Name that feeling first — then say what produced it. Fifty-three pins on a world map is not many.</dd>
+              <dt>P</dt><dd><b>Pattern and exceptions.</b> The counts above are the pattern. Now find the exceptions: the two pins that carry no picture at all, and the one place whose entire record is two faces of the same object.</dd>
+            </dl>
+          </details>
+        </div>
+
         <div class="filters" id="src-filters"></div>
         <div id="src-grid" class="grid"></div>
       </div>
